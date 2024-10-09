@@ -1,0 +1,121 @@
+.trip-summary-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .trip-summary-header {
+    border-bottom: 1px solid #06066c;
+    margin-bottom: 20px;
+  }
+  
+  .flight-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #06066c;
+  }
+  
+  .flight-info,
+  .flight-duration {
+    width: 30%;
+  }
+  
+  .baggage-info {
+    display:inline-flexbox;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .passenger-details,
+  .contact-details,
+  .seat-details {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #06066c;
+    border-spacing:0ch;
+  }
+  
+  .passenger-details th,
+  .contact-details th,
+  .seat-details th,
+  .passenger-details td,
+  .contact-details td,
+  .seat-details td {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .contact-details p {
+    margin: 5px 0;
+  }
+
+  .purchase-conditions {
+    margin-top: 20px;
+
+  }
+  
+  .toggle-button {
+    background-color: #0a000a;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .conditions-content {
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ccc;
+
+  }
+  
+  .conditions-content h4 {
+    margin-top: 0;
+  }
+  
+  .conditions-content p {
+    margin: 10px 0;
+    
+  }
+  
+  /* Price Summary Styles */
+.price-summary {
+    border: 1px solid #2903c2;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #99e1e1;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.price-summary h2 {
+    color: #4b4bc2;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.trip-details {
+    margin-bottom: 20px;
+}
+
+.trip-details p {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+}
+
+.trip-details h3 {
+    font-size: 22px;
+    color: #d1397c;
+    margin-top: 5px;
+}
+
+
+.conditions{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #06066c;
+}
+  
