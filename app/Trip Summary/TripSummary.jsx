@@ -32,10 +32,7 @@ const TripSummary = () => {
           <p>Sri Lanka</p>
         </div>
 
-        <div className="flight-duration">
-          <p><span className="tick-icon">✔</span> 5h 0m</p>
-          <p>Non-stop</p>
-        </div>
+        
 
         <div className="flight-info">
           <p><strong>Arrival</strong></p>
@@ -68,12 +65,12 @@ const TripSummary = () => {
           <tr>
             <td>Mrs Sanuji Perera</td>
             <td>200280703718</td>
-            <td>01 Feb 1976</td>
+            <td>01 Feb 1990</td>
             <td>Adult</td>
           </tr>
           <tr>
             <td>Miss Minuli Perera</td>
-            <td>20028070</td>
+            <td>200680703718</td>
             <td>04 Apr 2014</td>
             <td>Child</td>
           </tr>
@@ -86,6 +83,7 @@ const TripSummary = () => {
         <thead>
           <tr>
             <th>Passenger Name</th>
+            <th>Type</th>
             <th>Email</th>
             <th>Number</th>
           </tr>
@@ -93,6 +91,7 @@ const TripSummary = () => {
         <tbody>
           <tr>
             <td>Mrs Sanuji Perera</td>
+            <td>Frequent</td>
             <td>sanujis1102@gmail.com</td>
             <td>94-774194482</td>
           </tr>
@@ -180,13 +179,15 @@ const TripSummary = () => {
       </>
 
       <div class="price-summary">
-    <h2>Total price</h2>
-    <div class="trip-details">
-        <p>Trip price (1 Adult + 1 Child)</p>
-        <h3>LKR 451,004.00</h3>
-    
-    </div>
-</div>
+    <h3>Total price : LKR 451,004.00 </h3>
+  </div>
+
+  {/* Pay Now button */}
+  <div className="pay-now-button">
+        <button onClick={() => alert('Proceed to payment')} className="pay-button">
+          Purchase
+        </button>
+      </div>
 
     </div >
   );

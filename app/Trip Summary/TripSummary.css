@@ -1,121 +1,94 @@
 .trip-summary-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .trip-summary-header {
-    border-bottom: 1px solid #06066c;
-    margin-bottom: 20px;
-  }
-  
-  .flight-details {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #06066c;
-  }
-  
-  .flight-info,
-  .flight-duration {
-    width: 30%;
-  }
-  
-  .baggage-info {
-    display:inline-flexbox;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .passenger-details,
-  .contact-details,
-  .seat-details {
-    width: 100%;
-    margin-bottom: 20px;
-    padding-bottom: 50px;
-    border-bottom: 1px solid #06066c;
-    border-spacing:0ch;
-  }
-  
-  .passenger-details th,
-  .contact-details th,
-  .seat-details th,
-  .passenger-details td,
-  .contact-details td,
-  .seat-details td {
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .contact-details p {
-    margin: 5px 0;
-  }
-
-  .purchase-conditions {
-    margin-top: 20px;
-
-  }
-  
-  .toggle-button {
-    background-color: #0a000a;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .conditions-content {
-    margin-top: 10px;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border: 1px solid #ccc;
-
-  }
-  
-  .conditions-content h4 {
-    margin-top: 0;
-  }
-  
-  .conditions-content p {
-    margin: 10px 0;
-    
-  }
-  
-  /* Price Summary Styles */
-.price-summary {
-    border: 1px solid #2903c2;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #99e1e1;
-    max-width: 400px;
-    margin: 20px auto;
-    text-align: center;
+  background-color: #e0f7fa; /* Light blue background */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Padding around the content */
+  max-width: 1000px; /* Max width for better layout */
+  margin: auto; /* Center the component */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
-.price-summary h2 {
-    color: #4b4bc2;
-    font-size: 24px;
-    margin-bottom: 15px;
+.trip-summary-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.trip-details {
-    margin-bottom: 20px;
+h2 {
+  color: #00796b; /* Darker blue color */
 }
 
-.trip-details p {
-    font-size: 16px;
-    color: #333;
-    margin: 0;
+h3 {
+  color: #004d40; /* Even darker blue */
 }
 
-.trip-details h3 {
-    font-size: 22px;
-    color: #d1397c;
-    margin-top: 5px;
+.flight-details {
+  background-color: white; /* White background for details */
+  border-radius: 8px; /* Rounded corners for details */
+  margin-bottom: 50px; /* Spacing between sections */
+  padding: 15px; /* Padding inside the sections */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  display: flex;
+  flex-direction: row; /* Stack the items vertically */
+  gap: 100px; /* Add space between items */
 }
 
 
-.conditions{
-    padding-bottom: 10px;
-    border-bottom: 1px solid #06066c;
+.passenger-details, .contact-details, .seat-details {
+  background-color: white; /* White background for details */
+  border-radius: 8px; /* Rounded corners for details */
+  margin-bottom: 50px; /* Spacing between sections */
+  padding: 15px; /* Padding inside the sections */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
-  
+
+table {
+  width: 100%; /* Full width for tables */
+  border-collapse: collapse; /* Remove spacing between table cells */
+}
+
+th, td {
+  padding: 10px; /* Padding inside table cells */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #ddd; /* Bottom border for cells */
+}
+
+th {
+  background-color: #b2ebf2; /* Light blue header */
+  color: #004d40; /* Darker text color for header */
+}
+
+.conditions-content {
+  background-color: #f1f8e9; /* Light green background for conditions */
+  padding: 10px; /* Padding for conditions */
+ 
+  margin: 10px 0; /* Margin for spacing */
+}
+
+.pay-now-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pay-button {
+  background-color: #05104f; /* Button color */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.pay-button:hover {
+  background-color: #e65c50; /* Darker button color on hover */
+}
+
+.conditions h4 {
+  cursor: pointer;
+  color: #00796b; /* Darker blue color for headers */
+}
+
+.conditions h4:hover {
+  text-decoration: underline; /* Underline effect on hover */
+}
