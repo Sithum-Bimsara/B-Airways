@@ -12,13 +12,14 @@
   margin-bottom: 20px;
 }
 
+h1 {
+  color: #01413a; /* Darker blue color */
+}
+
 h2 {
   color: #00796b; /* Darker blue color */
 }
 
-h3 {
-  color: #004d40; /* Even darker blue */
-}
 
 .flight-details {
   background-color: white; /* White background for details */
@@ -70,18 +71,18 @@ th {
 }
 
 .pay-button {
-  background-color: #05104f; /* Button color */
+  background-color: #00796b; /* Button color */
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 20px;
   transition: background-color 0.3s; /* Smooth transition */
 }
 
 .pay-button:hover {
-  background-color: #e65c50; /* Darker button color on hover */
+  background-color: #073c36;/* Darker button color on hover */
 }
 
 .conditions h4 {

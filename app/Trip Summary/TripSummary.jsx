@@ -19,8 +19,8 @@ const TripSummary = () => {
     <div className="trip-summary-container">
       {/* Trip summary section */}
       <div className="trip-summary-header">
-        <h2>Trip Summary</h2>
-        <h3>Colombo &gt; Doha Fri, 11 Oct 2024</h3>
+        <h1>Trip Summary</h1>
+        <h2>Colombo &gt; Doha Fri, 11 Oct 2024</h2>
       </div>
 
       {/* Flight details */}
@@ -51,7 +51,7 @@ const TripSummary = () => {
       </div>
 
       {/* Passenger details */}
-      <h4>Passenger Details</h4>
+      <h3>Passenger Details</h3>
       <table className="passenger-details">
         <thead>
           <tr>
@@ -78,7 +78,7 @@ const TripSummary = () => {
       </table>
 
       {/* Contact details */}
-      <h4>Contact Details</h4>
+      <h3>Contact Details</h3>
       <table className="contact-details">
         <thead>
           <tr>
@@ -99,7 +99,7 @@ const TripSummary = () => {
       </table>
 
       {/* Seat details */}
-      <h4>Seat Details</h4>
+      <h3>Seat Details</h3>
       <table className="seat-details">
         <thead>
           <tr>
@@ -122,9 +122,9 @@ const TripSummary = () => {
       {/* Dropdown for Purchase Conditions */}
       <>
         {/* Heading for Purchase Conditions */}
-        <div className="conditions"><h4 onClick={toggleConditions} style={{ cursor: 'pointer' }}>
+        <div className="conditions"><h3 onClick={toggleConditions} style={{ cursor: 'pointer' }}>
           Purchase Conditions {showConditions ? '▲' : '▼'}
-        </h4></div>
+        </h3></div>
 
         {showConditions && (
           <>
@@ -152,9 +152,9 @@ const TripSummary = () => {
       {/* Dropdown for Refund Conditions */}
       <>
         {/* Heading for Refund Conditions */}
-        <div className="conditions"><h4 onClick={toggleRefundConditions} style={{ cursor: 'pointer' }}>
+        <div className="conditions"><h3 onClick={toggleRefundConditions} style={{ cursor: 'pointer' }}>
           Refund Conditions {showRefundConditions ? '▲' : '▼'}
-        </h4></div>
+        </h3></div>
 
         {showRefundConditions && (
           <>
@@ -179,7 +179,7 @@ const TripSummary = () => {
       </>
 
       <div class="price-summary">
-    <h3>Total price : LKR 451,004.00 </h3>
+    <h1>Total price : LKR 451,004.00 </h1>
   </div>
 
   {/* Pay Now button */}
