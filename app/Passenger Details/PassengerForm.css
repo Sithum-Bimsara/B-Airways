@@ -1,0 +1,101 @@
+.passenger-form-container {
+    background-color: #e0f7fa; /* Light blue background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding around the content */
+    max-width: 800px; /* Max width for better layout */
+    margin: auto; /* Center the component */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+  
+  .form-title {
+    text-align: center;
+    font-size: 24px;
+    color: #01413a; /* Darker blue color */
+    margin-bottom: 40px;
+    margin-top: 20px;
+  }
+  
+  .passenger-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .section {
+    background-color: white; /* White background for sections */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside sections */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-bottom: 50px; /* Spacing between sections */
+  }
+  
+  .section h3 {
+    color: #00796b; /* Darker blue color */
+    margin-bottom: 20px;
+    margin-top: 5px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .form-row input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  input:focus {
+    border-color: #00796b; /* Border color on focus */
+    outline: none;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: center; /* Center the button */
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  
+  .submit-button {
+    background-color: #00796b; /* Button color */
+  color: white;
+  padding: 10px 20px ;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.submit-button:hover {
+  background-color: #073c36;/* Darker button color on hover */
+}
+  
+  .passenger-details,
+  .emergency-contact,
+  .bag-info {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #b2ebf2; /* Light blue header */
+    color: #004d40; /* Darker text color for header */
+  }
+  
