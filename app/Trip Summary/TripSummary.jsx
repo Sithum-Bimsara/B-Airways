@@ -20,7 +20,7 @@ const TripSummary = () => {
       {/* Trip summary section */}
       <div className="trip-summary-header">
         <h1>Trip Summary</h1>
-        <h2>Colombo &gt; Doha Fri, 11 Oct 2024</h2>
+        <h3>Colombo &gt; Doha Fri, 11 Oct 2024</h3>
       </div>
 
       {/* Flight details */}
