@@ -1,0 +1,97 @@
+/* components/Testimonials.css */
+.testimonials {
+    text-align: center;
+    padding: 40px;
+    background-color: #f0f4ff;
+    width: 100%;
+}
+
+.testimonials h2 {
+    font-size: 28px;
+    color: #3c47e9; /* Primary color */
+    margin-bottom: 30px;
+}
+
+.testimonial-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Wrap testimonials on smaller screens */
+    gap: 20px; /* Spacing between cards */
+}
+
+.testimonial-card {
+    width: 300px; /* Fixed width for cards */
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: transform 0.2s;
+    display: flex; /* Use flexbox for card layout */
+    align-items: flex-start; /* Align items at the start */
+    position: relative; /* Position relative for proper layout */
+}
+/*
+.testimonial-card:hover {
+    transform: scale(1.05); 
+}
+*/
+
+.testimonial-image {
+    width: 50px; /* Set image size */
+    height: 50px; /* Set image size */
+    border-radius: 50%; /* Circular image */
+    margin-right: 15px; /* Space between image and text */
+}
+
+.testimonial-info {
+    text-align: left; /* Align text to the left */
+    display: flex;
+    flex-direction: column; /* Stack info vertically */
+    justify-content: flex-start; /* Align content at the top */
+}
+
+.testimonial-name {
+    font-size: 18px; /* Adjust name font size */
+    color: #333; /* Dark color for names */
+    margin: 0; /* Remove default margin */
+}
+
+.testimonial-location {
+    font-size: 14px; /* Smaller size for location/date */
+    color: #888; /* Lighter color for location/date */
+    margin: 5px 0; /* Margin for spacing */
+}
+
+.testimonial-rating {
+    display: flex; /* Use flexbox for rating alignment */
+    align-items: center; /* Center items vertically */
+    margin: 5px 0; /* Space above rating */
+}
+
+.star {
+    color: #FFD700; /* Gold color for stars */
+    font-size: 16px; /* Size of stars */
+    margin-right: 2px; /* Space between stars */
+}
+
+.testimonial-review {
+    font-size: 14px; /* Review text size */
+    color: #333; /* Darker color for review text */
+    margin-top: 10px; /* Margin above review */
+    max-height: 60px; /* Limit height for review */
+    overflow: hidden; /* Hide overflow */
+    transition: max-height 0.3s ease; /* Smooth transition */
+}
+
+.testimonial-review.expanded {
+    max-height: 200px; /* Expanded height */
+}
+
+.read-more-btn {
+    background-color: transparent; /* Button background */
+    border: none; /* Remove border */
+    color: #3c47e9; /* Color of button text */
+    cursor: pointer; /* Pointer cursor */
+    margin-top: 10px; /* Margin above button */
+    font-size: 14px; /* Button font size */
+}
