@@ -1,9 +1,11 @@
+"use client";
+
 // components/Testimonials.jsx
 import React, { useState } from 'react';
 import './Testimonials.css';
-import user1 from '../assets/images/user1.jpg'; // Replace with your image path
-import user2 from '../assets/images/user2.jpg'; // Replace with your image path
-import user3 from '../assets/images/user3.jpg'; // Replace with your image path
+import user1 from '../../assets/images/user1.jpg'; // Replace with your image path
+import user2 from '../../assets/images/user2.jpg'; // Replace with your image path
+import user3 from '../../assets/images/user3.jpg'; // Replace with your image path
 
 function Testimonials() {
   const testimonials = [

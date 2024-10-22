@@ -1,8 +1,8 @@
 // components/FlightDeals.jsx
 import React from 'react';
-import bundImage from '../assets/images/bund.jpg'; 
-import sydneyImage from '../assets/images/sydney.jpg';
-import kodaijiImage from '../assets/images/kodaiji.jpg';
+import bundImage from '../../assets/images/bund.jpg'; 
+import sydneyImage from '../../assets/images/sydney.jpg';
+import kodaijiImage from '../../assets/images/kodaiji.jpg';
 import './FlightDeals.css';
 
 function FlightDeals() {

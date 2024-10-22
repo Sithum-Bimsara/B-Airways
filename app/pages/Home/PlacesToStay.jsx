@@ -1,9 +1,9 @@
 // components/PlacesToStay.jsx
 import React from 'react';
 import './PlacesToStay.css';
-import maldivesImage from '../assets/images/maldivesImage.jpg'; // Replace with your image path
-import moroccoImage from '../assets/images/moroccoImage.jpg';
-import mongoliaImage from '../assets/images/mongoliaImage.jpg';
+import maldivesImage from '../../assets/images/maldivesImage.jpg'; // Replace with your image path
+import moroccoImage from '../../assets/images/moroccoImage.jpg';
+import mongoliaImage from '../../assets/images/mongoliaImage.jpg';
 
 function PlacesToStay() {
   const places = [
