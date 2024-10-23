@@ -1,27 +1,31 @@
 /* components/Navbar.css */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Position logo and auth buttons at the ends */
   align-items: center;
-  padding: 20px 50px; /* You can adjust padding for more or less spacing */
+  padding: 20px 5%; /* Responsive horizontal padding */
   background-color: #fff;
-  width: 100%; /* Ensure it takes full width */
-  position: relative; /* Ensures proper stacking context */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+  width: 100%; /* Full width */
+  position: fixed; /* Fixed at the top */
+  top: 0;
+  left: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Include padding in width */
+  z-index: 1000; /* Ensure it stays above other elements */
 }
 
 .logo {
   font-size: 28px;
   font-weight: bold;
-  color:/*#3c47e9*/ #24577a;
+  color: #24577a;
   cursor: pointer;
-  margin-right: 450px;
+  /* Removed fixed margin to prevent overflow */
 }
 
 .menu {
   display: flex;
   list-style: none;
-  gap: 30px; /* Adjust spacing between menu items */
+  gap: 30px; /* Space between menu items */
 }
 
 .menu li {
@@ -36,7 +40,7 @@
 
 .auth-buttons {
   display: flex;
-  gap: 15px;
+  gap: 15px; /* Space between buttons */
 }
 
 .signin-btn {
@@ -51,19 +55,32 @@
   background-color: #3c47e9;
   color: #fff;
   border: none;
-  padding: 10px 20px; /* Ensure padding for the button */
+  padding: 10px 20px;
   border-radius: 5px;
-  border-color: #3c47e9;
   cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover */
+  transition: background-color 0.3s;
 }
 
 .signup-btn:hover {
-  background-color: #3c47e9;
+  background-color: #2c357a; /* Darker shade on hover */
 }
 
-/* Ensure the navbar has no margin */
-body, html {
-  margin: 0;
-  padding: 0;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 5%;
+  }
+
+  .menu {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

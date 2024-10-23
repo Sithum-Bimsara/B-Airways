@@ -1,8 +1,8 @@
 // components/FlightDeals.jsx
 import React from 'react';
 import Image from 'next/image';
-import sydneyImage from '../../assets/images/sydney.jpg';
-import kodaijiImage from '../../assets/images/kodaiji.jpg';
+import sydneyImage from '../assets/images/sydney.jpg';
+import kodaijiImage from '../assets/images/kodaiji.jpg';
 import './FlightDeals.css';
 
 function FlightDeals() {

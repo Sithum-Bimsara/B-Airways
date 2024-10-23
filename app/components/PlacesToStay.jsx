@@ -1,9 +1,9 @@
 // components/PlacesToStay.jsx
 import React from 'react';
 import './PlacesToStay.css';
-import maldivesImage from '../../assets/images/maldivesImage.jpg';
-import moroccoImage from '../../assets/images/moroccoImage.jpg';
-import mongoliaImage from '../../assets/images/mongoliaImage.jpg';
+import maldivesImage from '../assets/images/maldivesImage.jpg';
+import moroccoImage from '../assets/images/moroccoImage.jpg';
+import mongoliaImage from '../assets/images/mongoliaImage.jpg';
 import Image from 'next/image';
 
 function PlacesToStay() {

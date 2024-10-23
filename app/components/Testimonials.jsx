@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import './Testimonials.css';
-import user1 from '../../assets/images/user1.jpg';
-import user2 from '../../assets/images/user2.jpg';
-import user3 from '../../assets/images/user3.jpg';
+import user1 from '../assets/images/user1.jpg';
+import user2 from '../assets/images/user2.jpg';
+import user3 from '../assets/images/user3.jpg';
 
 function Testimonials() {
   const testimonials = [

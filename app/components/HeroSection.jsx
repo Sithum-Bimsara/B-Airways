@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,8 @@ function HeroSection() {
   const [returnDate, setReturnDate] = useState('');
   const [originCodes, setOriginCodes] = useState([]);
   const [destinationCodes, setDestinationCodes] = useState([]);
-  const [route, setRoute] = useState(null);
+  const [route1, setRoute1] = useState(null);
+  const [route2, setRoute2] = useState(null);
 
   useEffect(() => {
     fetchAirportCodes();
@@ -22,7 +23,7 @@ function HeroSection() {
 
   useEffect(() => {
     if (fromWhere && whereTo) {
-      fetchRoute(fromWhere, whereTo);
+      fetchRoutes(fromWhere, whereTo);
     }
   }, [fromWhere, whereTo]);
 
@@ -37,34 +38,56 @@ function HeroSection() {
     }
   };
 
-  const fetchRoute = async (origin, destination) => {
+  const fetchRoutes = async (origin, destination) => {
     if (origin && destination) {
       try {
-        const response = await fetch(`/api/getRoute?origin=${origin}&destination=${destination}`);
-        const data = await response.json();
-        if (data && data.length > 0 && data[0].Route_ID) {
-          setRoute({ id: data[0].Route_ID });
+        const response1 = await fetch(`/api/getRoute?origin=${origin}&destination=${destination}`);
+        const data1 = await response1.json();
+        if (data1 && data1.length > 0 && data1[0].Route_ID) {
+          setRoute1({ id: data1[0].Route_ID });
         } else {
-          setRoute(null);
+          setRoute1(null);
+        }
+
+        const response2 = await fetch(`/api/getRoute?origin=${destination}&destination=${origin}`);
+        const data2 = await response2.json();
+        if (data2 && data2.length > 0 && data2[0].Route_ID) {
+          setRoute2({ id: data2[0].Route_ID });
+        } else {
+          setRoute2(null);
+          setReturnDate(''); // Clear return date if route2 is not valid
         }
       } catch (error) {
-        console.error('Error fetching route:', error);
-        setRoute(null);
+        console.error('Error fetching routes:', error);
+        setRoute1(null);
+        setRoute2(null);
+        setReturnDate(''); // Clear return date if there's an error
       }
     }
   };
 
   const handleSearch = () => {
-    if (route && departureDate) {
+    if (route1 && departureDate && !returnDate) {
+      // Construct the URL with query parameters
+      const queryParams = new URLSearchParams({
+        route1: route1.id,
+        departureDate: departureDate,
+      }).toString();
+
       // Navigate to the search results page with the route ID and departure date
-      router.push({
-        pathname: '/SearchResults',
-        query: {
-          route: route.id,
-          departureDate: departureDate,
-        },
-      });
-    } else {
+      router.push(`/searchResults?${queryParams}`);
+    } 
+    else if (route1 && route2 && departureDate && returnDate) {
+      // Construct the URL with query parameters
+      const queryParams = new URLSearchParams({
+        route1: route1.id,
+        route2: route2.id,
+        departureDate: departureDate,
+        returnDate: returnDate,
+      }).toString();
+      router.push(`/searchResults?${queryParams}`);
+    } 
+    else {
       console.error('Please fill in all required fields');
     }
   };
@@ -72,13 +95,13 @@ function HeroSection() {
   const handleFromWhereChange = async (event) => {
     const selectedFromWhere = event.target.value;
     setFromWhere(selectedFromWhere);
-    fetchRoute(selectedFromWhere, whereTo);
+    fetchRoutes(selectedFromWhere, whereTo);
   };
 
   const handleWhereToChange = async (event) => {
     const selectedWhereTo = event.target.value;
     setWhereTo(selectedWhereTo);
-    fetchRoute(fromWhere, selectedWhereTo);
+    fetchRoutes(fromWhere, selectedWhereTo);
   };
 
   const handleDepartureDateChange = (event) => setDepartureDate(event.target.value);
@@ -119,7 +142,13 @@ function HeroSection() {
         {/* Return date input */}
         <div className="input-group">
           <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
-          <input type="date" value={returnDate} onChange={handleReturnDateChange} className="dropdown" />
+          <input 
+            type="date" 
+            value={returnDate} 
+            onChange={handleReturnDateChange} 
+            className="dropdown" 
+            disabled={!route2}
+          />
         </div>
         <button className="search-button" onClick={handleSearch}>Search</button>
       </div>

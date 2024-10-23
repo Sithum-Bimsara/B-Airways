@@ -5,7 +5,7 @@ import './Navbar.css';
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">Tripma</div>
+      <div className="logo">B Airways</div>
       <ul className="menu">
         <li>Flights</li>
         <li>Hotels</li>

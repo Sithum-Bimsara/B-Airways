@@ -1,9 +1,28 @@
 /* components/Footer.css */
 .footer {
-    text-align: center;
-    padding: 10px;
-    background-color: white;
-    color: #3c47e9;
-    width: 100%;
-  }
+  text-align: center;
+  padding: 20px 5%; /* Responsive horizontal padding */
+  background-color: #fff;
+  color: #3c47e9;
+  width: 100%; /* Full width */
+  position: relative; /* Positioned relative by default */
+  box-sizing: border-box; /* Include padding in width */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   
+  /* Optional: Fixed Footer */
+  /* 
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  */
+}
+
+/* Optional: Fixed Footer Styling */
+/*
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+*/
