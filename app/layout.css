@@ -1,0 +1,25 @@
+/* layout.css */
+
+/* Apply box-sizing globally */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  /* Ensure body takes full width without margin */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+  
+  /* Responsive Images */
+  img, picture, video, canvas, svg {
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* Prevent long words from causing overflow */
+  body {
+    word-wrap: break-word;
+  }

@@ -1,0 +1,61 @@
+/* components/PlacesToStay.css */
+.places-to-stay {
+  text-align: center;
+  padding: 40px;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.places-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  align-items: center;
+}
+
+.place-card {
+  display: flex; /* Align image and text horizontally */
+  width: 900px;
+  background-color: #f0f4ff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden; /* Ensures content doesn’t overflow */
+  align-items: flex-start; /* Align items at the top */
+  gap: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.place-image {
+  width: 250px;
+  height: 150px;
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.place-info {
+  flex: 1; /* Take up remaining space */
+  text-align: left;
+}
+
+.places-to-stay h2{
+  font-size: 32px;
+  font-weight: bold;
+  color: #3c47e9; /* Primary color */
+  margin-bottom: 40px;
+}
+
+.place-description {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  line-height: 1.6; /* Improve readability */
+  word-wrap: break-word; /* Prevent overflow for long words */
+}
+
+.place-name {
+  font-weight: bold;
+  font-size: 20px;
+  color: #3c47e9; /* Different color for country name */
+}
