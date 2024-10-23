@@ -1,26 +1,39 @@
 // App.jsx
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './pages/Home/HeroSection';
 import FlightDeals from './pages/Home/FlightDeals';
 import PlacesToStay from './pages/Home/PlacesToStay';
 import Testimonials from './pages/Home/Testimonials';
 import Footer from './components/Footer';
+import SearchResults from './pages/SearchResults/SearchResults';
 import './App.css';
 
-
-function App() {
+function HomePage() {
   return (
-    <div className="App">
-      <Navbar />
+    <>
       <HeroSection />
       <FlightDeals />
       <PlacesToStay />
       <Testimonials />
-      <Footer />
-    </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/SearchResults" element={<SearchResults />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
 export default App;
-
