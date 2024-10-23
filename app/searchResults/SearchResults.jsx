@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import './SearchResults.css';
 
 const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
@@ -10,6 +11,8 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const [loadingReturn, setLoadingReturn] = useState(true);
   const [errorOutbound, setErrorOutbound] = useState(null);
   const [errorReturn, setErrorReturn] = useState(null);
+  
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOutboundFlights = async () => {
@@ -58,6 +61,13 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
     fetchReturnFlights();
   }, [returnDate]);
 
+  const handleSelectFlight = (flightId) => {
+    // Store the selected flight ID in local storage
+    localStorage.setItem('selectedFlightId', flightId);
+    // Navigate to the Passenger Details page
+    router.push('/passengerDetails');
+  };
+
   return (
     <div className="search-results">
       <h1>Flight Search Results</h1>
@@ -80,6 +90,9 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                     Arrival: {flight.arrivalDate} at {flight.arrivalTime}
                   </p>
                   <p>Status: {flight.status}</p>
+                  <button onClick={() => handleSelectFlight(flight.flightId)} className="select-button">
+                    Select Flight
+                  </button>
                 </li>
               ))}
             </ul>
@@ -107,6 +120,9 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                       Arrival: {flight.arrivalDate} at {flight.arrivalTime}
                     </p>
                     <p>Status: {flight.status}</p>
+                    <button onClick={() => handleSelectFlight(flight.flightId)} className="select-button">
+                      Select Flight
+                    </button>
                   </li>
                 ))}
               </ul>

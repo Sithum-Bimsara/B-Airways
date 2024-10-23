@@ -50,3 +50,18 @@
     max-width: 50%;
   }
 }
+
+.select-button {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.select-button:hover {
+  background-color: #005bb5;
+}
