@@ -1,9 +1,10 @@
 // components/PlacesToStay.jsx
 import React from 'react';
 import './PlacesToStay.css';
-import maldivesImage from '../../assets/images/maldivesImage.jpg'; // Replace with your image path
+import maldivesImage from '../../assets/images/maldivesImage.jpg';
 import moroccoImage from '../../assets/images/moroccoImage.jpg';
 import mongoliaImage from '../../assets/images/mongoliaImage.jpg';
+import Image from 'next/image';
 
 function PlacesToStay() {
   const places = [
@@ -37,7 +38,15 @@ function PlacesToStay() {
       <div className="places-container">
         {places.map((place, index) => (
           <div key={index} className="place-card">
-            <img src={place.image} alt={place.name} className="place-image" />
+            <Image 
+              src={place.image} 
+              alt={place.name} 
+              className="place-image" 
+              width={500}
+              height={300}
+              placeholder="blur"
+              blurDataURL="/path/to/fallback/image.jpg"
+            />
             <div className="place-info">
               <span className="place-name">{place.name}</span><br/>
               <p className="place-description">

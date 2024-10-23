@@ -2,10 +2,11 @@
 
 // components/Testimonials.jsx
 import React, { useState } from 'react';
+import Image from 'next/image';
 import './Testimonials.css';
-import user1 from '../../assets/images/user1.jpg'; // Replace with your image path
-import user2 from '../../assets/images/user2.jpg'; // Replace with your image path
-import user3 from '../../assets/images/user3.jpg'; // Replace with your image path
+import user1 from '../../assets/images/user1.jpg';
+import user2 from '../../assets/images/user2.jpg';
+import user3 from '../../assets/images/user3.jpg';
 
 function Testimonials() {
   const testimonials = [
@@ -23,7 +24,7 @@ function Testimonials() {
       location: 'Honolulu, Hawaii',
       date: 'February 2017',
       review:
-        'My family and I visit Hawaii every year, and we usually book our flights through Tripma. Tripma was recommended to us by a long-time friend, and I’m so glad we tried it out! The process was easy and reliable.',
+        'My family and I visit Hawaii every year, and we usually book our flights through Tripma. Tripma was recommended to us by a long-time friend, and I\'m so glad we tried it out! The process was easy and reliable.',
       image: user2,
       rating: 4,
     },
@@ -32,7 +33,7 @@ function Testimonials() {
       location: 'Berlin, Germany',
       date: 'September 2019',
       review:
-        'When I was looking to book my flight to Berlin from LAX, Tripma had the best browsing experience, so I figured I’d give it a try. It was my first time using Tripma, but I’d definitely recommend it to a friend and use it for more trips!',
+        'When I was looking to book my flight to Berlin from LAX, Tripma had the best browsing experience, so I figured I\'d give it a try. It was my first time using Tripma, but I\'d definitely recommend it to a friend and use it for more trips!',
       image: user3,
       rating: 5,
     },
@@ -50,7 +51,13 @@ function Testimonials() {
       <div className="testimonial-cards">
         {testimonials.map((testimonial, index) => (
           <div key={index} className="testimonial-card">
-            <img src={testimonial.image} alt={testimonial.name} className="testimonial-image" />
+            <Image 
+              src={testimonial.image} 
+              alt={testimonial.name} 
+              className="testimonial-image" 
+              width={100}
+              height={100}
+            />
             <div className="testimonial-info">
               <h3 className="testimonial-name">{testimonial.name}</h3>
               <p className="testimonial-location">
