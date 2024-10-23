@@ -32,6 +32,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
     }
 
+    // Check if user already exists
+    const [existingUser]: any = await connection.execute(
+      `SELECT * FROM User WHERE User_name = ? OR Email = ?`,
+      [userName, email]
+    );
+
+    if (existingUser.length > 0) {
+      return NextResponse.json({ message: 'User already exists.' }, { status: 409 });
+    }
+
     // Hash the password before storing
     const hashedPassword = await bcrypt.hash(password, 10);
 

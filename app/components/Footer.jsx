@@ -5,7 +5,7 @@ import './Footer.css';
 function Footer() {
   return (
     <footer className="footer">
-      <p>© 2020 Tripma Incorporated</p>
+      <p>© 2024 B Airways</p>
     </footer>
   );
 }

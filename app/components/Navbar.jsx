@@ -1,36 +1,24 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './Navbar.css';
 import SignupModal from './SignupModal';
 import SigninModal from './SigninModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../context/AuthContext';
+import Link from 'next/link';
 
 function Navbar() {
-  const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const [isSigninOpen, setIsSigninOpen] = useState(false);
-  const [username, setUsername] = useState('');
-
-  // Check localStorage for username on component mount
-  useEffect(() => {
-    const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-  }, []);
+  const [isSignupOpen, setIsSignupOpen] = React.useState(false);
+  const [isSigninOpen, setIsSigninOpen] = React.useState(false);
+  const { username, signOut } = useContext(AuthContext);
 
   const openSignupModal = () => setIsSignupOpen(true);
   const closeSignupModal = () => setIsSignupOpen(false);
 
   const openSigninModal = () => setIsSigninOpen(true);
   const closeSigninModal = () => setIsSigninOpen(false);
-
-  const handleSignOut = () => {
-    localStorage.removeItem('username');
-    setUsername('');
-    window.location.reload();
-  };
 
   return (
     <>
@@ -44,9 +32,11 @@ function Navbar() {
         <div className="auth-buttons">
           {username ? (
             <div className="profile-section">
-              <FontAwesomeIcon icon={faUserCircle} size="2x" />
-              <span>{username}</span>
-              <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
+              <Link href="/userProfile" className="profile-link">
+                <FontAwesomeIcon icon={faUserCircle} size="2x" />
+                <span>{username}</span>
+              </Link>
+              <button className="signout-btn" onClick={signOut}>Sign Out</button>
             </div>
           ) : (
             <>

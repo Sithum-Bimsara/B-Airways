@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connection } from '../../lib/db';
 import bcrypt from 'bcrypt';
+import { generateToken, serializeCookie } from '../../lib/auth';
 
 export async function POST(request: Request) {
   try {
@@ -31,8 +32,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Invalid password.' }, { status: 401 });
     }
 
-    // Authentication successful
-    return NextResponse.json({ message: 'Authentication successful.', username: user.User_name }, { status: 200 });
+    // Generate JWT
+    const token = generateToken({ userId: user.User_ID, username: user.User_name });
+
+    // Create a NextResponse object
+    const response = NextResponse.json(
+      { message: 'Authentication successful.', username: user.User_name },
+      { status: 200 }
+    );
+
+    // Serialize and set the cookie
+    const cookie = serializeCookie(token);
+    response.headers.set('Set-Cookie', cookie);
+
+    return response;
   } catch (error: any) {
     console.error('Error during sign in:', error);
     return NextResponse.json({ message: 'Internal Server Error.' }, { status: 500 });

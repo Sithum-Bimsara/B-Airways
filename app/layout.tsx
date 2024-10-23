@@ -1,6 +1,7 @@
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import './layout.css'; // Ensure you have a layout.css or similar for global styles
+import './layout.css';
+import AuthProvider from './context/AuthContext';
 
 export const metadata = {
   title: 'B Airways',
@@ -10,12 +11,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen overflow-x-hidden"> {/* Prevent horizontal scrolling */}
-        <Navbar />
-        <main className="flex-grow container mx-auto px-4" style={{ paddingTop: '80px', paddingBottom: '60px' }}>
-          {children}
-        </main>
-        <Footer />
+      <body className="flex flex-col min-h-screen overflow-x-hidden">
+        <AuthProvider>
+          <Navbar />
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

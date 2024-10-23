@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './SigninModal.css';
+import { AuthContext } from '../context/AuthContext';
 
 const SigninModal = ({ isOpen, onClose }) => {
+  const { setUsername } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({
     identifier: '', // Can be username or email
     password: '',
@@ -29,8 +31,8 @@ const SigninModal = ({ isOpen, onClose }) => {
 
       if (response.ok) {
         const data = await response.json();
-        // Store the username in localStorage
-        localStorage.setItem('username', data.username);
+        // Update auth context
+        setUsername(data.username);
         onClose();
         // Reload the page to update Navbar
         window.location.reload();
