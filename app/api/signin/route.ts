@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connection } from '../../lib/db';
+import { connection } from '../../database/db';
 import bcrypt from 'bcrypt';
 import { generateToken, serializeCookie } from '../../lib/auth';
 
