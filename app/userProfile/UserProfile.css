@@ -1,146 +1,168 @@
-/* UserProfile.css */
-
-/* General Container */
+/* Main Profile Container */
 .profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 30px;
+  background-color: #e0f7fa; /* Light background for the whole container */
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* Profile Main Section */
+.profile-main {
+  flex: 2;
+  margin-right: 20px;
+  padding: 20px;
+  background-color: #ffffff; /* White background for profile section */
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+}
+
+.profile-main h2{
+  margin-left: 300px;
+}
+
+.profile-main h3{
+  margin-left: 280px;
+}
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  margin-bottom: 10px;
+  margin-left: 300px;
+}
+
+.letter-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 42px;
+  font-weight: bold;
+}
+
+/* User Info Styles */
+.user-info h2 {
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-weight: bold;
   
-  /* Main Profile Card */
-  .profile-main {
-    background-color: #f0f8ff;
-    border-radius: 15px; /* Rounded corners for card look */
-    padding: 40px;
-    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1); /* Soft shadow for the card */
-    width: 100%;
-    max-width: 600px; /* Card width */
-    text-align: center;
-    margin: 20px;
-    border: 1px solid #d1e3f0; /* Light border around card */
-  }
-  
-  /* Profile Picture Section */
-  .profile-picture {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 30px;
-    height: 180px; /* Increased height for more space */
-  }
-  
-  .letter-avatar {
-    background-color: #007acc; /* Dark blue for avatar */
-    color: white;
-    width: 150px; /* Increase avatar size */
-    height: 150px; /* Increase avatar size */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 4em; /* Increased font size */
-    font-weight: bold;
-    line-height: 1; /* Ensures the letter stays centered */
-    overflow: hidden;
-  }
-  
-  /* Profile Headings */
-  h2 {
-    font-size: 2em;
-    color: #007acc; /* Dark blue */
-    margin: 0 0 10px;
-  }
-  
-  h3, h4 {
-    color: #006699; /* Medium blue */
-    margin-bottom: 15px;
-  }
-  
-  /* Profile Detail Rows */
-  .profile-detail-row {
-    margin-bottom: 25px;
-    text-align: left; /* Left-align text for a cleaner look */
-  }
-  
-  .profile-detail-row p {
-    margin: 8px 0;
-    font-size: 1.1em;
-    color: #333;
-  }
-  
-  /* Input Fields for Edit Mode */
-  .profile-detail-row input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #007acc;
-    border-radius: 8px;
-    font-size: 1.05em;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-  }
-  
-  .profile-detail-row input:focus {
-    border-color: #005f99;
-    outline: none;
-    box-shadow: 0px 0px 8px rgba(0, 122, 204, 0.4); /* Light blue shadow on focus */
-  }
-  
-  /* Buttons */
-  button {
-    background-color: #007acc;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-size: 1.1em;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #005f99;
-    transform: translateY(-2px);
-  }
-  
-  button:active {
-    transform: translateY(1px); /* Button press effect */
-  }
-  
-  /* Password Section */
-  input[type="password"] {
-    margin: 12px 0;
-    padding: 12px;
-    border: 1px solid #007acc;
-    border-radius: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 1.05em;
-  }
-  
-  button + button {
-    margin-left: 12px;
-  }
-  
-  /* Profile Sections */
-  .profile-section {
-    margin-bottom: 30px;
-  }
-  
-  /* Section Headings */
-  .profile-section h4 {
-    margin-bottom: 18px;
-    text-align: left; /* Align section titles left */
-  }
-  
-  /* Footer Space */
-  .profile-container::after {
-    content: '';
-    display: block;
-    height: 40px; /* Add space at the bottom */
-  }
-  
+}
+
+.profile-detail-row p {
+  font-size: 16px;
+  color: #555555; /* Subtle text color for better readability */
+}
+
+/* Profile Section Styles */
+.profile-section {
+  margin-bottom: 0;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-section:last-child {
+  border-bottom: none; /* Remove border from the last section */
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom:0;
+  color: #333333;
+}
+
+.profile-detail-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.profile-detail-row p{
+  margin-bottom: 10px;
+}
+
+
+/* Button Styles */
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Change Password Modal */
+.password-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Flights Container */
+.flights-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Flights Box Styles */
+.flights-box {
+  background-color: #e0f7fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.flights-box h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 15px;
+}
+
+.flight-card {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.flight-card:last-child {
+  border-bottom: none;
+}
+
+.flight-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555555;
+}
+

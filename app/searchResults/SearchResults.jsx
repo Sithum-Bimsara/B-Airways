@@ -62,9 +62,7 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   }, [returnDate]);
 
   const handleSelectFlight = (flightId) => {
-    // Store the selected flight ID in local storage
     localStorage.setItem('selectedFlightId', flightId);
-    // Navigate to the Passenger Details page
     router.push('/passengerDetails');
   };
 
@@ -131,6 +129,10 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
             )}
           </div>
         )}
+      </div>
+
+      {/* World map image below the flight boxes */}
+      <div className="world-map-container">
       </div>
     </div>
   );

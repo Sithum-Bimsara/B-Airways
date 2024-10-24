@@ -11,29 +11,29 @@ import user3 from '../assets/images/user3.jpg';
 function Testimonials() {
   const testimonials = [
     {
-      name: 'Yifei Chen',
+      name: 'Kim Taeri',
       location: 'Seoul, South Korea',
-      date: 'April 2019',
+      date: 'April 2023',
       review:
-        'What a great experience using Tripma! I booked all of my flights for my gap year through Tripma and never had any issues. When I had to cancel a flight because of an emergency, Tripma support helped me out!',
+        'What a great experience using B Airways! I booked all of my flights for my gap year through B Airways and never had any issues. When I had to cancel a flight because of an emergency, B Airways support helped me out!',
       image: user1,
       rating: 5,
     },
     {
       name: 'Kaori Yamaguchi',
       location: 'Honolulu, Hawaii',
-      date: 'February 2017',
+      date: 'February 2024',
       review:
-        'My family and I visit Hawaii every year, and we usually book our flights through Tripma. Tripma was recommended to us by a long-time friend, and I\'m so glad we tried it out! The process was easy and reliable.',
+        'My family and I visit Hawaii every year, and we usually book our flights through B Airways. B Airways was recommended to us by a long-time friend, and I\'m so glad we tried it out! The process was easy and reliable.',
       image: user2,
       rating: 4,
     },
     {
       name: 'Anthony Lewis',
       location: 'Berlin, Germany',
-      date: 'September 2019',
+      date: 'May 2024',
       review:
-        'When I was looking to book my flight to Berlin from LAX, Tripma had the best browsing experience, so I figured I\'d give it a try. It was my first time using Tripma, but I\'d definitely recommend it to a friend and use it for more trips!',
+        'When I was looking to book my flight to Berlin from Singapore, B Airways had the best browsing experience, so I figured I\'d give it a try. It was my first time using B Airways, but I\'d definitely recommend it to a friend and use it for more trips!',
       image: user3,
       rating: 5,
     },
@@ -47,7 +47,7 @@ function Testimonials() {
 
   return (
     <section className="testimonials">
-      <h2>What Tripma users are saying</h2>
+      <h2>What our users are saying</h2>
       <div className="testimonial-cards">
         {testimonials.map((testimonial, index) => (
           <div key={index} className="testimonial-card">
