@@ -1,4 +1,3 @@
-
 //Triggers
 
 //After user is entered then add a row to him in memeber detail table

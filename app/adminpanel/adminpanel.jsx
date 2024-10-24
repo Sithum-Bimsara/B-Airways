@@ -1,14 +1,13 @@
-'use client';
-
 import React, { useState } from 'react';
 import AdminProtectedRoute from '../components/AdminProtectedRoute';
+import './adminpanel.css';
 
 const RevenueTable = ({ data }) => (
-  <table className="table table-striped table-bordered table-hover">
+  <table className="table table-striped table-bordered hover">
     <thead>
       <tr>
         <th>Model Name</th>
-        <th>Version</th>
+        <th>Model_ID</th>
         <th>Total Revenue</th>
       </tr>
     </thead>
@@ -16,7 +15,7 @@ const RevenueTable = ({ data }) => (
       {data.map((item) => (
         <tr key={item.model}>
           <td>{item.model}</td>
-          <td>{item.version}</td>
+          <td>{item.Model_ID}</td>
           <td>{item.revenue}</td>
         </tr>
       ))}
@@ -25,7 +24,7 @@ const RevenueTable = ({ data }) => (
 );
 
 const BookingCountTable = ({ bookingCounts }) => (
-  <table className="table table-striped table-bordered table-hover">
+  <table className="table table-striped table-bordered hover">
     <thead>
       <tr>
         <th>Type</th>
@@ -52,6 +51,13 @@ const AdminPanel = () => {
     toDate: '',
   });
 
+  const [passengers, setPassengers] = useState([
+    { name: 'John Doe', number: 'P001', age: 35 },
+    { name: 'Jane Smith', number: 'P002', age: 28 },
+    { name: 'Alice Brown', number: 'P003', age: 17 },
+    { name: 'Bob White', number: 'P004', age: 15 },
+  ]);
+
   const handlePassengerCountSubmit = (e) => {
     e.preventDefault();
     setPassengerCount(Math.floor(Math.random() * 100));
@@ -72,10 +78,13 @@ const AdminPanel = () => {
   };
 
   const revenueData = [
-    { model: 'Airbus A320', version: 'A320-200', revenue: '$1,234,567' },
-    { model: 'Boeing 737', version: 'MAX 10', revenue: '$2,345,678' },
-    { model: 'Embraer E175', version: 'E2', revenue: '$987,654' },
+    { model: 'Airbus A320', Model_ID: 'A320-200', revenue: '$1,234,567' },
+    { model: 'Boeing 737', Model_ID: 'MAX 10', revenue: '$2,345,678' },
+    { model: 'Embraer E175', Model_ID: 'E2', revenue: '$987,654' },
   ];
+
+  const below18Passengers = passengers.filter(p => p.age < 18);
+  const above18Passengers = passengers.filter(p => p.age >= 18);
 
   return (
     <AdminProtectedRoute>
@@ -84,7 +93,7 @@ const AdminPanel = () => {
 
         <div className="card mb-4">
           <div className="card-header bg-primary text-white">
-            Total Revenue by each model
+            Total Revenue by Each Model
           </div>
           <div className="card-body">
             <RevenueTable data={revenueData} />
@@ -183,7 +192,7 @@ const AdminPanel = () => {
                 </div>
               </div>
             </form>
-            <table className="table table-striped table-bordered table-hover">
+            <table className="table table-striped table-bordered hover">
               <thead>
                 <tr>
                   <th>Flight No</th>
@@ -222,11 +231,13 @@ const AdminPanel = () => {
                   </div>
                 </div>
                 <div className="col-md-2 d-flex align-items-end">
-                  <button type="submit" className="btn btn-primary w-100">Submit</button>
+                  <button className="btn btn-primary w-100" type="submit">Submit</button>
                 </div>
               </div>
             </form>
-            <table className="table table-striped table-bordered table-hover">
+
+            <h5>Passengers Below 18</h5>
+            <table className="table table-striped table-bordered hover">
               <thead>
                 <tr>
                   <th>Passenger Name</th>
@@ -235,16 +246,43 @@ const AdminPanel = () => {
                 </tr>
               </thead>
               <tbody>
+                {below18Passengers.map((passenger) => (
+                  <tr key={passenger.number}>
+                    <td>{passenger.name}</td>
+                    <td>{passenger.number}</td>
+                    <td>{passenger.age}</td>
+                  </tr>
+                ))}
+                {below18Passengers.length === 0 && (
+                  <tr>
+                    <td colSpan="3" className="text-center">No passengers below 18.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <h5>Passengers 18 and Above</h5>
+            <table className="table table-striped table-bordered hover">
+              <thead>
                 <tr>
-                  <td>John Doe</td>
-                  <td>P001</td>
-                  <td>35</td>
+                  <th>Passenger Name</th>
+                  <th>Passenger Number</th>
+                  <th>Age</th>
                 </tr>
-                <tr>
-                  <td>Jane Smith</td>
-                  <td>P002</td>
-                  <td>28</td>
-                </tr>
+              </thead>
+              <tbody>
+                {above18Passengers.map((passenger) => (
+                  <tr key={passenger.number}>
+                    <td>{passenger.name}</td>
+                    <td>{passenger.number}</td>
+                    <td>{passenger.age}</td>
+                  </tr>
+                ))}
+                {above18Passengers.length === 0 && (
+                  <tr>
+                    <td colSpan="3" className="text-center">No passengers 18 or older.</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
