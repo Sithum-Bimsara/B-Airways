@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: 'Invalid token.' }, { status: 401 });
     }
 
-    return NextResponse.json({ username: decoded.username }, { status: 200 });
+    return NextResponse.json({ username: decoded.username, role: decoded.role }, { status: 200 });
   } catch (error: any) {
     console.error('Error fetching user data:', error);
     return NextResponse.json({ message: 'Internal Server Error.' }, { status: 500 });
