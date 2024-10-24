@@ -1,0 +1,15 @@
+CREATE INDEX idx_user_email ON User (Email);
+CREATE INDEX idx_member_membership_type ON Member_detail (Membership_Type);
+CREATE INDEX idx_flight_status ON Flight (Status);
+CREATE INDEX idx_Departure_flight_dates ON Flight (Departure_date);
+CREATE INDEX idx_Arrival_flight_dates ON Flight (Arrival_date);
+CREATE INDEX idx_flight_pricing_class ON Flight_Pricing (Travel_Class);
+CREATE INDEX idx_flight_airplane_id ON Flight (Airplane_ID);
+CREATE INDEX idx_flight_route_id ON Flight (Route_ID);
+CREATE INDEX idx_booking_flight_id ON Booking (Flight_ID);
+CREATE INDEX idx_booking_user_id ON Booking (User_ID);
+CREATE INDEX idx_booking_seat ON Booking (Seat_ID);
+CREATE INDEX idx_passenger_dob ON Passenger (Date_of_birth);
+CREATE INDEX idx_airplane_model_id ON Airplane (Airplane_model_ID);
+CREATE INDEX idx_Destination_route_code ON Route (Destination_airport_code);
+CREATE INDEX idx_Origin_route_code ON Route (Origin_airport_code);
