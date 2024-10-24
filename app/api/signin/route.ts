@@ -32,8 +32,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Invalid password.' }, { status: 401 });
     }
 
-    // Generate JWT
-    const token = generateToken({ userId: user.User_ID, username: user.User_name });
+    // Generate JWT with role
+    const token = generateToken({ userId: user.User_ID, username: user.User_name, role: user.Role });
 
     // Create a NextResponse object
     const response = NextResponse.json(
