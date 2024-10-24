@@ -12,7 +12,7 @@ import Link from 'next/link';
 function Navbar() {
   const [isSignupOpen, setIsSignupOpen] = React.useState(false);
   const [isSigninOpen, setIsSigninOpen] = React.useState(false);
-  const { username, signOut } = useContext(AuthContext);
+  const { username, role, signOut } = useContext(AuthContext);
 
   const openSignupModal = () => setIsSignupOpen(true);
   const closeSignupModal = () => setIsSignupOpen(false);
@@ -28,6 +28,14 @@ function Navbar() {
           <li>Flights</li>
           <li>Hotels</li>
           <li>Packages</li>
+          {/* Admin Button */}
+          {role === 'Admin' && (
+            <li>
+              <Link href="/adminpanel" className="admin-link">
+                Admin Panel
+              </Link>
+            </li>
+          )}
         </ul>
         <div className="auth-buttons">
           {username ? (
