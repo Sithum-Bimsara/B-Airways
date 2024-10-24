@@ -1,17 +1,24 @@
-//Triggers
+-- Triggers
 
-//After user is entered then add a row to him in memeber detail table
-CREATE DEFINER=`root`@`localhost` TRIGGER `after_user_insert` AFTER INSERT ON `user` FOR EACH ROW BEGIN
+-- After user is entered then add a row to him in member detail table
+DELIMITER //
+CREATE TRIGGER `after_user_insert` AFTER INSERT ON `user`
+FOR EACH ROW
+BEGIN
     -- Check if the role is 'Member'
     IF NEW.Role = 'Member' THEN
         -- Insert into Member_detail with default attributes
         INSERT INTO Member_detail (User_ID, No_of_booking, Membership_Type)
         VALUES (NEW.User_ID, 0, 'Normal');
     END IF;
-END
+END //
+DELIMITER ;
 
-//To update the number of booking and membership type for each booking
-CREATE DEFINER=`root`@`localhost` TRIGGER `update_membership_type_and_no_of_bookings` AFTER INSERT ON `booking` FOR EACH ROW BEGIN
+-- To update the number of booking and membership type for each booking
+DELIMITER //
+CREATE TRIGGER `update_membership_type_and_no_of_bookings` AFTER INSERT ON `booking`
+FOR EACH ROW
+BEGIN
     DECLARE new_membership_type VARCHAR(50);
 
     -- Check if the user exists in member_detail
@@ -37,11 +44,14 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `update_membership_type_and_no_of_book
             WHERE User_ID = NEW.User_ID;
         END IF;
     END IF;
-END
+END //
+DELIMITER ;
 
-
-//After adding a airplane add relevet seats according to airplane model table data to seat table  
-CREATE DEFINER=`root`@`localhost` TRIGGER `after_airplane_insert` AFTER INSERT ON `airplane` FOR EACH ROW BEGIN
+-- After adding an airplane add relevant seats according to airplane model table data to seat table  
+DELIMITER //
+CREATE TRIGGER `after_airplane_insert` AFTER INSERT ON `airplane`
+FOR EACH ROW
+BEGIN
     DECLARE last_seat_id INT DEFAULT 0;
     DECLARE econ_seats INT;
     DECLARE bus_seats INT;
@@ -62,7 +72,7 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `after_airplane_insert` AFTER INSERT O
     -- Insert Economy Class Seats
     SET seat_num = 1;
     WHILE seat_num <= econ_seats DO
-        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + seat_num, 3, '0'));
+        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + seat_num, 5, '0'));
         INSERT INTO seat (Seat_ID, Airplane_ID, Travel_Class) 
         VALUES (new_seat_id, NEW.Airplane_ID, 'Economy');
         SET seat_num = seat_num + 1;
@@ -71,7 +81,7 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `after_airplane_insert` AFTER INSERT O
     -- Insert Business Class Seats
     SET seat_num = 1;
     WHILE seat_num <= bus_seats DO
-        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + econ_seats + seat_num, 3, '0'));
+        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + econ_seats + seat_num, 5, '0'));
         INSERT INTO seat (Seat_ID, Airplane_ID, Travel_Class) 
         VALUES (new_seat_id, NEW.Airplane_ID, 'Business');
         SET seat_num = seat_num + 1;
@@ -80,10 +90,10 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `after_airplane_insert` AFTER INSERT O
     -- Insert Platinum Class Seats
     SET seat_num = 1;
     WHILE seat_num <= plat_seats DO
-        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + econ_seats + bus_seats + seat_num, 3, '0'));
+        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + econ_seats + bus_seats + seat_num, 5, '0'));
         INSERT INTO seat (Seat_ID, Airplane_ID, Travel_Class) 
         VALUES (new_seat_id, NEW.Airplane_ID, 'Platinum');
         SET seat_num = seat_num + 1;
     END WHILE;
-
-END
+END //
+DELIMITER ;
