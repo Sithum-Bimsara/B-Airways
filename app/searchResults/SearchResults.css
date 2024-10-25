@@ -13,11 +13,15 @@
 }
 
 .flight-section.outbound {
-  /* Styles specific to outbound flights if needed */
+  background-color: #e0f7fa;
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .flight-section.return {
-  /* Styles specific to return flights if needed */
+  background-color: #e0f7fa;
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .flight-list {
@@ -55,13 +59,25 @@
   background-color: #0070f3;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 10px 20px;
   margin-top: 10px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.3s ease;
 }
 
 .select-button:hover {
   background-color: #005bb5;
 }
+
+/* Styles for the world map */
+.world-map-container {
+  width: 100%;
+  height: 400px; /* Decreased height */
+  background-image: url('../assets/images/world-map.jpg');
+  background-size: contain; /* Ensures the whole image fits within the container */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+

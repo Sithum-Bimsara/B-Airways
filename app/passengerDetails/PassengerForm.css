@@ -11,8 +11,8 @@
     text-align: center;
     font-size: 24px;
     color: #01413a; /* Darker blue color */
-    margin-bottom: 40px;
-    margin-top: 20px;
+    margin-bottom: 50px;
+    margin-top: 30px;
   }
   
   .passenger-form {
@@ -60,26 +60,22 @@
     margin-bottom: 20px;
   }
   
-  .submit-button {
-    background-color: #00796b; /* Button color */
+  .form-actions button {
+  background-color: #007bff; /* Button color */
   color: white;
   padding: 10px 20px ;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 20px;
+  margin-right: 20px;
   transition: background-color 0.3s; /* Smooth transition */
 }
 
-.submit-button:hover {
-  background-color: #073c36;/* Darker button color on hover */
+.form-actions button:hover {
+  background-color: #0056b3;/* Darker button color on hover */
 }
   
-  .passenger-details,
-  .emergency-contact,
-  .bag-info {
-    border-bottom: 1px solid #ddd;
-  }
   
   table {
     width: 100%;
