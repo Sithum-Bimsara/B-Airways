@@ -1,67 +1,95 @@
 body {
-    background-image: url('../assets/images/wallpaper.png'); /* Path to your background image */
-    background-size: cover; /* Cover the entire background */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent the background from repeating */
+    position: relative;
+    background-image: url('../assets/images/wallpaper.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
 }
 
 .card {
-    border: 1px solid rgba(222, 226, 230, 0.5); /* Add a semi-transparent border to the cards */
-    border-radius: 0.5rem; /* Round the corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-    margin-bottom: 20px; /* Spacing between cards */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
 .card-header {
-    font-size: 1.25rem; /* Increase the font size for the card headers */
-    background-color: rgba(0, 123, 255, 0.9); /* Semi-transparent primary color background */
-    color: white; /* Set text color to white */
+    background-color: #2196F3;
+    color: white;
+    font-size: 18px;
+    padding: 15px;
+    font-weight: bold;
 }
 
-.table {
-    margin-top: 20px; /* Add spacing above the tables */
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-    border: none; /* Remove border */
+.card-body {
+    padding: 20px;
 }
 
-.table th {
-    background-color: rgba(248, 249, 250, 0.9); /* Slightly transparent light grey for table headers */
-    color: black; /* Change header text color for better visibility */
+.form-group {
+    margin-bottom: 15px;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(242, 242, 242, 0.9); /* Slightly transparent light grey for odd table rows */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-.btn-primary {
-    background-color: #007bff; /* Set button primary color */
-    border: none; /* Remove border */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3; /* Darken button color on hover */
+button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: block;
 }
 
-.form-label {
-    font-weight: bold; /* Make form labels bold */
+button:hover {
+    background-color: #1976D2;
 }
 
-.mt-3 {
-    margin-top: 20px; /* Increase the top margin for mt-3 class */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
-.mb-4 {
-    margin-bottom: 30px; /* Increase the bottom margin for mb-4 class */
+table, th, td {
+    border: 1px solid rgba(221, 221, 221, 0.7);
+    padding: 10px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .card {
-        margin-bottom: 20px; /* Reduce margin between cards */
-    }
+th {
+    background-color: rgba(242, 242, 242, 0.9);
+    text-align: left;
+}
 
-    .table {
-        margin-top: 20px; /* Ensure spacing above the tables */
-    }
+td {
+    text-align: left;
 }
