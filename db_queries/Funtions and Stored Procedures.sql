@@ -1,4 +1,4 @@
--- To add a passenger
+-- To add a passenger or retrieve existing passenger ID
 DELIMITER //
 CREATE PROCEDURE `AddPassenger`(
     IN p_Passport_Number VARCHAR(9),
@@ -8,10 +8,69 @@ CREATE PROCEDURE `AddPassenger`(
     IN p_Gender ENUM('Male', 'Female', 'Other')
 )
 BEGIN
-    INSERT INTO passenger (Passport_Number, Passport_Expire_Date, Name, Date_of_birth, Gender)
-    VALUES (p_Passport_Number, p_Passport_Expire_Date, p_Name, p_Date_of_birth, p_Gender);
+    DECLARE existing_passenger_id INT;
+    -- Check if passenger already exists
+    SELECT Passenger_ID INTO existing_passenger_id
+    FROM passenger
+    WHERE Passport_Number = p_Passport_Number
+    AND Passport_Expire_Date = p_Passport_Expire_Date
+    LIMIT 1;
+    IF existing_passenger_id IS NOT NULL THEN
+        -- Return existing passenger ID
+        SELECT existing_passenger_id AS Passenger_ID;
+    ELSE
+        -- Insert new passenger and return new ID
+        INSERT INTO passenger
+        (Passport_Number, Passport_Expire_Date, Name, Date_of_birth, Gender)
+        VALUES
+        (p_Passport_Number, p_Passport_Expire_Date, p_Name, p_Date_of_birth, p_Gender);
+        SELECT LAST_INSERT_ID() AS Passenger_ID;
+    END IF;
 END //
 DELIMITER ;
+
+-- To get booked seats
+DELIMITER //
+
+CREATE PROCEDURE `GetBookedSeats`(
+    IN p_Flight_ID VARCHAR(10)
+)
+BEGIN
+    DECLARE v_Airplane_model_ID INT;
+
+    -- Get the Airplane_model_ID for the given Flight_ID
+    SELECT am.Airplane_model_ID INTO v_Airplane_model_ID
+    FROM Flight f
+    JOIN Airplane a ON f.Airplane_ID = a.Airplane_ID
+    JOIN Airplane_model am ON a.Airplane_model_ID = am.Airplane_model_ID
+    WHERE f.Flight_ID = p_Flight_ID;
+
+    -- Check if there are any bookings for this flight
+    IF EXISTS (SELECT 1 FROM Booking WHERE Flight_ID = p_Flight_ID) THEN
+        -- Return the Airplane_model_ID and booked seat numbers
+        SELECT 
+            v_Airplane_model_ID AS Airplane_model_ID,
+            GROUP_CONCAT(SUBSTRING_INDEX(s.Seat_ID, '_S', -1)) AS Booked_Seat_Numbers
+        FROM 
+            Seat s
+        JOIN
+            Airplane a ON s.Airplane_ID = a.Airplane_ID
+        JOIN 
+            Booking b ON s.Seat_ID = b.Seat_ID AND b.Flight_ID = p_Flight_ID
+        WHERE 
+            a.Airplane_model_ID = v_Airplane_model_ID
+        GROUP BY
+            v_Airplane_model_ID;
+    ELSE
+        -- If no bookings, return Airplane_model_ID and 0 for booked seats
+        SELECT 
+            v_Airplane_model_ID AS Airplane_model_ID,
+            '0' AS Booked_Seat_Numbers;
+    END IF;
+END //
+
+DELIMITER ;
+
 
 -- To create a booking
 DELIMITER //

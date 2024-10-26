@@ -258,3 +258,18 @@ VALUES
 -- (3, 'C85296374', '2032-12-01', 'Alice Johnson', '1995-12-01', 'Female'),
 -- (4, 'D15975385', '2033-11-30', 'Bob Brown Jr.', '2019-11-30', 'Male'),
 -- (5, 'E96325874', '2035-03-14', 'Charlie Green', '2000-03-14', 'Other');
+
+-- Insert Passengers
+INSERT INTO Passenger (Passenger_ID, Passport_Number, Passport_Expire_Date, Name, Date_of_birth, Gender)
+VALUES
+(1, '1234', '2030-12-01', 'Akindu', '2014-05-20', 'Male');
+
+
+-- Insert sample bookings
+INSERT INTO Booking (Booking_ID, Flight_ID, Passenger_ID, Seat_ID, Issue_date, Price)
+VALUES
+('bk_1', 'FL003', 1, 'P003_S001', '2023-06-01 10:00:00', 1500.00),
+('bk_2', 'FL003', 1, 'P003_S005', '2023-06-01 10:15:00', 1500.00),
+('bk_3', 'FL003', 1, 'P003_S045', '2023-06-01 11:00:00', 1500.00),
+('bk_4', 'FL003', 1, 'P003_S100', '2023-06-01 11:30:00', 1500.00),
+('bk_5', 'FL003', 1, 'P003_S145', '2023-06-01 12:00:00', 1500.00);

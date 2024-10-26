@@ -1,11 +1,15 @@
 "use client";
 import React, { useState } from 'react';
-import './PassengerForm.css'; // Import the CSS file
+import './PassengerForm.css';
+import { useRouter } from 'next/navigation';
 
 const PassengerForm = () => {
   const [passengers, setPassengers] = useState([
     { Passenger_ID: '', Passport_Number: '', Passport_Expire_Date: '', Name: '', Date_of_birth: '', Gender: '' }
   ]);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handlePassengerChange = (e, index) => {
     const { name, value } = e.target;
@@ -17,13 +21,54 @@ const PassengerForm = () => {
   const addPassenger = () => {
     setPassengers([
       ...passengers,
-      { Name: '', Passport_Number: '', Passport_Expire_Date: '', Date_of_birth: '', Gender: '' }
+      { Passenger_ID: '', Passport_Number: '', Passport_Expire_Date: '', Name: '', Date_of_birth: '', Gender: '' }
     ]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(passengers);
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Array to hold all Passenger_IDs
+      const passengerIds = [];
+
+      for (const passenger of passengers) {
+        const response = await fetch('/api/addPassenger', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            Passport_Number: passenger.Passport_Number,
+            Passport_Expire_Date: passenger.Passport_Expire_Date,
+            Name: passenger.Name,
+            Date_of_birth: passenger.Date_of_birth,
+            Gender: passenger.Gender,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Failed to add passenger.');
+        }
+
+        passengerIds.push(result.Passenger_ID);
+      }
+
+      // Save Passenger_IDs to local storage
+      localStorage.setItem('Passenger_IDs', JSON.stringify(passengerIds));
+
+      // Navigate to Seat Selection page
+      router.push('/seatSelection');
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,20 +85,23 @@ const PassengerForm = () => {
                 placeholder="Name"
                 value={passenger.Name}
                 onChange={(e) => handlePassengerChange(e, index)}
+                required
               />
               <label htmlFor={`dob-${index}`}>Date of Birth</label>
-                <input
-                  type="date"
-                  id={`dob-${index}`}
-                  name="Date_of_birth"
-                  placeholder="Date of Birth"
-                  value={passenger.Date_of_birth}
-                  onChange={(e) => handlePassengerChange(e, index)}
-                />
+              <input
+                type="date"
+                id={`dob-${index}`}
+                name="Date_of_birth"
+                placeholder="Date of Birth"
+                value={passenger.Date_of_birth}
+                onChange={(e) => handlePassengerChange(e, index)}
+                required
+              />
               <select
                 name="Gender"
                 value={passenger.Gender}
                 onChange={(e) => handlePassengerChange(e, index)}
+                required
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -62,7 +110,6 @@ const PassengerForm = () => {
               </select>
             </div>
 
-
             <div className="form-row">
               <input
                 type="text"
@@ -70,26 +117,31 @@ const PassengerForm = () => {
                 placeholder="Passport Number"
                 value={passenger.Passport_Number}
                 onChange={(e) => handlePassengerChange(e, index)}
+                required
               />
-
-<label htmlFor={`passport-expire-${index}`}>Passport Expiry Date</label>
-                <input
-                  type="date"
-                  id={`passport-expire-${index}`}
-                  name="Passport_Expire_Date"
-                  placeholder="Passport Expiry Date"
-                  value={passenger.Passport_Expire_Date}
-                  onChange={(e) => handlePassengerChange(e, index)}
-                />
+              <label htmlFor={`passport-expire-${index}`}>Passport Expiry Date</label>
+              <input
+                type="date"
+                id={`passport-expire-${index}`}
+                name="Passport_Expire_Date"
+                placeholder="Passport Expiry Date"
+                value={passenger.Passport_Expire_Date}
+                onChange={(e) => handlePassengerChange(e, index)}
+                required
+              />
             </div>        
           </div>
         ))}
 
+        {error && <p className="error-message">{error}</p>}
+
         <div className="form-actions">
-          <button type="button" className="add-passenger-button" onClick={addPassenger}>
+          <button type="button" className="add-passenger-button" onClick={addPassenger} disabled={loading}>
             Add Passenger
           </button>
-          <button type="button" className="seat-selection-button">Go to seat selection</button>
+          <button type="submit" className="seat-selection-button" disabled={loading}>
+            {loading ? 'Processing...' : 'Go to Seat Selection'}
+          </button>
         </div>
       </form>
     </div>
