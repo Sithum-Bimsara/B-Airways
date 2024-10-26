@@ -190,9 +190,15 @@ BEGIN
     SELECT Passenger_ID INTO existing_passenger_id
     FROM passenger
     WHERE Passport_Number = p_Passport_Number
-    AND Passport_Expire_Date = p_Passport_Expire_Date
     LIMIT 1;
     IF existing_passenger_id IS NOT NULL THEN
+        -- Update existing passenger with new data
+        UPDATE passenger
+        SET Passport_Expire_Date = p_Passport_Expire_Date,
+            Name = p_Name,
+            Date_of_birth = p_Date_of_birth,
+            Gender = p_Gender
+        WHERE Passenger_ID = existing_passenger_id;
         -- Return existing passenger ID
         SELECT existing_passenger_id AS Passenger_ID;
     ELSE
@@ -260,16 +266,30 @@ CREATE PROCEDURE `CreateBooking`(
 BEGIN
     DECLARE v_Booking_ID VARCHAR(10);
     DECLARE v_Last_Booking_Num INT;
+    DECLARE exit handler for sqlexception
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
 
     -- Convert empty string to NULL for User_ID
     IF p_User_ID = '' THEN
         SET p_User_ID = NULL;
     END IF;
 
+    -- Check if the seat is already booked for this flight
+    IF EXISTS (SELECT 1 FROM Booking WHERE Flight_ID = p_Flight_ID AND Seat_ID = p_Seat_ID) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'This seat is already booked.';
+    END IF;
+
     -- Check if there is any booking already
     SELECT MAX(CAST(SUBSTRING(Booking_ID, 4) AS UNSIGNED))
     INTO v_Last_Booking_Num
-    FROM Booking;
+    FROM Booking
+    FOR UPDATE;
 
     -- Set the booking ID
     IF v_Last_Booking_Num IS NULL THEN
@@ -281,6 +301,8 @@ BEGIN
     -- Insert the new booking
     INSERT INTO Booking (Booking_ID, Flight_ID, User_ID, Passenger_ID, Seat_ID, Issue_date, Price)
     VALUES (v_Booking_ID, p_Flight_ID, p_User_ID, p_Passenger_ID, p_Seat_ID, NOW(), p_Price);
+
+    COMMIT;
 END //
 DELIMITER ;
 
