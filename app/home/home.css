@@ -1,0 +1,342 @@
+/* components/HeroSection.css */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full-screen height */
+    background-image: url('../assets/images/wallpaper.png'); /* Adjust the path */
+    background-size: cover; /* Ensure the wallpaper covers the entire area */
+    background-position: center; /* Center the wallpaper */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .header {
+    text-align: center;
+    position: relative;
+    margin-top: 100px;
+  }
+  
+  .main-title {
+    font-size: 64px;
+    font-weight: 700;
+    color: #fff; /* White color for better contrast */
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for text */
+    line-height: 1.2;
+  }
+  
+  @media (max-width: 768px) {
+    .main-title {
+      font-size: 48px;
+    }
+  }
+  
+  .search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 100px;
+    align-items: center;
+    margin-bottom: 200px;
+    background-color: white;
+    /*gap: 15px;
+    width: 90%; 
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.9); Transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-group {
+    display: flex;
+    color: #6a6a6a;
+    align-items: center;
+    gap: 10px;
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #d3d3d3;
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .dropdown {
+    border: none;
+    background: none;
+    color: #6a6a6a;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .icon {
+    font-size: 20px;
+    color: #6a6a6a;
+  }
+  
+  .input-group input {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+    color: #333;
+  }
+
+  .search-button {
+    background-color: /*#3c47e9*/ #24577a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .search-button:hover {
+    background-color:/*#3c47e9*/ #24577a;
+  }
+
+/* components/FlightDeals.css */
+.flight-deals {
+    text-align: center;
+    padding: 40px;
+    background-color: #f0f4ff;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  
+  .flight-deals-heading {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3c47e9; /* Primary color */
+    margin-bottom: 40px;
+  }
+  
+  .deals-container {
+    display: flex;
+    flex-wrap: wrap; /* Enable wrapping */
+    justify-content: center; /* Center align all rows */
+    gap: 40px 20px; /* Space between cards */
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .deal-card {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 300px;
+    overflow: hidden;
+    text-align: left;
+    position: relative;
+    flex: 1 1 calc(33.33% - 20px); /* Responsive 3 cards per row with gap */
+    max-width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  }
+
+  .deal-card:hover {
+    transform: scale(1.05); /* Slight scaling effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+  }
+
+  .deal-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .deal-info {
+    padding: 15px;
+  }
+  
+  .deal-city {
+    font-size: 20px;
+    font-weight: bold;
+    color: #3c47e9;
+    margin: 0;
+  }
+  
+  .deal-location {
+    font-size: 16px;
+    color: #666; /* Gray color for the location */
+    margin: 5px 0;
+  }
+  
+  .deal-description {
+    font-size: 14px;
+    color: #888; /* Light gray for the description */
+    margin: 5px 0;
+  }
+  
+  .deal-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0 0; /* Add margin to the top */
+    text-align: right;
+  }
+
+/* components/PlacesToStay.css */
+.places-to-stay {
+    text-align: center;
+    padding: 40px;
+    background-color: #ffffff;
+    width: 100%;
+  }
+  
+  .places-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+  }
+  
+  .place-card {
+    display: flex; /* Align image and text horizontally */
+    width: 900px;
+    background-color: #f0f4ff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden; /* Ensures content doesn’t overflow */
+    align-items: flex-start; /* Align items at the top */
+    gap: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .place-image {
+    width: 250px;
+    height: 150px;
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners */
+  }
+  
+  .place-info {
+    flex: 1; /* Take up remaining space */
+    text-align: left;
+  }
+  
+  .places-to-stay h2{
+    font-size: 32px;
+    font-weight: bold;
+    color: #3c47e9; /* Primary color */
+    margin-bottom: 40px;
+  }
+  
+  .place-description {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    line-height: 1.6; /* Improve readability */
+    word-wrap: break-word; /* Prevent overflow for long words */
+  }
+  
+  .place-name {
+    font-weight: bold;
+    font-size: 20px;
+    color: #3c47e9; /* Different color for country name */
+  }
+
+/* components/Testimonials.css */
+.testimonials {
+    text-align: center;
+    padding: 40px;
+    background-color: #f0f4ff;
+    width: 100%;
+}
+
+.testimonials h2 {
+    font-size: 28px;
+    color: #3c47e9; /* Primary color */
+    margin-bottom: 30px;
+}
+
+.testimonial-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Wrap testimonials on smaller screens */
+    gap: 20px; /* Spacing between cards */
+}
+
+.testimonial-card {
+    width: 300px; /* Fixed width for cards */
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: transform 0.2s;
+    display: flex; /* Use flexbox for card layout */
+    align-items: flex-start; /* Align items at the start */
+    position: relative; /* Position relative for proper layout */
+}
+/*
+.testimonial-card:hover {
+    transform: scale(1.05); 
+}
+*/
+
+.testimonial-image {
+    width: 50px; /* Set image size */
+    height: 50px; /* Set image size */
+    border-radius: 50%; /* Circular image */
+    margin-right: 15px; /* Space between image and text */
+}
+
+.testimonial-info {
+    text-align: left; /* Align text to the left */
+    display: flex;
+    flex-direction: column; /* Stack info vertically */
+    justify-content: flex-start; /* Align content at the top */
+}
+
+.testimonial-name {
+    font-size: 18px; /* Adjust name font size */
+    color: #333; /* Dark color for names */
+    margin: 0; /* Remove default margin */
+}
+
+.testimonial-location {
+    font-size: 14px; /* Smaller size for location/date */
+    color: #888; /* Lighter color for location/date */
+    margin: 5px 0; /* Margin for spacing */
+}
+
+.testimonial-rating {
+    display: flex; /* Use flexbox for rating alignment */
+    align-items: center; /* Center items vertically */
+    margin: 5px 0; /* Space above rating */
+}
+
+.star {
+    color: #FFD700; /* Gold color for stars */
+    font-size: 16px; /* Size of stars */
+    margin-right: 2px; /* Space between stars */
+}
+
+.testimonial-review {
+    font-size: 14px; /* Review text size */
+    color: #333; /* Darker color for review text */
+    margin-top: 10px; /* Margin above review */
+    max-height: 60px; /* Limit height for review */
+    overflow: hidden; /* Hide overflow */
+    transition: max-height 0.3s ease; /* Smooth transition */
+}
+
+.testimonial-review.expanded {
+    max-height: 200px; /* Expanded height */
+}
+
+.read-more-btn {
+    background-color: transparent; /* Button background */
+    border: none; /* Remove border */
+    color: #3c47e9; /* Color of button text */
+    cursor: pointer; /* Pointer cursor */
+    margin-top: 10px; /* Margin above button */
+    font-size: 14px; /* Button font size */
+}

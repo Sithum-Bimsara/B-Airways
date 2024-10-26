@@ -1,15 +1,12 @@
-import HeroSection from './components/HeroSection';
-import FlightDeals from './components/FlightDeals';
-import PlacesToStay from './components/PlacesToStay';
-import Testimonials from './components/Testimonials';
+'use client';
 
-export default function Home() {
-  return (
-    <div className="flex flex-col space-y-8">
-      <HeroSection />
-      <FlightDeals />
-      <PlacesToStay />
-      <Testimonials />
-    </div>
-  );
-}
+import React from 'react';
+import Home from './home/Home';
+
+const HomePage = () => {
+    return (
+        <Home />
+    );
+};
+
+export default HomePage;
