@@ -25,16 +25,59 @@ const PassengerForm = () => {
     ]);
   };
 
+  const fetchPassengerData = async (passportNumber, index) => {
+    if (!passportNumber) {
+      alert('Please enter a Passport Number.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch('/api/getPassengerData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ Passport_Number: passportNumber }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Passenger not found.');
+      }
+
+      const updatedPassengers = [...passengers];
+      updatedPassengers[index] = {
+        ...updatedPassengers[index],
+        Passport_Number: passportNumber,
+        Name: data.Name || '',
+        Date_of_birth: data.Date_of_birth ? new Date(data.Date_of_birth).toISOString().split('T')[0] : '',
+        Gender: data.Gender || '',
+        Passport_Expire_Date: data.Passport_Expire_Date ? new Date(data.Passport_Expire_Date).toISOString().split('T')[0] : '',
+      };
+      setPassengers(updatedPassengers);
+    } catch (err) {
+      console.error(err);
+      alert(err.message || 'Error fetching passenger data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      // Array to hold all Passenger_IDs
-      const passengerIds = [];
+      const passengerData = [];
 
       for (const passenger of passengers) {
+        if (!passenger.Passport_Number) {
+          throw new Error('All passengers must have a Passport Number.');
+        }
+
         const response = await fetch('/api/addPassenger', {
           method: 'POST',
           headers: {
@@ -55,13 +98,10 @@ const PassengerForm = () => {
           throw new Error(result.message || 'Failed to add passenger.');
         }
 
-        passengerIds.push(result.Passenger_ID);
+        passengerData.push({ Passenger_ID: result.Passenger_ID, Seat: "" });
       }
 
-      // Save Passenger_IDs to local storage
-      localStorage.setItem('Passenger_IDs', JSON.stringify(passengerIds));
-
-      // Navigate to Seat Selection page
+      localStorage.setItem('PassengerData', JSON.stringify(passengerData));
       router.push('/seatSelection');
     } catch (err) {
       console.error(err);
@@ -81,18 +121,35 @@ const PassengerForm = () => {
             <div className="form-row">
               <input
                 type="text"
+                name="Passport_Number"
+                placeholder="Passport Number"
+                value={passenger.Passport_Number}
+                onChange={(e) => handlePassengerChange(e, index)}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => fetchPassengerData(passenger.Passport_Number, index)}
+                disabled={loading}
+                className="fetch-data-button"
+              >
+                {loading ? 'Fetching...' : 'Fetch Data'}
+              </button>
+            </div>
+
+            <div className="form-row">
+              <input
+                type="text"
                 name="Name"
                 placeholder="Name"
                 value={passenger.Name}
                 onChange={(e) => handlePassengerChange(e, index)}
                 required
               />
-              <label htmlFor={`dob-${index}`}>Date of Birth</label>
               <input
-                type="date"
-                id={`dob-${index}`}
+                type="text"
                 name="Date_of_birth"
-                placeholder="Date of Birth"
+                placeholder="Date of Birth (YYYY-MM-DD)"
                 value={passenger.Date_of_birth}
                 onChange={(e) => handlePassengerChange(e, index)}
                 required
@@ -113,33 +170,32 @@ const PassengerForm = () => {
             <div className="form-row">
               <input
                 type="text"
-                name="Passport_Number"
-                placeholder="Passport Number"
-                value={passenger.Passport_Number}
-                onChange={(e) => handlePassengerChange(e, index)}
-                required
-              />
-              <label htmlFor={`passport-expire-${index}`}>Passport Expiry Date</label>
-              <input
-                type="date"
-                id={`passport-expire-${index}`}
                 name="Passport_Expire_Date"
-                placeholder="Passport Expiry Date"
+                placeholder="Passport Expiry Date (YYYY-MM-DD)"
                 value={passenger.Passport_Expire_Date}
                 onChange={(e) => handlePassengerChange(e, index)}
                 required
               />
-            </div>        
+            </div>
           </div>
         ))}
 
         {error && <p className="error-message">{error}</p>}
 
         <div className="form-actions">
-          <button type="button" className="add-passenger-button" onClick={addPassenger} disabled={loading}>
+          <button
+            type="button"
+            className="add-passenger-button"
+            onClick={addPassenger}
+            disabled={loading}
+          >
             Add Passenger
           </button>
-          <button type="submit" className="seat-selection-button" disabled={loading}>
+          <button
+            type="submit"
+            className="seat-selection-button"
+            disabled={loading}
+          >
             {loading ? 'Processing...' : 'Go to Seat Selection'}
           </button>
         </div>
