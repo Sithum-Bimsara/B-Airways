@@ -52,7 +52,6 @@ DELIMITER //
 CREATE TRIGGER `after_airplane_insert` AFTER INSERT ON `airplane`
 FOR EACH ROW
 BEGIN
-    DECLARE last_seat_id INT DEFAULT 0;
     DECLARE econ_seats INT;
     DECLARE bus_seats INT;
     DECLARE plat_seats INT;
@@ -65,32 +64,26 @@ BEGIN
     FROM airplane_model
     WHERE Airplane_model_ID = NEW.Airplane_model_ID;
 
-    -- Get the last Seat_ID in the seat table
-    SELECT IFNULL(MAX(CAST(SUBSTRING(Seat_ID, 3) AS UNSIGNED)), 0) INTO last_seat_id
-    FROM seat;
-
     -- Insert Economy Class Seats
     SET seat_num = 1;
     WHILE seat_num <= econ_seats DO
-        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + seat_num, 5, '0'));
+        SET new_seat_id = CONCAT('P', LPAD(NEW.Airplane_ID, 3, '0'), '_S', LPAD(seat_num, 3, '0'));
         INSERT INTO seat (Seat_ID, Airplane_ID, Travel_Class) 
         VALUES (new_seat_id, NEW.Airplane_ID, 'Economy');
         SET seat_num = seat_num + 1;
     END WHILE;
 
     -- Insert Business Class Seats
-    SET seat_num = 1;
-    WHILE seat_num <= bus_seats DO
-        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + econ_seats + seat_num, 5, '0'));
+    WHILE seat_num <= (econ_seats + bus_seats) DO
+        SET new_seat_id = CONCAT('P', LPAD(NEW.Airplane_ID, 3, '0'), '_S', LPAD(seat_num, 3, '0'));
         INSERT INTO seat (Seat_ID, Airplane_ID, Travel_Class) 
         VALUES (new_seat_id, NEW.Airplane_ID, 'Business');
         SET seat_num = seat_num + 1;
     END WHILE;
 
     -- Insert Platinum Class Seats
-    SET seat_num = 1;
-    WHILE seat_num <= plat_seats DO
-        SET new_seat_id = CONCAT('ST', LPAD(last_seat_id + econ_seats + bus_seats + seat_num, 5, '0'));
+    WHILE seat_num <= (econ_seats + bus_seats + plat_seats) DO
+        SET new_seat_id = CONCAT('P', LPAD(NEW.Airplane_ID, 3, '0'), '_S', LPAD(seat_num, 3, '0'));
         INSERT INTO seat (Seat_ID, Airplane_ID, Travel_Class) 
         VALUES (new_seat_id, NEW.Airplane_ID, 'Platinum');
         SET seat_num = seat_num + 1;
