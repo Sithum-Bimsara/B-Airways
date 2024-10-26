@@ -3,6 +3,49 @@
   max-width: 1200px;
   margin: auto;
   text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #00796b;
+  margin-bottom: 20px;
+}
+
+.passenger-list-section {
+  margin-bottom: 30px;
+}
+
+.passenger-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.passenger-item {
+  padding: 10px 20px;
+  background-color: #b2ebf2;
+  border: 2px solid #004d40;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.passenger-item:hover {
+  background-color: #80deea;
+  transform: scale(1.05);
+}
+
+.passenger-item.selected {
+  background-color: #00796b;
+  color: #ffffff;
+  border-color: #00575b;
+}
+
+.seat-map-section {
+  margin-bottom: 30px;
 }
 
 .seat-map {
@@ -18,8 +61,8 @@
 .seat {
   width: 40px;
   height: 40px;
-  background-color: #c8e6c9;
-  border: 2px solid #388e3c;
+  background-color: #c8e6c9; /* Light Green for available seats */
+  border: 2px solid #388e3c; /* Green border */
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -28,15 +71,19 @@
   transition: background-color 0.3s, border-color 0.3s;
 }
 
+.seat.available:hover {
+  background-color: #a5d6a7; /* Darker Green on hover */
+}
+
 .seat.unavailable {
-  background-color: #ffcdd2;
-  border-color: #d32f2f;
+  background-color: #ffcdd2; /* Light Red Background */
+  border-color: #d32f2f; /* Dark Red Border */
   cursor: not-allowed;
 }
 
 .seat.selected {
-  background-color: #64b5f6;
-  border-color: #1976d2;
+  background-color: #64b5f6; /* Blue for selected seat */
+  border-color: #1976d2; /* Darker Blue Border */
 }
 
 .confirm-seats-button {
@@ -47,6 +94,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s;
 }
 
 .confirm-seats-button:hover {
@@ -57,4 +105,40 @@
 .aisle {
   width: 40px;
   height: 40px;
+}
+
+/* Total Price Section */
+.total-price-section {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #004d40;
+}
+
+/* Additional Styles for Passenger List */
+.passenger-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.passenger-item {
+  padding: 10px 15px;
+  border: 1px solid #004d40;
+  border-radius: 5px;
+  background-color: #b2ebf2;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.passenger-item:hover {
+  background-color: #80deea;
+  transform: scale(1.05);
+}
+
+.passenger-item.selected {
+  background-color: #00796b;
+  color: #ffffff;
+  border-color: #00575b;
 }
