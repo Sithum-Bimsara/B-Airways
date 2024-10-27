@@ -125,11 +125,11 @@ VALUES
 -- Insert Flights
 INSERT INTO Flight (Flight_ID, Airplane_ID, Route_ID, Departure_date, Arrival_date, Departure_time, Arrival_time, Status)
 VALUES
-('FL001', 1, 'RT001', '2024-10-28', '2024-10-28', '08:00:00', '10:00:00', 'Scheduled'),
+('FL001', 1, 'RT003', '2024-10-28', '2024-10-28', '08:00:00', '10:00:00', 'Scheduled'),
 ('FL002', 2, 'RT002', '2024-10-28', '2024-10-28', '12:00:00', '14:30:00', 'Scheduled'),
-('FL003', 3, 'RT003', '2024-10-28', '2024-10-28', '15:00:00', '17:00:00', 'Delayed'),
-('FL004', 4, 'RT004', '2024-10-28', '2024-10-28', '18:00:00', '20:30:00', 'Scheduled'),
-('FL005', 5, 'RT005', '2024-10-28', '2024-10-28', '09:00:00', '11:00:00', 'Cancelled'),
+('FL003', 8, 'RT003', '2024-10-28', '2024-10-28', '15:00:00', '17:00:00', 'Delayed'),
+('FL004', 4, 'RT009', '2024-10-28', '2024-10-28', '18:00:00', '20:30:00', 'Scheduled'),
+('FL005', 5, 'RT009', '2024-10-28', '2024-10-28', '09:00:00', '11:00:00', 'Scheduled'),
 ('FL006', 1, 'RT006', '2024-10-29', '2024-10-29', '08:00:00', '10:00:00', 'Scheduled'),
 ('FL007', 2, 'RT007', '2024-10-29', '2024-10-29', '12:00:00', '14:30:00', 'Scheduled'),
 ('FL008', 3, 'RT008', '2024-10-29', '2024-10-29', '15:00:00', '17:00:00', 'Delayed'),
@@ -249,15 +249,6 @@ VALUES
 ('FL030', 'Economy', 1900.00),
 ('FL030', 'Business', 3800.00),
 ('FL030', 'Platinum', 4400.00);
-
--- -- Insert Passengers
--- INSERT INTO Passenger (Passenger_ID, Passport_Number, Passport_Expire_Date, Name, Date_of_birth, Gender)
--- VALUES
--- (1, 'A12345678', '2030-12-01', 'John Doe Jr.', '2014-05-20', 'Male'),
--- (2, 'B98765432', '2031-08-15', 'Jane Smith', '1990-08-15', 'Female'),
--- (3, 'C85296374', '2032-12-01', 'Alice Johnson', '1995-12-01', 'Female'),
--- (4, 'D15975385', '2033-11-30', 'Bob Brown Jr.', '2019-11-30', 'Male'),
--- (5, 'E96325874', '2035-03-14', 'Charlie Green', '2000-03-14', 'Other');
 
 -- Insert Passengers
 INSERT INTO Passenger (Passenger_ID, Passport_Number, Passport_Expire_Date, Name, Date_of_birth, Gender)
