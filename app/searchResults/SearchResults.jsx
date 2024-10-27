@@ -81,15 +81,49 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
               {outboundFlights.map((flight) => (
                 <li key={flight.flightId} className="flight-item">
                   <h3>Flight {flight.flightId}</h3>
-                  <p>
-                    Departure: {flight.departureDate} at {flight.departureTime}
-                  </p>
-                  <p>
-                    Arrival: {flight.arrivalDate} at {flight.arrivalTime}
-                  </p>
-                  <p>Status: {flight.status}</p>
-                  <button onClick={() => handleSelectFlight(flight.flightId)} className="select-button">
-                    Select Flight
+                  <div className="flight-details">
+                    <div className="flight-timing">
+                      <p>
+                        Departure: {flight.departureDate} at {flight.departureTime}
+                      </p>
+                      <p>
+                        Arrival: {flight.arrivalDate} at {flight.arrivalTime}
+                      </p>
+                      <p className="flight-status">Status: {flight.status}</p>
+                      <p className="seats-available">
+                        <span className="seats-icon">💺</span>
+                        {flight.availableSeats} seats available
+                      </p>
+                    </div>
+                    <div className="flight-pricing">
+                      <h4>Available Fares:</h4>
+                      {flight.pricing && (
+                        <div className="pricing-options">
+                          {flight.pricing.economy && (
+                            <div className="price-item">
+                              <span>Economy:</span> ${flight.pricing.economy}
+                            </div>
+                          )}
+                          {flight.pricing.business && (
+                            <div className="price-item">
+                              <span>Business:</span> ${flight.pricing.business}
+                            </div>
+                          )}
+                          {flight.pricing.platinum && (
+                            <div className="price-item">
+                              <span>Platinum:</span> ${flight.pricing.platinum}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => handleSelectFlight(flight.flightId)} 
+                    className="select-button"
+                    disabled={flight.availableSeats === 0}
+                  >
+                    {flight.availableSeats === 0 ? 'Fully Booked' : 'Select Flight'}
                   </button>
                 </li>
               ))}
@@ -111,15 +145,49 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                 {returnFlights.map((flight) => (
                   <li key={flight.flightId} className="flight-item">
                     <h3>Flight {flight.flightId}</h3>
-                    <p>
-                      Departure: {flight.departureDate} at {flight.departureTime}
-                    </p>
-                    <p>
-                      Arrival: {flight.arrivalDate} at {flight.arrivalTime}
-                    </p>
-                    <p>Status: {flight.status}</p>
-                    <button onClick={() => handleSelectFlight(flight.flightId)} className="select-button">
-                      Select Flight
+                    <div className="flight-details">
+                      <div className="flight-timing">
+                        <p>
+                          Departure: {flight.departureDate} at {flight.departureTime}
+                        </p>
+                        <p>
+                          Arrival: {flight.arrivalDate} at {flight.arrivalTime}
+                        </p>
+                        <p className="flight-status">Status: {flight.status}</p>
+                        <p className="seats-available">
+                          <span className="seats-icon">💺</span>
+                          {flight.availableSeats} seats available
+                        </p>
+                      </div>
+                      <div className="flight-pricing">
+                        <h4>Available Fares:</h4>
+                        {flight.pricing && (
+                          <div className="pricing-options">
+                            {flight.pricing.economy && (
+                              <div className="price-item">
+                                <span>Economy:</span> ${flight.pricing.economy}
+                              </div>
+                            )}
+                            {flight.pricing.business && (
+                              <div className="price-item">
+                                <span>Business:</span> ${flight.pricing.business}
+                              </div>
+                            )}
+                            {flight.pricing.platinum && (
+                              <div className="price-item">
+                                <span>Platinum:</span> ${flight.pricing.platinum}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => handleSelectFlight(flight.flightId)} 
+                      className="select-button"
+                      disabled={flight.availableSeats === 0}
+                    >
+                      {flight.availableSeats === 0 ? 'Fully Booked' : 'Select Flight'}
                     </button>
                   </li>
                 ))}
