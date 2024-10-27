@@ -6,7 +6,8 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState(null);
-  const [role, setRole] = useState(null); // Added state for role
+  const [role, setRole] = useState(null); 
+  const [userId, setUserId] = useState(null); 
 
   const fetchUser = async () => {
     try {
@@ -14,15 +15,18 @@ const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setUsername(data.username);
-        setRole(data.role); // Set role from response
+        setRole(data.role);
+        setUserId(data.userId);
       } else {
         setUsername(null);
         setRole(null);
+        setUserId(null);
       }
     } catch (error) {
       console.error('Error fetching user:', error);
       setUsername(null);
       setRole(null);
+      setUserId(null);
     }
   };
 
@@ -37,7 +41,8 @@ const AuthProvider = ({ children }) => {
       });
       if (response.ok) {
         setUsername(null);
-        setRole(null); // Clear role on sign out
+        setRole(null);
+        setUserId(null); 
         window.location.reload();
       }
     } catch (error) {
@@ -46,7 +51,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ username, role, setUsername, setRole, signOut }}>
+    <AuthContext.Provider value={{ username, role,userId, setUsername, setRole,setUserId, signOut }}>
       {children}
     </AuthContext.Provider>
   );
