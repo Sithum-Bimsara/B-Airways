@@ -16,9 +16,12 @@ function HeroSection() {
   const [destinationCodes, setDestinationCodes] = useState([]);
   const [route1, setRoute1] = useState(null);
   const [route2, setRoute2] = useState(null);
+  const [flightType, setFlightType] = useState('oneway');
 
   useEffect(() => {
     fetchAirportCodes();
+    // Clear all localStorage data
+    localStorage.clear();
   }, []);
 
   useEffect(() => {
@@ -67,29 +70,29 @@ function HeroSection() {
   };
 
   const handleSearch = () => {
+    let queryParams;
     if (route1 && departureDate && !returnDate) {
-      // Construct the URL with query parameters
-      const queryParams = new URLSearchParams({
+      queryParams = new URLSearchParams({
         route1: route1.id,
         departureDate: departureDate,
       }).toString();
-
-      // Navigate to the search results page with the route ID and departure date
-      router.push(`/searchResults?${queryParams}`);
     } 
     else if (route1 && route2 && departureDate && returnDate) {
-      // Construct the URL with query parameters
-      const queryParams = new URLSearchParams({
+      queryParams = new URLSearchParams({
         route1: route1.id,
         route2: route2.id,
         departureDate: departureDate,
         returnDate: returnDate,
       }).toString();
-      router.push(`/searchResults?${queryParams}`);
     } 
     else {
       console.error('Please fill in all required fields');
+      return;
     }
+
+    const searchUrl = `/searchResults?${queryParams}`;
+    localStorage.setItem('lastSearchUrl', searchUrl);
+    router.push(searchUrl);
   };
 
   const handleFromWhereChange = async (event) => {
@@ -107,14 +110,36 @@ function HeroSection() {
   const handleDepartureDateChange = (event) => setDepartureDate(event.target.value);
   const handleReturnDateChange = (event) => setReturnDate(event.target.value);
 
+  const handleFlightTypeChange = (type) => {
+    setFlightType(type);
+    if (type === 'oneway') {
+      setReturnDate(''); // Clear return date when switching to one-way
+    }
+  };
+
   return (
     <section className="hero-section">
       <header className="header">
         <h1 className="main-title">It's more than</h1>
         <h1 className="main-title">just a trip</h1>
       </header>
+      
+      <div className="flight-type-selector">
+        <button 
+          className={`type-button ${flightType === 'oneway' ? 'active' : ''}`}
+          onClick={() => handleFlightTypeChange('oneway')}
+        >
+          One Way
+        </button>
+        <button 
+          className={`type-button ${flightType === 'roundtrip' ? 'active' : ''}`}
+          onClick={() => handleFlightTypeChange('roundtrip')}
+        >
+          Round Trip
+        </button>
+      </div>
+
       <div className="search-bar">
-        {/* From where dropdown */}
         <div className="input-group">
           <FontAwesomeIcon icon={faPlaneDeparture} className="icon" />
           <select value={fromWhere} onChange={handleFromWhereChange} className="dropdown">
@@ -124,7 +149,6 @@ function HeroSection() {
             ))}
           </select>
         </div>
-        {/* Where to dropdown */}
         <div className="input-group">
           <FontAwesomeIcon icon={faPlaneArrival} className="icon" />
           <select value={whereTo} onChange={handleWhereToChange} className="dropdown">
@@ -134,22 +158,27 @@ function HeroSection() {
             ))}
           </select>
         </div>
-        {/* Departure date input */}
-        <div className="input-group">
-          <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
-          <input type="date" value={departureDate} onChange={handleDepartureDateChange} className="dropdown" />
-        </div>
-        {/* Return date input */}
         <div className="input-group">
           <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
           <input 
             type="date" 
-            value={returnDate} 
-            onChange={handleReturnDateChange} 
+            value={departureDate} 
+            onChange={handleDepartureDateChange} 
             className="dropdown" 
-            disabled={!route2}
           />
         </div>
+        {flightType === 'roundtrip' && (
+          <div className="input-group">
+            <FontAwesomeIcon icon={faCalendarAlt} className="icon" />
+            <input 
+              type="date" 
+              value={returnDate} 
+              onChange={handleReturnDateChange} 
+              className="dropdown" 
+              disabled={!route2}
+            />
+          </div>
+        )}
         <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
     </section>

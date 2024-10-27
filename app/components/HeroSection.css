@@ -33,11 +33,41 @@
     }
   }
   
+  .flight-type-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px;
+    border-radius: 25px;
+  }
+  
+  .type-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: transparent;
+    color: #24577a;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .type-button.active {
+    background-color: #24577a;
+    color: white;
+  }
+  
+  .type-button:hover:not(.active) {
+    background-color: rgba(36, 87, 122, 0.1);
+  }
+  
   .search-bar {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 100px;
+    margin-top: 20px; /* Reduced from 100px to accommodate the new selector */
     align-items: center;
     margin-bottom: 200px;
     background-color: white;
@@ -100,4 +130,3 @@
   .search-button:hover {
     background-color:/*#3c47e9*/ #24577a;
   }
-  
