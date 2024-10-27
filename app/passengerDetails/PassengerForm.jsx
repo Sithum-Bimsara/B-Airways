@@ -98,7 +98,7 @@ const PassengerForm = () => {
           throw new Error(result.message || 'Failed to add passenger.');
         }
 
-        passengerData.push({ Passenger_ID: result.Passenger_ID, Seat: "" });
+        passengerData.push({ Passenger_ID: result.Passenger_ID, Name: passenger.Name, Seat: "" });
       }
 
       localStorage.setItem('PassengerData', JSON.stringify(passengerData));
@@ -133,7 +133,7 @@ const PassengerForm = () => {
                 disabled={loading}
                 className="fetch-data-button"
               >
-                {loading ? 'Fetching...' : 'Fetch Data'}
+                {loading ? 'Fetching...' : 'Find me'}
               </button>
             </div>
 
