@@ -1,57 +1,84 @@
-// import { NextResponse } from 'next/server';
-// import { connection } from '../../database/db';
+import { NextResponse } from 'next/server';
+import { connection } from '../../database/db';
 
-// export async function POST(request: Request) {
-//   try {
-//     const { flightId, bookings } = await request.json();
+export async function POST(request: Request) {
+  try {
+    const { flightId, userId, passengerData } = await request.json();
 
-//     // Validate input
-//     if (!flightId || !Array.isArray(bookings) || bookings.length === 0) {
-//       return NextResponse.json(
-//         { message: 'Invalid input data.' },
-//         { status: 400 }
-//       );
-//     }
+    if (!flightId || !passengerData || !Array.isArray(passengerData)) {
+      return NextResponse.json({ message: 'Invalid request data.' }, { status: 400 });
+    }
 
-//     // Start transaction
-//     await connection.beginTransaction();
+    // Process each passenger booking
+    const bookingResults = [];
+    const successfulBookings = [];
+    const failedBookings = [];
 
-//     try {
-//       for (const booking of bookings) {
-//         const { passengerId, seatId, price } = booking;
+    for (const passenger of passengerData) {
+      try {
+        // Call the CreateBooking stored procedure for each passenger
+        const [results]: any = await connection.execute(
+          'CALL CreateBooking(?, ?, ?, ?, ?)',
+          [
+            flightId,
+            userId || '',
+            passenger.Passenger_ID,
+            passenger.Seat,
+            passenger.price
+          ]
+        );
 
-//         if (!passengerId || !seatId || !price) {
-//           throw new Error('Missing booking information.');
-//         }
+        // Get the booking ID from the procedure result
+        const bookingId = results[0][0].Booking_ID;
+        
+        successfulBookings.push({
+          ...passenger,
+          bookingId
+        });
+        
+        bookingResults.push({
+          passengerId: passenger.Passenger_ID,
+          success: true,
+          message: 'Booking created successfully',
+          bookingId
+        });
+      } catch (error: any) {
+        const errorMessage = error.message.includes('already booked') 
+          ? `Seat ${passenger.Seat} is already taken`
+          : 'Booking failed';
 
-//         // Call the CreateBooking stored procedure
-//         await connection.execute(
-//           'CALL CreateBooking(?, ?, ?, ?, ?)',
-//           [flightId, null, passengerId, seatId, price]
-//         );
-//       }
+        failedBookings.push({
+          ...passenger,
+          errorMessage
+        });
+        
+        bookingResults.push({
+          passengerId: passenger.Passenger_ID,
+          success: false,
+          error: errorMessage
+        });
+      }
+    }
 
-//       // Commit transaction
-//       await connection.commit();
+    // If there are any failed bookings, return partial success response
+    if (failedBookings.length > 0) {
+      return NextResponse.json({ 
+        message: 'Some bookings failed', 
+        results: bookingResults,
+        successfulBookings,
+        failedBookings,
+        partialSuccess: true
+      }, { status: 207 }); // Using 207 Multi-Status for partial success
+    }
 
-//       return NextResponse.json(
-//         { message: 'Bookings successfully created.' },
-//         { status: 200 }
-//       );
-//     } catch (err: any) {
-//       // Rollback transaction on error
-//       await connection.rollback();
-//       console.error('Error creating bookings:', err);
-//       return NextResponse.json(
-//         { message: err.message || 'Failed to create bookings.' },
-//         { status: 500 }
-//       );
-//     }
-//   } catch (error: any) {
-//     console.error('API Error:', error);
-//     return NextResponse.json(
-//       { message: 'Internal Server Error.' },
-//       { status: 500 }
-//     );
-//   }
-// }
+    return NextResponse.json({ 
+      message: 'All bookings created successfully', 
+      results: bookingResults,
+      successfulBookings
+    }, { status: 200 });
+
+  } catch (error) {
+    console.error('Error processing bookings:', error);
+    return NextResponse.json({ message: 'Error processing bookings.' }, { status: 500 });
+  }
+}
