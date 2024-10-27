@@ -1,9 +1,12 @@
 "use client"; // Ensure this is marked as a client component
 
-import React, { useState } from 'react';
-import './UserProfile.css'; // Link to the CSS file
+import React, { useState, useContext } from 'react';
+import './UserProfile.css'; 
+import { AuthContext } from '../context/AuthContext';
 
 const UserProfile = () => {
+  const { username, role, userId } = useContext(AuthContext);
+
   const [userData] = useState({
     userName: "Sanuji2002",
     firstname: "Sanuji",
@@ -42,7 +45,7 @@ const UserProfile = () => {
     }
   };
 
-  const firstLetter = userData.userName.charAt(0); // Get the first letter of the name
+  const firstLetter = username ? username.charAt(0) : ''; // Get the first letter of the name
 
   // Define dummy flight data
   const flights = {
@@ -67,8 +70,8 @@ const UserProfile = () => {
           <div className="letter-avatar">{firstLetter}</div>
         </div>
 
-        <h2>{userData.userName}</h2>
-        <h3>User ID: 679445946</h3>
+        <h2>{username}</h2>
+        <h3>User ID: {userId}</h3>
 
         <section className="profile-section">
 
