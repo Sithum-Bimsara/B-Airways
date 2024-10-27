@@ -48,6 +48,15 @@ h2 {
   margin-bottom: 30px;
 }
 
+.seat-class-section {
+  margin-bottom: 20px;
+}
+
+.seat-class-section h4 {
+  margin-bottom: 10px;
+  color: #00575b;
+}
+
 .seat-map {
   display: flex;
   flex-wrap: wrap;
@@ -141,4 +150,23 @@ h2 {
   background-color: #00796b;
   color: #ffffff;
   border-color: #00575b;
+}
+
+/* Styles for Different Seat Classes */
+.seat-class-section.economy {
+  background-color: #e8f5e9; /* Light Green */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.seat-class-section.business {
+  background-color: #e3f2fd; /* Light Blue */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.seat-class-section.platinum {
+  background-color: #f3e5f5; /* Light Purple */
+  padding: 10px;
+  border-radius: 8px;
 }
