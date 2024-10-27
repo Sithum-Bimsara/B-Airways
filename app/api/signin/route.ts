@@ -37,7 +37,12 @@ export async function POST(request: Request) {
 
     // Create a NextResponse object
     const response = NextResponse.json(
-      { message: 'Authentication successful.', username: user.User_name },
+      { 
+        message: 'Authentication successful.', 
+        username: user.User_name,
+        userId: user.User_ID,
+        role: user.Role 
+      },
       { status: 200 }
     );
 
