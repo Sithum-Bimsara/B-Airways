@@ -1,9 +1,11 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './SeatSelection.css';
 import { useRouter } from 'next/navigation';
+import { AuthContext } from '../context/AuthContext';
 
 const SeatSelection = () => {
+  const { userId } = useContext(AuthContext);
   const [seatMap, setSeatMap] = useState([]);
   const [passengerData, setPassengerData] = useState([]);
   const [selectedPassengerIndex, setSelectedPassengerIndex] = useState(null);
@@ -15,7 +17,7 @@ const SeatSelection = () => {
 
   // Define total seats based on model ID
   const modelSeatConfig = {
-    1: { totalSeats: 160, seatsPerRow: 6 }, // Example configuration
+    1: { totalSeats: 160, seatsPerRow: 6 },
     2: { totalSeats: 180, seatsPerRow: 6 },
     3: { totalSeats: 489, seatsPerRow: 6 },
   };
@@ -129,12 +131,20 @@ const SeatSelection = () => {
 
   // Identify travel class based on seat ID
   const getTravelClass = (seatId) => {
-    // Assuming seat numbering: 
-    // Economy: 001-100, Business: 101-150, Platinum: 151-160
     const seatNumber = parseInt(seatId, 10);
-    if (seatNumber >= 1 && seatNumber <= 100) return 'Economy';
-    if (seatNumber >= 101 && seatNumber <= 150) return 'Business';
-    if (seatNumber >= 151 && seatNumber <= 160) return 'Platinum';
+    if (modelId === 1) { // Boeing 737
+      if (seatNumber >= 1 && seatNumber <= 114) return 'Economy';
+      if (seatNumber >= 115 && seatNumber <= 144) return 'Business';
+      if (seatNumber >= 145 && seatNumber <= 160) return 'Platinum';
+    } else if (modelId === 2) { // Boeing 757
+      if (seatNumber >= 1 && seatNumber <= 135) return 'Economy';
+      if (seatNumber >= 136 && seatNumber <= 156) return 'Business';
+      if (seatNumber >= 157 && seatNumber <= 180) return 'Platinum';
+    } else if (modelId === 3) { // Airbus A380
+      if (seatNumber >= 1 && seatNumber <= 399) return 'Economy';
+      if (seatNumber >= 400 && seatNumber <= 475) return 'Business';
+      if (seatNumber >= 476 && seatNumber <= 489) return 'Platinum';
+    }
     return 'Economy'; // Default
   };
 
@@ -167,7 +177,12 @@ const SeatSelection = () => {
       setTotalPrice((prevTotal) => prevTotal - previousPrice);
     }
 
-    updatedPassengerData[selectedPassengerIndex].Seat = seatId;
+    updatedPassengerData[selectedPassengerIndex] = {
+      ...updatedPassengerData[selectedPassengerIndex],
+      Seat: seatId,
+      price: price,
+      travelClass: travelClass
+    };
     setPassengerData(updatedPassengerData);
     localStorage.setItem('PassengerData', JSON.stringify(updatedPassengerData));
 
@@ -182,50 +197,125 @@ const SeatSelection = () => {
     setTotalPrice((prevTotal) => prevTotal + price);
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     // Validate all passengers have assigned seats
     for (let i = 0; i < passengerData.length; i++) {
       if (!passengerData[i].Seat) {
-        alert(`Please assign a seat for Passenger ${i + 1}.`);
+        alert(`Please assign a seat for ${passengerData[i].Name}.`);
         return;
       }
     }
-
-    // Optionally, send seat assignments to the backend
+  
     try {
       const flightId = localStorage.getItem('selectedFlightId');
-      const response = await fetch('/api/assignSeat', {
+      
+      const bookingResponse = await fetch('/api/createBooking', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           flightId,
+          userId: userId || '',
           passengerData,
         }),
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to assign seats.');
+  
+      const bookingData = await bookingResponse.json();
+  
+      if (bookingResponse.status === 207) { // Partial success
+        // Store successful bookings in BookingData
+        const successfulBookings = bookingData.successfulBookings.map(booking => ({
+          bookingId: booking.bookingId,
+          passengerId: booking.Passenger_ID,
+          passengerName: booking.Name,
+          seat: booking.Seat,
+          price: booking.price,
+          travelClass: getTravelClass(booking.Seat)
+        }));
+        
+        // Store existing bookings if any
+        const existingBookings = JSON.parse(localStorage.getItem('BookingData') || '[]');
+        localStorage.setItem('BookingData', JSON.stringify([...existingBookings, ...successfulBookings]));
+  
+        // Update PassengerData to keep only failed bookings, removing seat and price
+        const remainingPassengers = passengerData.filter(passenger => 
+          bookingData.failedBookings.some(failed => 
+            failed.Passenger_ID === passenger.Passenger_ID
+          )
+        ).map(({ Seat, price, travelClass, ...rest }) => rest);
+        localStorage.setItem('PassengerData', JSON.stringify(remainingPassengers));
+  
+        // Calculate new total price (which will be 0 as we removed prices)
+        localStorage.setItem('TotalPrice', JSON.stringify(0));
+  
+        // Show error messages for failed bookings
+        const errorMessages = bookingData.failedBookings
+          .map(booking => booking.errorMessage)
+          .join('\n');
+        
+        alert(`Some bookings failed:\n${errorMessages}`);
+        
+        // Refresh the page to update seat map
+        window.location.reload();
+        return;
       }
-
-      // Update local storage with total price
+  
+      if (!bookingResponse.ok) {
+        throw new Error(bookingData.message || 'Failed to create bookings.');
+      }
+  
+      // All bookings successful
+      // Store all bookings in BookingData
+      const successfulBookings = bookingData.successfulBookings.map(booking => ({
+        bookingId: booking.bookingId,
+        passengerId: booking.Passenger_ID,
+        passengerName: booking.Name,
+        seat: booking.Seat,
+        price: booking.price,
+        travelClass: getTravelClass(booking.Seat)
+      }));
+      
+      // Store existing bookings if any
+      const existingBookings = JSON.parse(localStorage.getItem('BookingData') || '[]');
+      localStorage.setItem('BookingData', JSON.stringify([...existingBookings, ...successfulBookings]));
+      
+      // Clear PassengerData since all bookings were successful
+      localStorage.setItem('PassengerData', JSON.stringify([]));
+      
+      // Store total price
       localStorage.setItem('TotalPrice', JSON.stringify(totalPrice));
-
-      // Navigate to confirmation page
-      router.push('/confirmation');
+      
+      router.push('/tickets');
     } catch (err) {
       console.error(err);
-      alert(err.message || 'Something went wrong while assigning seats.');
+      alert(err.message || 'Something went wrong while creating bookings.');
     }
+  };
+
+  // Function to categorize seats by class
+  const categorizeSeats = () => {
+    const categorized = {
+      Economy: [],
+      Business: [],
+      Platinum: []
+    };
+
+    seatMap.forEach(seat => {
+      if (seat.isAisle) return; // Skip aisles
+
+      const travelClass = getTravelClass(seat.seatId);
+      categorized[travelClass].push(seat);
+    });
+
+    return categorized;
   };
 
   if (loading) {
     return <p>Loading seat map...</p>;
   }
+
+  const categorizedSeats = categorizeSeats();
 
   return (
     <div className="seat-selection-container">
@@ -241,7 +331,8 @@ const SeatSelection = () => {
               className={`passenger-item ${selectedPassengerIndex === index ? 'selected' : ''}`}
               onClick={() => handlePassengerSelect(index)}
             >
-              Passenger {index + 1} {passenger.Seat && `- Seat ${passenger.Seat}`}
+              {passenger.Name} {passenger.Seat && `- Seat ${passenger.Seat}`}
+              {passenger.price && ` - $${passenger.price.toFixed(2)}`}
             </li>
           ))}
         </ul>
@@ -250,30 +341,30 @@ const SeatSelection = () => {
       {/* Seat Map */}
       <div className="seat-map-section">
         <h3>Seat Map</h3>
-        <div className="seat-map">
-          {seatMap.map((seat, idx) => {
-            if (seat.isAisle) {
-              return <div key={`aisle-${idx}`} className="aisle"></div>;
-            }
-            return (
-              <div
-                key={seat.seatId}
-                className={`seat ${!seat.isAvailable ? 'unavailable' : 'available'} ${
-                  selectedPassengerIndex !== null && passengerData[selectedPassengerIndex].Seat === seat.seatId
-                    ? 'selected'
-                    : ''
-                }`}
-                onClick={() => seat.isAvailable && handleSeatSelect(seat.seatId)}
-                title={seat.isAvailable ? `Seat ${seat.seatId} (${getTravelClass(seat.seatId)})` : `Seat ${seat.seatId} - Booked`}
-                aria-label={`Seat ${seat.seatId} ${seat.isAvailable ? getTravelClass(seat.seatId) : 'Booked'}`}
-                role="button"
-                tabIndex={seat.isAvailable ? 0 : -1}
-              >
-                {seat.seatId}
-              </div>
-            );
-          })}
-        </div>
+        {['Economy', 'Business', 'Platinum'].map(classType => (
+          <div key={classType} className={`seat-class-section ${classType.toLowerCase()}`}>
+            <h4>{classType} Class</h4>
+            <div className="seat-map">
+              {categorizedSeats[classType].map((seat, idx) => (
+                <div
+                  key={seat.seatId}
+                  className={`seat ${!seat.isAvailable ? 'unavailable' : 'available'} ${
+                    selectedPassengerIndex !== null && passengerData[selectedPassengerIndex].Seat === seat.seatId
+                      ? 'selected'
+                      : ''
+                  }`}
+                  onClick={() => seat.isAvailable && handleSeatSelect(seat.seatId)}
+                  title={seat.isAvailable ? `Seat ${seat.seatId} (${getTravelClass(seat.seatId)})` : `Seat ${seat.seatId} - Booked`}
+                  aria-label={`Seat ${seat.seatId} ${seat.isAvailable ? getTravelClass(seat.seatId) : 'Booked'}`}
+                  role="button"
+                  tabIndex={seat.isAvailable ? 0 : -1}
+                >
+                  {seat.seatId}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Total Price */}
