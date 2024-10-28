@@ -3,6 +3,8 @@ import React from 'react';
 import Image from 'next/image';
 import sydneyImage from '../assets/images/sydney.jpg';
 import kodaijiImage from '../assets/images/kodaiji.jpg';
+import tajmahalImage from '../assets/images/Taj_Mahal.jpeg';
+import libertyImage from '../assets/images/liberty.jpg'
 import './FlightDeals.css';
 
 function FlightDeals() {
@@ -14,6 +16,15 @@ function FlightDeals() {
       price: 981,
       image: sydneyImage,
     },
+
+    {
+      city: 'Taj Mahal',
+      location: 'India',
+      description: 'An iconic symbol of love',
+      price: 255,
+      image: tajmahalImage, 
+    },
+    
     {
       city: 'Kōdaiji Temple',
       location: 'Kyoto',
@@ -21,19 +32,13 @@ function FlightDeals() {
       price: 633,
       image: kodaijiImage,
     },
+    
     {
-      city: 'Sydney Opera House',
-      location: 'Sydney',
-      description: 'Take a stroll along the famous harbor',
-      price: 981,
-      image: sydneyImage, 
-    },
-    {
-      city: 'Kōdaiji Temple',
-      location: 'Kyoto',
-      description: 'Step back in time in the Gion district',
-      price: 633,
-      image: kodaijiImage,
+      city: 'Statue of Liberty',
+      location: 'New York',
+      description: 'An iconic symbol of freedom ',
+      price: 500,
+      image: libertyImage,
     },
   ];
 

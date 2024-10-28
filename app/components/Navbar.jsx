@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import './Navbar.css';
 import SignupModal from './SignupModal';
 import SigninModal from './SigninModal';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
@@ -33,7 +34,10 @@ function Navbar() {
         <li>
           <a href="#hotels">Hotels</a> {/* Link to Hotels section */}
         </li>
-          <li>Contact Us</li>
+        <li>
+          <Link href="/Contactus">Contact Us</Link>
+        </li>
+
           {/* Admin Button */}
           {role === 'Admin' && (
             <li>
