@@ -312,7 +312,12 @@ const SeatSelection = () => {
   };
 
   if (loading) {
-    return <p>Loading seat map...</p>;
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading seat map...</p>
+      </div>
+    );
   }
 
   const categorizedSeats = categorizeSeats();
@@ -327,12 +332,13 @@ const SeatSelection = () => {
         <ul className="passenger-list">
           {passengerData.map((passenger, index) => (
             <li
-              key={passenger.Passenger_ID}
+              key={passenger.Passenger_ID || index}
               className={`passenger-item ${selectedPassengerIndex === index ? 'selected' : ''}`}
               onClick={() => handlePassengerSelect(index)}
+              tabIndex={0}
+              onKeyPress={(e) => { if (e.key === 'Enter') handlePassengerSelect(index) }}
             >
               {passenger.Name} {passenger.Seat && `- Seat ${passenger.Seat}`}
-              {passenger.price && ` - $${passenger.price.toFixed(2)}`}
             </li>
           ))}
         </ul>
@@ -358,6 +364,7 @@ const SeatSelection = () => {
                   aria-label={`Seat ${seat.seatId} ${seat.isAvailable ? getTravelClass(seat.seatId) : 'Booked'}`}
                   role="button"
                   tabIndex={seat.isAvailable ? 0 : -1}
+                  onKeyPress={(e) => { if (e.key === 'Enter' && seat.isAvailable) handleSeatSelect(seat.seatId) }}
                 >
                   {seat.seatId}
                 </div>
