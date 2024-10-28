@@ -23,7 +23,8 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">B Airways</div>
+        <div className="logo">
+        </div>
         <ul className="menu">
           <li>Flights</li>
           <li>Hotels</li>
