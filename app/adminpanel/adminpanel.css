@@ -152,7 +152,8 @@ tr:nth-child(even) {
 }
 
 .tabs button {
-    background-color: #ecf0f1;
+    background-color: #8ca2b8;
+    color: white;
     border: none;
     padding: 12px 20px;
     margin: 5px;
@@ -168,7 +169,7 @@ tr:nth-child(even) {
 }
 
 .tabs button:hover:not(.active) {
-    background-color: #bdc3c7;
+    background-color: #34495e;
 }
 
 .booking-counts table,

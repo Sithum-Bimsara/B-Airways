@@ -22,6 +22,8 @@ function HeroSection() {
     fetchAirportCodes();
     // Clear all localStorage data
     localStorage.clear();
+    // Set initial flight type in localStorage
+    localStorage.setItem('flightType', 'oneway');
   }, []);
 
   useEffect(() => {
@@ -92,6 +94,7 @@ function HeroSection() {
 
     const searchUrl = `/searchResults?${queryParams}`;
     localStorage.setItem('lastSearchUrl', searchUrl);
+    localStorage.setItem('flightType', flightType);
     router.push(searchUrl);
   };
 
@@ -112,6 +115,7 @@ function HeroSection() {
 
   const handleFlightTypeChange = (type) => {
     setFlightType(type);
+    localStorage.setItem('flightType', type);
     if (type === 'oneway') {
       setReturnDate(''); // Clear return date when switching to one-way
     }

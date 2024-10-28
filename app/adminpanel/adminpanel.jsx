@@ -81,7 +81,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch(`/api/past-flights?origin=${origin}&destination=${destination}`);
       const data = await response.json();
-      setPastFlights(data);
+      setPastFlights(data.pastFlights);
     } catch (error) {
       console.error("Error fetching past flights:", error);
     }
@@ -224,15 +224,22 @@ export default function AdminDashboard() {
           {pastFlights.length > 0 ? (
             <table>
               <thead>
-                <tr><th>Flight Number</th><th>Origin</th><th>Destination</th><th>Date</th></tr>
+                <tr>
+                  <th>Flight ID</th>
+                  <th>Origin Airport</th>
+                  <th>Destination Airport</th>
+                  <th>Status</th>
+                  <th>Passenger Count</th>
+                </tr>
               </thead>
               <tbody>
                 {pastFlights.map((flight) => (
-                  <tr key={flight.id}>
-                    <td>{flight.flightNo}</td>
-                    <td>{flight.origin}</td>
-                    <td>{flight.destination}</td>
-                    <td>{new Date(flight.date).toLocaleDateString()}</td>
+                  <tr key={flight.Flight_ID}>
+                    <td>{flight.Flight_ID}</td>
+                    <td>{flight.OriginAirportName}</td>
+                    <td>{flight.DestinationAirportName}</td>
+                    <td>{flight.Status}</td>
+                    <td>{flight.PassengerCount}</td>
                   </tr>
                 ))}
               </tbody>

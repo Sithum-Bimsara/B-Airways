@@ -12,12 +12,14 @@ const Tickets = () => {
   const [destinationAirport, setDestinationAirport] = useState('');
   const [departureDate, setDepartureDate] = useState('');
   const [arrivalDate, setArrivalDate] = useState('');
+  const [flightType, setFlightType] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     const fetchTickets = async () => {
       const flightId = localStorage.getItem('selectedFlightId');
       const bookingData = JSON.parse(localStorage.getItem('BookingData')) || [];
+      const flightTypeFromStorage = localStorage.getItem('flightType');
 
       if (!flightId || bookingData.length === 0) {
         alert('No booking information found.');
@@ -27,6 +29,7 @@ const Tickets = () => {
 
       setFlightId(flightId);
       setBookings(bookingData);
+      setFlightType(flightTypeFromStorage);
       setTotalPrice(bookingData.reduce((total, booking) => total + booking.price, 0));
 
       try {
@@ -134,9 +137,11 @@ const Tickets = () => {
       </div>
 
       <div className="button-container">
-        <button className="action-button" onClick={handleBookReturnFlight}>
-          Book a Return Flight
-        </button>
+        {flightType === 'roundtrip' && (
+          <button className="action-button" onClick={handleBookReturnFlight}>
+            Book a Return Flight
+          </button>
+        )}
         <button className="action-button" onClick={handleReturnHome}>
           Return to Home
         </button>
