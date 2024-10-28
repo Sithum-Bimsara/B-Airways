@@ -123,3 +123,25 @@
   color: #005bb5;
 }
 
+
+.menu li {
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Remove default link styling and style like buttons */
+.menu a {
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit text color */
+  font-size: 1rem; /* Adjust font size */
+  font-weight: bold; /* Make the text bold */
+  padding: 10px 15px; /* Add padding to make it button-like */
+  border-radius: 4px; /* Round the corners */
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for menu items */
+.menu a:hover {
+  background-color: #f0f0f0; /* Slight background change on hover */
+  color: #0070f3; /* Text color change on hover */
+}
