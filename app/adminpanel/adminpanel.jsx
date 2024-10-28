@@ -13,6 +13,7 @@ export default function AdminDashboard() {
   const [bookingCounts, setBookingCounts] = useState([]);
   const [pastFlights, setPastFlights] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
+  const [flights, setFlights] = useState([]);
 
   const [formData, setFormData] = useState({
     flightNo: '',
@@ -23,7 +24,26 @@ export default function AdminDashboard() {
     destinationQuery: ''
   });
 
+  const [addFlightData, setAddFlightData] = useState({
+    Airplane_ID: '',
+    Route_ID: '',
+    Departure_date: '',
+    Arrival_date: '',
+    Departure_time: '',
+    Arrival_time: '',
+    Economy_Price: '',
+    Business_Price: '',
+    Platinum_Price: ''
+  });
+
+  const [changeStatusData, setChangeStatusData] = useState({
+    Flight_ID: '',
+    newStatus: ''
+  });
+
   const [activeTab, setActiveTab] = useState('passengerDetails');
+  const [addFlightStatus, setAddFlightStatus] = useState({ loading: false, message: '' });
+  const [changeStatus, setChangeStatus] = useState({ loading: false, message: '' });
 
   useEffect(() => {
     if (role !== 'Admin') {
@@ -97,13 +117,115 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchAllFlights = async () => {
+    try {
+      const response = await fetch('/api/getAllFlights');
+      const data = await response.json();
+      if (data && Array.isArray(data)) {
+        setFlights(data);
+      } else if (data && data.flights && Array.isArray(data.flights)) {
+        setFlights(data.flights);
+      } else {
+        console.error("Invalid flight data format received");
+        setFlights([]);
+      }
+    } catch (error) {
+      console.error("Error fetching flights:", error);
+      setFlights([]);
+    }
+  };
+
   useEffect(() => {
     fetchRevenueData();
+    fetchAllFlights();
   }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAddFlightChange = (e) => {
+    const { name, value } = e.target;
+    setAddFlightData({ ...addFlightData, [name]: value });
+  };
+
+  const handleChangeStatusInput = (e) => {
+    const { name, value } = e.target;
+    setChangeStatusData({ ...changeStatusData, [name]: value });
+  };
+
+  const handleAddFlightSubmit = async (e) => {
+    e.preventDefault();
+    setAddFlightStatus({ loading: true, message: '' });
+
+    try {
+      const response = await fetch('/api/addFlight', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(addFlightData)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to add flight.');
+      }
+
+      setAddFlightStatus({ loading: false, message: 'Flight added successfully!' });
+      // Reset the form
+      setAddFlightData({
+        Airplane_ID: '',
+        Route_ID: '',
+        Departure_date: '',
+        Arrival_date: '',
+        Departure_time: '',
+        Arrival_time: '',
+        Economy_Price: '',
+        Business_Price: '',
+        Platinum_Price: ''
+      });
+      // Refresh the flights list
+      fetchAllFlights();
+    } catch (error) {
+      console.error(error);
+      setAddFlightStatus({ loading: false, message: error.message || 'Something went wrong.' });
+    }
+  };
+
+  const handleChangeStatusSubmit = async (e) => {
+    e.preventDefault();
+    setChangeStatus({ loading: true, message: '' });
+
+    try {
+      const response = await fetch('/api/changeFlightStatus', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(changeStatusData)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to change flight status.');
+      }
+
+      setChangeStatus({ loading: false, message: 'Flight status updated successfully!' });
+      // Reset the form
+      setChangeStatusData({
+        Flight_ID: '',
+        newStatus: ''
+      });
+      // Refresh the flights list
+      fetchAllFlights();
+    } catch (error) {
+      console.error(error);
+      setChangeStatus({ loading: false, message: error.message || 'Something went wrong.' });
+    }
   };
 
   const renderPassengerDetails = () => (
@@ -270,6 +392,172 @@ export default function AdminDashboard() {
     </div>
   );
 
+  const renderAddFlight = () => (
+    <div className="card">
+      <div className="card-header">Add New Flight</div>
+      <div className="card-body">
+        <form onSubmit={handleAddFlightSubmit}>
+          <div className="form-group">
+            <label>Airplane ID:</label>
+            <input
+              type="number"
+              name="Airplane_ID"
+              value={addFlightData.Airplane_ID}
+              onChange={handleAddFlightChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Route ID:</label>
+            <input
+              type="text"
+              name="Route_ID"
+              value={addFlightData.Route_ID}
+              onChange={handleAddFlightChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Departure Date:</label>
+            <input
+              type="date"
+              name="Departure_date"
+              value={addFlightData.Departure_date}
+              onChange={handleAddFlightChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Arrival Date:</label>
+            <input
+              type="date"
+              name="Arrival_date"
+              value={addFlightData.Arrival_date}
+              onChange={handleAddFlightChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Departure Time:</label>
+            <input
+              type="time"
+              name="Departure_time"
+              value={addFlightData.Departure_time}
+              onChange={handleAddFlightChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Arrival Time:</label>
+            <input
+              type="time"
+              name="Arrival_time"
+              value={addFlightData.Arrival_time}
+              onChange={handleAddFlightChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Economy Price:</label>
+            <input
+              type="number"
+              name="Economy_Price"
+              value={addFlightData.Economy_Price}
+              onChange={handleAddFlightChange}
+              required
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div className="form-group">
+            <label>Business Price:</label>
+            <input
+              type="number"
+              name="Business_Price"
+              value={addFlightData.Business_Price}
+              onChange={handleAddFlightChange}
+              required
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div className="form-group">
+            <label>Platinum Price:</label>
+            <input
+              type="number"
+              name="Platinum_Price"
+              value={addFlightData.Platinum_Price}
+              onChange={handleAddFlightChange}
+              required
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <button type="submit" disabled={addFlightStatus.loading}>
+            {addFlightStatus.loading ? 'Adding Flight...' : 'Add Flight'}
+          </button>
+        </form>
+        {addFlightStatus.message && (
+          <p className={`add-flight-message ${addFlightStatus.message.includes('successfully') ? 'success' : 'error'}`}>
+            {addFlightStatus.message}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
+  const renderChangeFlightStatus = () => (
+    <div className="card">
+      <div className="card-header">Change Flight Status</div>
+      <div className="card-body">
+        <form onSubmit={handleChangeStatusSubmit}>
+          <div className="form-group">
+            <label>Flight ID:</label>
+            <select
+              name="Flight_ID"
+              value={changeStatusData.Flight_ID}
+              onChange={handleChangeStatusInput}
+              required
+            >
+              <option value="" disabled>Select a flight</option>
+              {flights && flights.length > 0 ? (
+                flights.map((flight) => (
+                  <option key={flight.Flight_ID} value={flight.Flight_ID}>
+                    {`Flight ${flight.Flight_ID}`}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>No flights available</option>
+              )}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>New Status:</label>
+            <select
+              name="newStatus"
+              value={changeStatusData.newStatus}
+              onChange={handleChangeStatusInput}
+              required
+            >
+              <option value="" disabled>Select new status</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Delayed">Delayed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <button type="submit" disabled={changeStatus.loading}>
+            {changeStatus.loading ? 'Updating Status...' : 'Update Status'}
+          </button>
+        </form>
+        {changeStatus.message && (
+          <p className={`change-status-message ${changeStatus.message.includes('successfully') ? 'success' : 'error'}`}>
+            {changeStatus.message}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
   if (role !== 'Admin') {
     return null; // Or you could return a "Not Authorized" message
   }
@@ -283,6 +571,8 @@ export default function AdminDashboard() {
         <button className={activeTab === 'bookingCounts' ? 'active' : ''} onClick={() => setActiveTab('bookingCounts')}>Booking Counts</button>
         <button className={activeTab === 'pastFlights' ? 'active' : ''} onClick={() => setActiveTab('pastFlights')}>Past Flights</button>
         <button className={activeTab === 'revenueData' ? 'active' : ''} onClick={() => setActiveTab('revenueData')}>Revenue Data</button>
+        <button className={activeTab === 'addFlight' ? 'active' : ''} onClick={() => setActiveTab('addFlight')}>Add Flight</button>
+        <button className={activeTab === 'changeFlightStatus' ? 'active' : ''} onClick={() => setActiveTab('changeFlightStatus')}>Change Flight Status</button>
       </div>
       <div className="content">
         {activeTab === 'passengerDetails' && renderPassengerDetails()}
@@ -290,6 +580,8 @@ export default function AdminDashboard() {
         {activeTab === 'bookingCounts' && renderBookingCounts()}
         {activeTab === 'pastFlights' && renderPastFlights()}
         {activeTab === 'revenueData' && renderRevenueData()}
+        {activeTab === 'addFlight' && renderAddFlight()}
+        {activeTab === 'changeFlightStatus' && renderChangeFlightStatus()}
       </div>
     </div>
   );
