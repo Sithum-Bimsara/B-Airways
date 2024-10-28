@@ -33,7 +33,7 @@ function PlacesToStay() {
   ];
 
   return (
-    <section className="places-to-stay">
+    <section id="hotels" className="places-to-stay">
       <h2>Explore unique places to stay</h2>
       <div className="places-container">
         {places.map((place, index) => (
