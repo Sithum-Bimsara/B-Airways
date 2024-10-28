@@ -11,8 +11,17 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const [loadingReturn, setLoadingReturn] = useState(true);
   const [errorOutbound, setErrorOutbound] = useState(null);
   const [errorReturn, setErrorReturn] = useState(null);
-  
+
   const router = useRouter();
+  
+  const [flightType, setFlightType] = useState('roundtrip'); // Default to 'roundtrip'
+
+  useEffect(() => {
+    const storedFlightType = localStorage.getItem('flightType');
+    if (storedFlightType) {
+      setFlightType(storedFlightType);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchOutboundFlights = async () => {
@@ -40,7 +49,7 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
 
   useEffect(() => {
     const fetchReturnFlights = async () => {
-      if (returnDate) {
+      if (flightType === 'roundtrip' && returnDate) {
         try {
           const response = await fetch(`/api/getFlight?route=${route2}&date=${returnDate}`);
           if (!response.ok) {
@@ -59,7 +68,7 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
     };
 
     fetchReturnFlights();
-  }, [returnDate]);
+  }, [flightType, returnDate, route2]);
 
   const handleSelectFlight = (flightId) => {
     localStorage.setItem('selectedFlightId', flightId);
@@ -69,11 +78,14 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   return (
     <div className="search-results">
       <h1>Flight Search Results</h1>
-      <div className="flights-container">
+      <div className={`flights-container ${flightType === 'oneway' ? 'oneway' : 'roundtrip'}`}>
         <div className="flight-section outbound">
           <h2>Outbound Flights</h2>
           {loadingOutbound ? (
-            <div className="loading">Loading outbound flights...</div>
+            <div className="loading">
+              <div className="spinner"></div>
+              <span>Loading outbound flights...</span>
+            </div>
           ) : errorOutbound ? (
             <div className="error">Error: {errorOutbound}</div>
           ) : outboundFlights.length > 0 ? (
@@ -84,14 +96,16 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                   <div className="flight-details">
                     <div className="flight-timing">
                       <p>
-                        Departure: {flight.departureDate} at {flight.departureTime}
+                        <strong>Departure:</strong> {flight.departureDate} at {flight.departureTime}
                       </p>
                       <p>
-                        Arrival: {flight.arrivalDate} at {flight.arrivalTime}
+                        <strong>Arrival:</strong> {flight.arrivalDate} at {flight.arrivalTime}
                       </p>
-                      <p className="flight-status">Status: {flight.status}</p>
+                      <p className="flight-status">
+                        <strong>Status:</strong> {flight.status}
+                      </p>
                       <p className="seats-available">
-                        <span className="seats-icon">💺</span>
+                        <span className="seats-icon" role="img" aria-label="seats">💺</span>
                         {flight.availableSeats} seats available
                       </p>
                     </div>
@@ -101,17 +115,17 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                         <div className="pricing-options">
                           {flight.pricing.economy && (
                             <div className="price-item">
-                              <span>Economy:</span> ${flight.pricing.economy}
+                              <span>Economy:</span> ${flight.pricing.economy.toFixed(2)}
                             </div>
                           )}
                           {flight.pricing.business && (
                             <div className="price-item">
-                              <span>Business:</span> ${flight.pricing.business}
+                              <span>Business:</span> ${flight.pricing.business.toFixed(2)}
                             </div>
                           )}
                           {flight.pricing.platinum && (
                             <div className="price-item">
-                              <span>Platinum:</span> ${flight.pricing.platinum}
+                              <span>Platinum:</span> ${flight.pricing.platinum.toFixed(2)}
                             </div>
                           )}
                         </div>
@@ -133,11 +147,14 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
           )}
         </div>
 
-        {returnDate && (
+        {flightType === 'roundtrip' && (
           <div className="flight-section return">
             <h2>Return Flights</h2>
             {loadingReturn ? (
-              <div className="loading">Loading return flights...</div>
+              <div className="loading">
+                <div className="spinner"></div>
+                <span>Loading return flights...</span>
+              </div>
             ) : errorReturn ? (
               <div className="error">Error: {errorReturn}</div>
             ) : returnFlights.length > 0 ? (
@@ -148,14 +165,16 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                     <div className="flight-details">
                       <div className="flight-timing">
                         <p>
-                          Departure: {flight.departureDate} at {flight.departureTime}
+                          <strong>Departure:</strong> {flight.departureDate} at {flight.departureTime}
                         </p>
                         <p>
-                          Arrival: {flight.arrivalDate} at {flight.arrivalTime}
+                          <strong>Arrival:</strong> {flight.arrivalDate} at {flight.arrivalTime}
                         </p>
-                        <p className="flight-status">Status: {flight.status}</p>
+                        <p className="flight-status">
+                          <strong>Status:</strong> {flight.status}
+                        </p>
                         <p className="seats-available">
-                          <span className="seats-icon">💺</span>
+                          <span className="seats-icon" role="img" aria-label="seats">💺</span>
                           {flight.availableSeats} seats available
                         </p>
                       </div>
@@ -165,17 +184,17 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                           <div className="pricing-options">
                             {flight.pricing.economy && (
                               <div className="price-item">
-                                <span>Economy:</span> ${flight.pricing.economy}
+                                <span>Economy:</span> ${flight.pricing.economy.toFixed(2)}
                               </div>
                             )}
                             {flight.pricing.business && (
                               <div className="price-item">
-                                <span>Business:</span> ${flight.pricing.business}
+                                <span>Business:</span> ${flight.pricing.business.toFixed(2)}
                               </div>
                             )}
                             {flight.pricing.platinum && (
                               <div className="price-item">
-                                <span>Platinum:</span> ${flight.pricing.platinum}
+                                <span>Platinum:</span> ${flight.pricing.platinum.toFixed(2)}
                               </div>
                             )}
                           </div>
@@ -201,6 +220,7 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
 
       {/* World map image below the flight boxes */}
       <div className="world-map-container">
+        {/* Optional: Add interactive elements or tooltips for better UX */}
       </div>
     </div>
   );
