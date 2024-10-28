@@ -25,6 +25,13 @@ const PassengerForm = () => {
     ]);
   };
 
+  const removePassenger = (index) => {
+    if (passengers.length > 1) {
+      const updatedPassengers = passengers.filter((_, i) => i !== index);
+      setPassengers(updatedPassengers);
+    }
+  };
+
   const fetchPassengerData = async (passportNumber, index) => {
     if (!passportNumber) {
       alert('Please enter a Passport Number.');
@@ -117,7 +124,18 @@ const PassengerForm = () => {
       <form onSubmit={handleSubmit} className="passenger-form">
         {passengers.map((passenger, index) => (
           <div key={index} className="section passenger-details">
-            <h3>Passenger {index + 1}</h3>
+            <div className="passenger-header">
+              <h3>Passenger {index + 1}</h3>
+              {index > 0 && (
+                <button
+                  type="button"
+                  onClick={() => removePassenger(index)}
+                  className="remove-passenger-button"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
             <div className="form-group">
               <label htmlFor={`passport_number_${index}`}>Passport Number</label>
               <div className="input-with-button">
