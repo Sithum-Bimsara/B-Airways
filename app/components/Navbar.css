@@ -9,7 +9,7 @@
   top: 0;
   z-index: 1000;
   overflow: hidden; /* Prevents logo from expanding navbar height */
-  height: 60px; /* Fixed navbar height */
+  height: 65px; /* Fixed navbar height */
 }
 
 .logo {
@@ -18,10 +18,10 @@
   background-image: url('../assets/images/logo.png');
   background-size: contain;
   background-repeat: no-repeat;
-  height: 150px; /* Logo height can be larger than navbar */
-  width: 150px; /* Adjust width as needed */
+  height: 160px; /* Logo height can be larger than navbar */
+  width: 200px; /* Adjust width as needed */
   margin-top: 0; /* Negative margin to vertically center larger logo */
-  margin-left: -50px;
+  margin-left: -70px;
 }
 
 .logo img {
