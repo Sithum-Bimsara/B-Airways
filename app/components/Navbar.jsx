@@ -9,11 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 function Navbar() {
   const [isSignupOpen, setIsSignupOpen] = React.useState(false);
   const [isSigninOpen, setIsSigninOpen] = React.useState(false);
   const { username, role, signOut } = useContext(AuthContext);
+  const router = useRouter();
 
   const openSignupModal = () => setIsSignupOpen(true);
   const closeSignupModal = () => setIsSignupOpen(false);
@@ -21,22 +23,35 @@ function Navbar() {
   const openSigninModal = () => setIsSigninOpen(true);
   const closeSigninModal = () => setIsSigninOpen(false);
 
+  const scrollToSection = (sectionId) => {
+    // If on homepage, scroll to section
+    if (window.location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If on different page, navigate to homepage then scroll
+      router.push(`/#${sectionId}`);
+    }
+  };
+
   return (
     <>
       <nav className="navbar">
-        <Link href="/" className="logo"> {/* Add the Link component here */}
+        <Link href="/" className="logo">
           {/* You can also use an image element if desired */}
         </Link>
         <ul className="menu">
-        <li>
-          <a href="#flights">Flights</a> {/* Link to Flights section */}
-        </li>
-        <li>
-          <a href="#hotels">Hotels</a> {/* Link to Hotels section */}
-        </li>
-        <li>
-          <Link href="/Contactus">Contact Us</Link>
-        </li>
+          <li>
+            <button onClick={() => scrollToSection('flights')} className="nav-link">Flights</button>
+          </li>
+          <li>
+            <button onClick={() => scrollToSection('hotels')} className="nav-link">Hotels</button>
+          </li>
+          <li>
+            <button onClick={() => router.push('/Contactus')} className="nav-link">Contact Us</button>
+          </li>
 
           {/* Admin Button */}
           {role === 'Admin' && (
