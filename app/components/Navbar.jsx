@@ -23,11 +23,17 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">B Airways</div>
+        <Link href="/" className="logo"> {/* Add the Link component here */}
+          {/* You can also use an image element if desired */}
+        </Link>
         <ul className="menu">
-          <li>Flights</li>
-          <li>Hotels</li>
-          <li>Packages</li>
+        <li>
+          <a href="#flights">Flights</a> {/* Link to Flights section */}
+        </li>
+        <li>
+          <a href="#hotels">Hotels</a> {/* Link to Hotels section */}
+        </li>
+          <li>Contact Us</li>
           {/* Admin Button */}
           {role === 'Admin' && (
             <li>

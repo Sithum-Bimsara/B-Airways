@@ -38,7 +38,7 @@ function FlightDeals() {
   ];
 
   return (
-    <section className="flight-deals">
+    <section id="flights" className="flight-deals">
       <h2 className="flight-deals-heading">Find your next adventure with these flight deals</h2>
       <div className="deals-container">
         {deals.map((deal, index) => (
