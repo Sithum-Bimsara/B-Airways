@@ -72,6 +72,7 @@
   align-items: center;
   gap: 4px; /* Reduced gap */
   text-decoration: none;
+  margin-right: 8px;
   color: inherit;
   cursor: pointer;
   font-size: 0.9rem; /* Slightly smaller font size */
@@ -93,16 +94,57 @@
   transition: all 0.2s ease-in-out; /* Faster transition */
 }
 
-/* Add responsive design for smaller screens */
+/* Enhanced responsive design for smaller screens */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
     padding: 10px 3%;
+    gap: 15px;
   }
 
-  .menu,
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+  }
+
   .auth-buttons {
-    margin-top: 10px;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .signin-btn,
+  .signup-btn,
+  .signout-btn {
+    width: 100%;
+    padding: 8px 12px;
+    text-align: center;
+  }
+
+  .profile-section {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .profile-link {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+/* Add hamburger menu breakpoint */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px 2%;
+  }
+  
+  .menu,
+  .auth-buttons,
+  .profile-section {
+    font-size: 0.85rem;
   }
 }
 

@@ -11,7 +11,6 @@ function FlightDeals() {
       city: 'Sydney Opera House',
       location: 'Sydney',
       description: 'Take a stroll along the famous harbor',
-      price: 981,
       image: sydneyImage,
     },
     {
@@ -25,14 +24,12 @@ function FlightDeals() {
       city: 'Sydney Opera House',
       location: 'Sydney',
       description: 'Take a stroll along the famous harbor',
-      price: 981,
       image: sydneyImage, 
     },
     {
       city: 'Kōdaiji Temple',
       location: 'Kyoto',
       description: 'Step back in time in the Gion district',
-      price: 633,
       image: kodaijiImage,
     },
   ];
@@ -55,7 +52,6 @@ function FlightDeals() {
               <h3 className="deal-city">{deal.city}</h3>
               <p className="deal-location">{deal.location}</p>
               <p className="deal-description">{deal.description}</p>
-              <p className="deal-price">${deal.price}</p>
             </div>
           </div>
         ))}

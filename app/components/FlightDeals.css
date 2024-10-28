@@ -33,7 +33,9 @@
     position: relative;
     flex: 1 1 calc(33.33% - 20px); /* Responsive 3 cards per row with gap */
     max-width: 300px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
 
   .deal-card:hover {
@@ -45,10 +47,14 @@
     width: 100%;
     height: 200px;
     object-fit: cover;
+    flex: 0 0 200px; /* Fixed height for images */
   }
   
   .deal-info {
     padding: 15px;
+    flex: 1; /* Allow info section to fill remaining space */
+    display: flex;
+    flex-direction: column;
   }
   
   .deal-city {
@@ -68,13 +74,5 @@
     font-size: 14px;
     color: #888; /* Light gray for the description */
     margin: 5px 0;
-  }
-  
-  .deal-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin: 10px 0 0; /* Add margin to the top */
-    text-align: right;
   }
   
