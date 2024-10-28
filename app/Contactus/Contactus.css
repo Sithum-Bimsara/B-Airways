@@ -1,0 +1,73 @@
+.contact-us {
+  max-width: 600px; /* Center the form and set a max width */
+  margin: 40px auto; /* Center the section horizontally */
+  padding: 20px; /* Add some padding */
+  background-color: linear-gradient(to right, #f0f4ff, #d9eaff); /* Light background color for contrast */
+  border-radius: 8px; /* Round the corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.contact-us h2 {
+  font-size: 24px; /* Larger font size for the heading */
+  margin-bottom: 20px; /* Space between heading and paragraph */
+  color: #333; /* Darker text color for better readability */
+  text-align: center; /* Center the heading */
+}
+
+.contact-us p {
+  font-size: 16px; /* Slightly larger font size for the paragraph */
+  color: #666; /* Medium gray color for the text */
+  text-align: center; /* Center the text */
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column; /* Stack the form elements vertically */
+}
+
+.form-group {
+  margin-bottom: 15px; /* Space between form groups */
+}
+
+.form-group label {
+  margin-bottom: 5px; /* Space between label and input */
+  font-weight: bold; /* Make label text bold */
+  color: #333; /* Dark color for the labels */
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%; /* Full width for inputs */
+  padding: 10px; /* Padding inside inputs */
+  border: 1px solid #ccc; /* Light border for inputs */
+  border-radius: 5px; /* Round the corners */
+  font-size: 16px; /* Slightly larger font size for inputs */
+  transition: border 0.3s; /* Smooth border color change */
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #0070f3; /* Change border color on focus */
+  outline: none; /* Remove outline */
+}
+
+.submit-button {
+  padding: 10px; /* Padding for button */
+  background-color: #0070f3; /* Blue background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Round corners */
+  font-size: 18px; /* Larger font size for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color change */
+}
+
+.submit-button:hover {
+  background-color: #005bb5; /* Darker blue on hover */
+}
+
+@media (max-width: 600px) {
+  .contact-us {
+    margin: 20px; /* Reduce margin for smaller screens */
+  }
+}
