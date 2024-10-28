@@ -148,8 +148,10 @@ function HeroSection() {
           <FontAwesomeIcon icon={faPlaneDeparture} className="icon" />
           <select value={fromWhere} onChange={handleFromWhereChange} className="dropdown">
             <option value="" disabled>From where?</option>
-            {originCodes.map((code, index) => (
-              <option key={index} value={code}>{code}</option>
+            {originCodes.map((airport, index) => (
+              <option key={index} value={airport.code}>
+                {airport.code} - {airport.name}
+              </option>
             ))}
           </select>
         </div>
@@ -157,8 +159,10 @@ function HeroSection() {
           <FontAwesomeIcon icon={faPlaneArrival} className="icon" />
           <select value={whereTo} onChange={handleWhereToChange} className="dropdown">
             <option value="" disabled>Where to?</option>
-            {destinationCodes.map((code, index) => (
-              <option key={index} value={code}>{code}</option>
+            {destinationCodes.map((airport, index) => (
+              <option key={index} value={airport.code}>
+                {airport.code} - {airport.name}
+              </option>
             ))}
           </select>
         </div>
