@@ -49,8 +49,10 @@ export async function POST(request: Request) {
 
     // Assuming the stored procedure does not return a new Flight_ID
     return NextResponse.json({ message: 'Flight added successfully.' }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error adding flight:', error);
-    return NextResponse.json({ message: 'Error adding flight.' }, { status: 500 });
+    return NextResponse.json({ 
+      message: error.sqlMessage || 'Error adding flight.'
+    }, { status: 500 });
   }
 }

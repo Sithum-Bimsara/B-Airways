@@ -207,23 +207,45 @@ CREATE PROCEDURE `AddFlight`(
 )
 BEGIN
     DECLARE new_Flight_ID VARCHAR(10);
+    DECLARE airplane_conflict INT;
 
-    -- Generate the next Flight_ID based on the highest existing Flight_ID
-    SELECT CONCAT('FL', LPAD(COALESCE(MAX(CAST(SUBSTRING(Flight_ID, 3, 3) AS UNSIGNED)), 0) + 1, 3, '0'))
-    INTO new_Flight_ID
-    FROM flight;
+    -- Check if airplane is already scheduled for this time period
+    SELECT COUNT(*) INTO airplane_conflict
+    FROM flight 
+    WHERE Airplane_ID = p_Airplane_ID
+    AND (
+        (p_Departure_date BETWEEN Departure_date AND Arrival_date)
+        OR (p_Arrival_date BETWEEN Departure_date AND Arrival_date)
+        OR (Departure_date BETWEEN p_Departure_date AND p_Arrival_date)
+        OR (Arrival_date BETWEEN p_Departure_date AND p_Arrival_date)
+    )
+    AND (
+        (p_Departure_time BETWEEN Departure_time AND Arrival_time)
+        OR (p_Arrival_time BETWEEN Departure_time AND Arrival_time)
+        OR (Departure_time BETWEEN p_Departure_time AND p_Arrival_time)
+        OR (Arrival_time BETWEEN p_Departure_time AND p_Arrival_time)
+    );
 
-    -- Insert into the flight table
-    INSERT INTO flight (Flight_ID, Airplane_ID, Route_ID, Departure_date, Arrival_date, Departure_time, Arrival_time)
-    VALUES (new_Flight_ID, p_Airplane_ID, p_Route_ID, p_Departure_date, p_Arrival_date, p_Departure_time, p_Arrival_time);
+    IF airplane_conflict > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Airplane is already scheduled for this time period';
+    ELSE
+        -- Generate the next Flight_ID based on the highest existing Flight_ID
+        SELECT CONCAT('FL', LPAD(COALESCE(MAX(CAST(SUBSTRING(Flight_ID, 3, 3) AS UNSIGNED)), 0) + 1, 3, '0'))
+        INTO new_Flight_ID
+        FROM flight;
 
-    -- Insert pricing 
-    INSERT INTO flight_pricing (Flight_ID, Travel_Class, Price) 
-    VALUES 
-    (new_Flight_ID, 'Economy', p_Economy_Price),
-    (new_Flight_ID, 'Business', p_Business_Price),
-    (new_Flight_ID, 'Platinum', p_Platinum_Price);
-    
+        -- Insert into the flight table
+        INSERT INTO flight (Flight_ID, Airplane_ID, Route_ID, Departure_date, Arrival_date, Departure_time, Arrival_time)
+        VALUES (new_Flight_ID, p_Airplane_ID, p_Route_ID, p_Departure_date, p_Arrival_date, p_Departure_time, p_Arrival_time);
+
+        -- Insert pricing 
+        INSERT INTO flight_pricing (Flight_ID, Travel_Class, Price) 
+        VALUES 
+        (new_Flight_ID, 'Economy', p_Economy_Price),
+        (new_Flight_ID, 'Business', p_Business_Price),
+        (new_Flight_ID, 'Platinum', p_Platinum_Price);
+    END IF;
 END //
 DELIMITER ;
 
