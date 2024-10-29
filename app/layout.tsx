@@ -1,6 +1,7 @@
+import './layout.css';
+import styles from './layout.module.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import './layout.css';
 import AuthProvider from './context/AuthContext';
 
 export const metadata = {
@@ -11,13 +12,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen overflow-x-hidden">
+      <body>
         <AuthProvider>
-          <Navbar />
-          <main>
-            {children}
-          </main>
-          <Footer />
+          <div className={styles.pageWrapper}>
+            <Navbar />
+            <main className={styles.mainContent}>
+              {children}
+            </main>
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>

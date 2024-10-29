@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext } from 'react';
-import './adminpanel.css';
+import styles from './adminpanel.module.css';
 import { AuthContext } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -50,6 +50,30 @@ export default function AdminDashboard() {
       router.push('/');
     }
   }, [role, router]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleAddFlightChange = (e) => {
+    const { name, value } = e.target;
+    setAddFlightData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleChangeStatusInput = (e) => {
+    const { name, value } = e.target;
+    setChangeStatusData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   // Fetch Functions
   const fetchPassengerDetails = async (flightNo) => {
@@ -140,125 +164,128 @@ export default function AdminDashboard() {
     fetchAllFlights();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleAddFlightChange = (e) => {
-    const { name, value } = e.target;
-    setAddFlightData({ ...addFlightData, [name]: value });
-  };
-
-  const handleChangeStatusInput = (e) => {
-    const { name, value } = e.target;
-    setChangeStatusData({ ...changeStatusData, [name]: value });
-  };
-
+  // Event Handlers
   const handleAddFlightSubmit = async (e) => {
     e.preventDefault();
     setAddFlightStatus({ loading: true, message: '' });
-
     try {
       const response = await fetch('/api/addFlight', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addFlightData)
       });
-
       const result = await response.json();
-
-      if (!response.ok) {
+      if (response.ok) {
+        setAddFlightStatus({ loading: false, message: 'Flight added successfully.' });
+        // Optionally, reset form
+        setAddFlightData({
+          Airplane_ID: '',
+          Route_ID: '',
+          Departure_date: '',
+          Arrival_date: '',
+          Departure_time: '',
+          Arrival_time: '',
+          Economy_Price: '',
+          Business_Price: '',
+          Platinum_Price: ''
+        });
+        fetchAllFlights(); // Refresh flights list
+      } else {
         throw new Error(result.message || 'Failed to add flight.');
       }
-
-      setAddFlightStatus({ loading: false, message: 'Flight added successfully!' });
-      // Reset the form
-      setAddFlightData({
-        Airplane_ID: '',
-        Route_ID: '',
-        Departure_date: '',
-        Arrival_date: '',
-        Departure_time: '',
-        Arrival_time: '',
-        Economy_Price: '',
-        Business_Price: '',
-        Platinum_Price: ''
-      });
-      // Refresh the flights list
-      fetchAllFlights();
     } catch (error) {
-      console.error(error);
-      setAddFlightStatus({ loading: false, message: error.message || 'Something went wrong.' });
+      setAddFlightStatus({ loading: false, message: `Error: ${error.message}` });
     }
   };
 
   const handleChangeStatusSubmit = async (e) => {
     e.preventDefault();
     setChangeStatus({ loading: true, message: '' });
-
     try {
       const response = await fetch('/api/changeFlightStatus', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(changeStatusData)
       });
-
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to change flight status.');
+      if (response.ok) {
+        setChangeStatus({ loading: false, message: 'Flight status updated successfully.' });
+        // Optionally, reset form
+        setChangeStatusData({
+          Flight_ID: '',
+          newStatus: ''
+        });
+        fetchAllFlights(); // Refresh flights list
+      } else {
+        throw new Error(result.message || 'Failed to update flight status.');
       }
-
-      setChangeStatus({ loading: false, message: 'Flight status updated successfully!' });
-      // Reset the form
-      setChangeStatusData({
-        Flight_ID: '',
-        newStatus: ''
-      });
-      // Refresh the flights list
-      fetchAllFlights();
     } catch (error) {
-      console.error(error);
-      setChangeStatus({ loading: false, message: error.message || 'Something went wrong.' });
+      setChangeStatus({ loading: false, message: `Error: ${error.message}` });
     }
   };
 
+  // Render Functions
   const renderPassengerDetails = () => (
-    <div className="card">
-      <div className="card-header">Passengers by Age</div>
-      <div className="card-body">
-        <form onSubmit={(e) => { e.preventDefault(); fetchPassengerDetails(formData.flightNo); }}>
-          <div className="form-group">
-            <label>Flight Number:</label>
-            <input type="text" name="flightNo" value={formData.flightNo} onChange={handleInputChange} required />
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Passengers by Age</div>
+      <div className={styles.cardBody}>
+        <form onSubmit={(e) => { e.preventDefault(); fetchPassengerDetails(formData.flightNo); }} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Flight Number:</label>
+            <input
+              type="text"
+              name="flightNo"
+              value={formData.flightNo}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+              placeholder="Enter Flight Number"
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
+            Submit
+          </button>
         </form>
-        <div className="tables-container">
-          <div className="table-wrapper">
-            <h3>Below 18</h3>
-            <table>
+        <div className={styles.tablesContainer}>
+          <div className={styles.tableWrapper}>
+            <h3 className={styles.tableTitle}>Below 18</h3>
+            <table className={styles.table}>
               <thead>
-                <tr><th>Name</th><th>Age</th><th>Gender</th></tr>
+                <tr>
+                  <th className={styles.tableHeaderCell}>Name</th>
+                  <th className={styles.tableHeaderCell}>Age</th>
+                  <th className={styles.tableHeaderCell}>Gender</th>
+                </tr>
               </thead>
               <tbody>
-                {passengerDetails.below18.map((p) => <tr key={p.id}><td>{p.name}</td><td>{p.age}</td><td>{p.gender}</td></tr>)}
+                {passengerDetails.below18.map((p) => (
+                  <tr key={p.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{p.name}</td>
+                    <td className={styles.tableCell}>{p.age}</td>
+                    <td className={styles.tableCell}>{p.gender}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <div className="table-wrapper">
-            <h3>Above 18</h3>
-            <table>
+          <div className={styles.tableWrapper}>
+            <h3 className={styles.tableTitle}>Above 18</h3>
+            <table className={styles.table}>
               <thead>
-                <tr><th>Name</th><th>Age</th><th>Gender</th></tr>
+                <tr>
+                  <th className={styles.tableHeaderCell}>Name</th>
+                  <th className={styles.tableHeaderCell}>Age</th>
+                  <th className={styles.tableHeaderCell}>Gender</th>
+                </tr>
               </thead>
               <tbody>
-                {passengerDetails.above18.map((p) => <tr key={p.id}><td>{p.name}</td><td>{p.age}</td><td>{p.gender}</td></tr>)}
+                {passengerDetails.above18.map((p) => (
+                  <tr key={p.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{p.name}</td>
+                    <td className={styles.tableCell}>{p.age}</td>
+                    <td className={styles.tableCell}>{p.gender}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -268,197 +295,329 @@ export default function AdminDashboard() {
   );
 
   const renderPassengerCount = () => (
-    <div className="card">
-      <div className="card-header">Passenger Count by Destination</div>
-      <div className="card-body">
-        <form onSubmit={(e) => { e.preventDefault(); fetchPassengerCount(formData.destination, formData.fromDate, formData.toDate); }}>
-          <div className="form-group">
-            <label>Destination:</label>
-            <input type="text" name="destination" value={formData.destination} onChange={handleInputChange} required />
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Passenger Count by Destination</div>
+      <div className={styles.cardBody}>
+        <form onSubmit={(e) => { e.preventDefault(); fetchPassengerCount(formData.destination, formData.fromDate, formData.toDate); }} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Destination:</label>
+            <input
+              type="text"
+              name="destination"
+              value={formData.destination}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+              placeholder="Enter Destination"
+            />
           </div>
-          <div className="form-group">
-            <label>From Date:</label>
-            <input type="date" name="fromDate" value={formData.fromDate} onChange={handleInputChange} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>From Date:</label>
+            <input
+              type="date"
+              name="fromDate"
+              value={formData.fromDate}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+            />
           </div>
-          <div className="form-group">
-            <label>To Date:</label>
-            <input type="date" name="toDate" value={formData.toDate} onChange={handleInputChange} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>To Date:</label>
+            <input
+              type="date"
+              name="toDate"
+              value={formData.toDate}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
+            Submit
+          </button>
         </form>
-        <p className="count-display">Total Passengers: {passengerCount}</p>
+        <p className={styles.countDisplay}>Total Passengers: {passengerCount}</p>
       </div>
     </div>
   );
 
   const renderBookingCounts = () => (
-    <div className="card">
-      <div className="card-header">Booking Counts by Passenger Type</div>
-      <div className="card-body">
-        <form onSubmit={(e) => { e.preventDefault(); fetchBookingCounts(formData.fromDate, formData.toDate); }}>
-          <div className="form-group">
-            <label>From Date:</label>
-            <input type="date" name="fromDate" value={formData.fromDate} onChange={handleInputChange} required />
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Booking Counts by Passenger Type</div>
+      <div className={styles.cardBody}>
+        <form onSubmit={(e) => { e.preventDefault(); fetchBookingCounts(formData.fromDate, formData.toDate); }} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>From Date:</label>
+            <input
+              type="date"
+              name="fromDate"
+              value={formData.fromDate}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+            />
           </div>
-          <div className="form-group">
-            <label>To Date:</label>
-            <input type="date" name="toDate" value={formData.toDate} onChange={handleInputChange} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>To Date:</label>
+            <input
+              type="date"
+              name="toDate"
+              value={formData.toDate}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
+            Submit
+          </button>
         </form>
-        <div className="booking-counts">
+        <div className={styles.bookingCounts}>
           {bookingCounts.length > 0 ? (
-            <table>
+            <table className={styles.table}>
               <thead>
-                <tr><th>Passenger Type</th><th>Number of Bookings</th></tr>
+                <tr>
+                  <th className={styles.tableHeaderCell}>Passenger Type</th>
+                  <th className={styles.tableHeaderCell}>Number of Bookings</th>
+                </tr>
               </thead>
               <tbody>
                 {bookingCounts.map((booking, index) => (
-                  <tr key={index}>
-                    <td>{booking.PassengerType}</td>
-                    <td>{booking.NumberOfBookings}</td>
+                  <tr key={index} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{booking.PassengerType}</td>
+                    <td className={styles.tableCell}>{booking.NumberOfBookings}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ) : <p>No data available.</p>}
+          ) : <p className={styles.emptyState}>No data available.</p>}
         </div>
       </div>
     </div>
   );
 
   const renderPastFlights = () => (
-    <div className="card">
-      <div className="card-header">Past Flights Data</div>
-      <div className="card-body">
-        <form onSubmit={(e) => { e.preventDefault(); fetchPastFlights(formData.origin, formData.destinationQuery); }}>
-          <div className="form-group">
-            <label>Origin:</label>
-            <input type="text" name="origin" value={formData.origin} onChange={handleInputChange} required />
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Past Flights Data</div>
+      <div className={styles.cardBody}>
+        <form onSubmit={(e) => { e.preventDefault(); fetchPastFlights(formData.origin, formData.destinationQuery); }} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Origin:</label>
+            <input
+              type="text"
+              name="origin"
+              value={formData.origin}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+              placeholder="Enter Origin Airport"
+            />
           </div>
-          <div className="form-group">
-            <label>Destination:</label>
-            <input type="text" name="destinationQuery" value={formData.destinationQuery} onChange={handleInputChange} required />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Destination:</label>
+            <input
+              type="text"
+              name="destinationQuery"
+              value={formData.destinationQuery}
+              onChange={handleInputChange}
+              required
+              className={styles.input}
+              placeholder="Enter Destination Airport"
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
+            Submit
+          </button>
         </form>
-        <div className="flight-list">
+        <div className={styles.flightList}>
           {pastFlights.length > 0 ? (
-            <table>
+            <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Flight ID</th>
-                  <th>Origin Airport</th>
-                  <th>Destination Airport</th>
-                  <th>Status</th>
-                  <th>Passenger Count</th>
+                  <th className={styles.tableHeaderCell}>Flight ID</th>
+                  <th className={styles.tableHeaderCell}>Origin Airport</th>
+                  <th className={styles.tableHeaderCell}>Destination Airport</th>
+                  <th className={styles.tableHeaderCell}>Status</th>
+                  <th className={styles.tableHeaderCell}>Passenger Count</th>
                 </tr>
               </thead>
               <tbody>
                 {pastFlights.map((flight) => (
-                  <tr key={flight.Flight_ID}>
-                    <td>{flight.Flight_ID}</td>
-                    <td>{flight.OriginAirportName}</td>
-                    <td>{flight.DestinationAirportName}</td>
-                    <td>{flight.Status}</td>
-                    <td>{flight.PassengerCount}</td>
+                  <tr key={flight.Flight_ID} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{flight.Flight_ID}</td>
+                    <td className={styles.tableCell}>{flight.OriginAirportName}</td>
+                    <td className={styles.tableCell}>{flight.DestinationAirportName}</td>
+                    <td className={styles.tableCell}>{flight.Status}</td>
+                    <td className={styles.tableCell}>{flight.PassengerCount}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ) : <p>No past flights found.</p>}
+          ) : <p className={styles.emptyState}>No past flights found.</p>}
         </div>
       </div>
     </div>
   );
 
   const renderRevenueData = () => (
-    <div className="card">
-      <div className="card-header">Revenue by Aircraft Type</div>
-      <div className="card-body">
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Revenue by Aircraft Type</div>
+      <div className={styles.cardBody}>
         {revenueData.length > 0 ? (
-          <div className="chart-container">
-            <table>
-              <thead><tr><th>Aircraft</th><th>Revenue</th></tr></thead>
+          <div className={styles.revenueContainer}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th className={styles.tableHeaderCell}>Aircraft</th>
+                  <th className={styles.tableHeaderCell}>Revenue</th>
+                </tr>
+              </thead>
               <tbody>
-                {revenueData.map((r) => <tr key={r.model}><td>{r.model}</td><td>${r.revenue.toLocaleString()}</td></tr>)}
+                {revenueData.map((r) => (
+                  <tr key={r.model} className={styles.tableRow}>
+                    <td className={styles.tableCell}>{r.model}</td>
+                    <td className={styles.tableCell}>${r.revenue.toLocaleString()}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-            {/* Placeholder for chart */}
-            {/* You can integrate a chart library like Chart.js or Recharts for better visualization */}
+            <div style={{ 
+              width: '100%', 
+              height: '300px', 
+              marginTop: '20px',
+              backgroundColor: '#f8f9fa',
+              padding: '20px',
+              borderRadius: '8px'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                height: '100%', 
+                alignItems: 'flex-end', 
+                gap: '20px', 
+                justifyContent: 'space-around'
+              }}>
+                {revenueData.map((r, index) => {
+                  const maxRevenue = Math.max(...revenueData.map(item => item.revenue));
+                  const height = (r.revenue / maxRevenue) * 80; // Using 80% of container height
+                  return (
+                    <div key={index} style={{ 
+                      flex: '1',
+                      maxWidth: '100px',
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      alignItems: 'center',
+                      height: '100%',
+                      justifyContent: 'flex-end'
+                    }}>
+                      <div 
+                        style={{ 
+                          width: '60%', 
+                          height: `${height}%`, 
+                          backgroundColor: '#4a90e2',
+                          borderRadius: '8px 8px 0 0',
+                          transition: 'height 0.5s ease',
+                          minHeight: '20px'
+                        }} 
+                      />
+                      <div style={{ 
+                        marginTop: '8px', 
+                        textAlign: 'center', 
+                        fontSize: '12px',
+                        width: '100%',
+                        wordWrap: 'break-word'
+                      }}>
+                        <div style={{ fontWeight: 'bold' }}>{r.model}</div>
+                        <div>${r.revenue.toLocaleString()}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        ) : <p>Loading revenue data...</p>}
+        ) : <p className={styles.emptyState}>Loading revenue data...</p>}
       </div>
     </div>
   );
 
   const renderAddFlight = () => (
-    <div className="card">
-      <div className="card-header">Add New Flight</div>
-      <div className="card-body">
-        <form onSubmit={handleAddFlightSubmit}>
-          <div className="form-group">
-            <label>Airplane ID:</label>
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Add New Flight</div>
+      <div className={styles.cardBody}>
+        <form onSubmit={handleAddFlightSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Airplane ID:</label>
             <input
               type="number"
               name="Airplane_ID"
               value={addFlightData.Airplane_ID}
               onChange={handleAddFlightChange}
               required
+              min="0"
+              step="1"
+              className={styles.input}
+              placeholder="Enter Airplane ID"
             />
           </div>
-          <div className="form-group">
-            <label>Route ID:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Route ID:</label>
             <input
               type="text"
               name="Route_ID"
               value={addFlightData.Route_ID}
               onChange={handleAddFlightChange}
               required
+              className={styles.input}
+              placeholder="Enter Route ID"
             />
           </div>
-          <div className="form-group">
-            <label>Departure Date:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Departure Date:</label>
             <input
               type="date"
               name="Departure_date"
               value={addFlightData.Departure_date}
               onChange={handleAddFlightChange}
               required
+              className={styles.input}
             />
           </div>
-          <div className="form-group">
-            <label>Arrival Date:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Arrival Date:</label>
             <input
               type="date"
               name="Arrival_date"
               value={addFlightData.Arrival_date}
               onChange={handleAddFlightChange}
               required
+              className={styles.input}
             />
           </div>
-          <div className="form-group">
-            <label>Departure Time:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Departure Time:</label>
             <input
               type="time"
               name="Departure_time"
               value={addFlightData.Departure_time}
               onChange={handleAddFlightChange}
               required
+              className={styles.input}
             />
           </div>
-          <div className="form-group">
-            <label>Arrival Time:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Arrival Time:</label>
             <input
               type="time"
               name="Arrival_time"
               value={addFlightData.Arrival_time}
               onChange={handleAddFlightChange}
               required
+              className={styles.input}
             />
           </div>
-          <div className="form-group">
-            <label>Economy Price:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Economy Price:</label>
             <input
               type="number"
               name="Economy_Price"
@@ -467,10 +626,12 @@ export default function AdminDashboard() {
               required
               min="0"
               step="0.01"
+              className={styles.input}
+              placeholder="Enter Economy Price"
             />
           </div>
-          <div className="form-group">
-            <label>Business Price:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Business Price:</label>
             <input
               type="number"
               name="Business_Price"
@@ -479,10 +640,12 @@ export default function AdminDashboard() {
               required
               min="0"
               step="0.01"
+              className={styles.input}
+              placeholder="Enter Business Price"
             />
           </div>
-          <div className="form-group">
-            <label>Platinum Price:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Platinum Price:</label>
             <input
               type="number"
               name="Platinum_Price"
@@ -491,14 +654,16 @@ export default function AdminDashboard() {
               required
               min="0"
               step="0.01"
+              className={styles.input}
+              placeholder="Enter Platinum Price"
             />
           </div>
-          <button type="submit" disabled={addFlightStatus.loading}>
+          <button type="submit" className={`${styles.button} ${styles.primaryButton}`} disabled={addFlightStatus.loading}>
             {addFlightStatus.loading ? 'Adding Flight...' : 'Add Flight'}
           </button>
         </form>
         {addFlightStatus.message && (
-          <p className={`add-flight-message ${addFlightStatus.message.includes('successfully') ? 'success' : 'error'}`}>
+          <p className={`${styles.message} ${addFlightStatus.message.includes('successfully') ? styles.successMessage : styles.errorMessage}`}>
             {addFlightStatus.message}
           </p>
         )}
@@ -507,17 +672,18 @@ export default function AdminDashboard() {
   );
 
   const renderChangeFlightStatus = () => (
-    <div className="card">
-      <div className="card-header">Change Flight Status</div>
-      <div className="card-body">
-        <form onSubmit={handleChangeStatusSubmit}>
-          <div className="form-group">
-            <label>Flight ID:</label>
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>Change Flight Status</div>
+      <div className={styles.cardBody}>
+        <form onSubmit={handleChangeStatusSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Flight ID:</label>
             <select
               name="Flight_ID"
               value={changeStatusData.Flight_ID}
               onChange={handleChangeStatusInput}
               required
+              className={styles.select}
             >
               <option value="" disabled>Select a flight</option>
               {flights && flights.length > 0 ? (
@@ -531,13 +697,14 @@ export default function AdminDashboard() {
               )}
             </select>
           </div>
-          <div className="form-group">
-            <label>New Status:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>New Status:</label>
             <select
               name="newStatus"
               value={changeStatusData.newStatus}
               onChange={handleChangeStatusInput}
               required
+              className={styles.select}
             >
               <option value="" disabled>Select new status</option>
               <option value="Scheduled">Scheduled</option>
@@ -545,12 +712,12 @@ export default function AdminDashboard() {
               <option value="Cancelled">Cancelled</option>
             </select>
           </div>
-          <button type="submit" disabled={changeStatus.loading}>
+          <button type="submit" className={`${styles.button} ${styles.primaryButton}`} disabled={changeStatus.loading}>
             {changeStatus.loading ? 'Updating Status...' : 'Update Status'}
           </button>
         </form>
         {changeStatus.message && (
-          <p className={`change-status-message ${changeStatus.message.includes('successfully') ? 'success' : 'error'}`}>
+          <p className={`${styles.message} ${changeStatus.message.includes('successfully') ? styles.successMessage : styles.errorMessage}`}>
             {changeStatus.message}
           </p>
         )}
@@ -563,18 +730,53 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="container">
-      <h1>Airline Admin Dashboard</h1>
-      <div className="tabs">
-        <button className={activeTab === 'passengerDetails' ? 'active' : ''} onClick={() => setActiveTab('passengerDetails')}>Passenger Details</button>
-        <button className={activeTab === 'passengerCount' ? 'active' : ''} onClick={() => setActiveTab('passengerCount')}>Passenger Count</button>
-        <button className={activeTab === 'bookingCounts' ? 'active' : ''} onClick={() => setActiveTab('bookingCounts')}>Booking Counts</button>
-        <button className={activeTab === 'pastFlights' ? 'active' : ''} onClick={() => setActiveTab('pastFlights')}>Past Flights</button>
-        <button className={activeTab === 'revenueData' ? 'active' : ''} onClick={() => setActiveTab('revenueData')}>Revenue Data</button>
-        <button className={activeTab === 'addFlight' ? 'active' : ''} onClick={() => setActiveTab('addFlight')}>Add Flight</button>
-        <button className={activeTab === 'changeFlightStatus' ? 'active' : ''} onClick={() => setActiveTab('changeFlightStatus')}>Change Flight Status</button>
+    <div className={styles.adminContainer}>
+      <h1 className={styles.title}>Airline Admin Dashboard</h1>
+      <div className={styles.tabs}>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'passengerDetails' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('passengerDetails')}
+        >
+          Passenger Details
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'passengerCount' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('passengerCount')}
+        >
+          Passenger Count
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'bookingCounts' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('bookingCounts')}
+        >
+          Booking Counts
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'pastFlights' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('pastFlights')}
+        >
+          Past Flights
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'revenueData' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('revenueData')}
+        >
+          Revenue Data
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'addFlight' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('addFlight')}
+        >
+          Add Flight
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'changeFlightStatus' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('changeFlightStatus')}
+        >
+          Change Flight Status
+        </button>
       </div>
-      <div className="content">
+      <div className={styles.content}>
         {activeTab === 'passengerDetails' && renderPassengerDetails()}
         {activeTab === 'passengerCount' && renderPassengerCount()}
         {activeTab === 'bookingCounts' && renderBookingCounts()}

@@ -125,6 +125,8 @@ function HeroSection() {
     <section className="hero-section">
       <header className="header">
         <h1 className="main-title">It's more than</h1>
+        <br />
+        <br />
         <h1 className="main-title">just a trip</h1>
       </header>
       
