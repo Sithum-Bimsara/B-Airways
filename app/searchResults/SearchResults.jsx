@@ -34,6 +34,16 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const [flightType, setFlightType] = useState('roundtrip'); // Default to 'roundtrip'
 
   useEffect(() => {
+    // Check if BookingData exists in localStorage and refresh if it does
+    const bookingData = localStorage.getItem('BookingData');
+    const refresh = localStorage.getItem('refresh');
+    if (bookingData && !refresh) {
+      window.location.reload();
+      localStorage.setItem('refresh', 'true');
+    }
+  }, []);
+
+  useEffect(() => {
     const storedFlightType = localStorage.getItem('flightType');
     if (storedFlightType) {
       setFlightType(storedFlightType);
@@ -121,10 +131,13 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                       <p className="flight-status">
                         <strong>Status:</strong> {flight.status}
                       </p>
-                      <p className="seats-available">
+                      <div className="seats-available">
                         <span className="seats-icon" role="img" aria-label="seats">💺</span>
-                        {flight.availableSeats} seats available
-                      </p>
+                        <p><strong>Available Seats:</strong></p>
+                        <p>Economy: {flight.availableSeats.economy}</p>
+                        <p>Business: {flight.availableSeats.business}</p>
+                        <p>Platinum: {flight.availableSeats.platinum}</p>
+                      </div>
                     </div>
                     <div className="flight-pricing">
                       <h4>Available Fares:</h4>
@@ -152,9 +165,9 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                   <button 
                     onClick={() => handleSelectFlight(flight.flightId)} 
                     className="select-button"
-                    disabled={flight.availableSeats === 0}
+                    disabled={flight.availableSeats.economy === 0 && flight.availableSeats.business === 0 && flight.availableSeats.platinum === 0}
                   >
-                    {flight.availableSeats === 0 ? 'Fully Booked' : 'Select Flight'}
+                    {flight.availableSeats.economy === 0 && flight.availableSeats.business === 0 && flight.availableSeats.platinum === 0 ? 'Fully Booked' : 'Select Flight'}
                   </button>
                 </li>
               ))}
@@ -190,10 +203,13 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                         <p className="flight-status">
                           <strong>Status:</strong> {flight.status}
                         </p>
-                        <p className="seats-available">
+                        <div className="seats-available">
                           <span className="seats-icon" role="img" aria-label="seats">💺</span>
-                          {flight.availableSeats} seats available
-                        </p>
+                          <p><strong>Available Seats:</strong></p>
+                          <p>Economy: {flight.availableSeats.economy}</p>
+                          <p>Business: {flight.availableSeats.business}</p>
+                          <p>Platinum: {flight.availableSeats.platinum}</p>
+                        </div>
                       </div>
                       <div className="flight-pricing">
                         <h4>Available Fares:</h4>
@@ -221,9 +237,9 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
                     <button 
                       onClick={() => handleSelectFlight(flight.flightId)} 
                       className="select-button"
-                      disabled={flight.availableSeats === 0}
+                      disabled={flight.availableSeats.economy === 0 && flight.availableSeats.business === 0 && flight.availableSeats.platinum === 0}
                     >
-                      {flight.availableSeats === 0 ? 'Fully Booked' : 'Select Flight'}
+                      {flight.availableSeats.economy === 0 && flight.availableSeats.business === 0 && flight.availableSeats.platinum === 0 ? 'Fully Booked' : 'Select Flight'}
                     </button>
                   </li>
                 ))}

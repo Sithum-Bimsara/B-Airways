@@ -25,7 +25,13 @@ export async function GET(request: Request) {
 
       // Get available seats for the flight
       const [availableSeatsResult] = await connection.query('CALL GetAvailableSeats(?)', [flight.Flight_ID]);
-      const availableSeats = availableSeatsResult[0][0].Available_Seats;
+      const seatsData = availableSeatsResult[0][0];
+      const availableSeats = {
+        economy: seatsData.Economy_Available,
+        business: seatsData.Business_Available,
+        platinum: seatsData.Platinum_Available
+      };
+
       // Convert UTC dates to Sri Lanka timezone (UTC+5:30)
       const departureInSL = new Date(flight.Departure_date.getTime() + (5.5 * 60 * 60 * 1000));
       const arrivalInSL = new Date(flight.Arrival_date.getTime() + (5.5 * 60 * 60 * 1000));

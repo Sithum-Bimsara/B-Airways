@@ -255,9 +255,12 @@ CREATE PROCEDURE `GetAvailableSeats`(IN p_Flight_ID VARCHAR(10))
 BEGIN
     DECLARE v_Airplane_ID INT;
     DECLARE v_Airplane_model_ID INT;
-    DECLARE v_Total_Seats INT;
-    DECLARE v_Booked_Seats INT;
-    DECLARE v_Available_Seats INT;
+    DECLARE v_Economy_Total INT;
+    DECLARE v_Business_Total INT;
+    DECLARE v_Platinum_Total INT;
+    DECLARE v_Economy_Booked INT;
+    DECLARE v_Business_Booked INT;
+    DECLARE v_Platinum_Booked INT;
 
     -- Get the Airplane_ID and Airplane_model_ID for the given Flight_ID
     SELECT f.Airplane_ID, a.Airplane_model_ID 
@@ -266,24 +269,37 @@ BEGIN
     JOIN Airplane a ON f.Airplane_ID = a.Airplane_ID
     WHERE f.Flight_ID = p_Flight_ID;
 
-    -- Get the total number of seats for the airplane model
-    SELECT (No_of_Economic_Seats + No_of_Business_Seats + No_of_Platinum_Seats)
-    INTO v_Total_Seats
+    -- Get the total seats by class for the airplane model
+    SELECT 
+        No_of_Economic_Seats,
+        No_of_Business_Seats,
+        No_of_Platinum_Seats
+    INTO 
+        v_Economy_Total,
+        v_Business_Total,
+        v_Platinum_Total
     FROM Airplane_model
     WHERE Airplane_model_ID = v_Airplane_model_ID;
 
-    -- Get the number of booked seats for the flight
-    SELECT COUNT(*)
-    INTO v_Booked_Seats
-    FROM Booking
-    WHERE Flight_ID = p_Flight_ID;
-
-    -- Calculate available seats
-    SET v_Available_Seats = v_Total_Seats - v_Booked_Seats;
-
-    -- Return the results
+    -- Get booked seats by class
     SELECT 
-        v_Available_Seats AS Available_Seats;
+        COUNT(CASE WHEN s.Travel_Class = 'Economy' THEN 1 END),
+        COUNT(CASE WHEN s.Travel_Class = 'Business' THEN 1 END),
+        COUNT(CASE WHEN s.Travel_Class = 'Platinum' THEN 1 END)
+    INTO
+        v_Economy_Booked,
+        v_Business_Booked,
+        v_Platinum_Booked
+    FROM Booking b
+    JOIN Seat s ON b.Seat_ID = s.Seat_ID
+    WHERE b.Flight_ID = p_Flight_ID
+    GROUP BY b.Flight_ID;
+
+    -- Return available seats by class
+    SELECT 
+        (v_Economy_Total - COALESCE(v_Economy_Booked, 0)) AS Economy_Available,
+        (v_Business_Total - COALESCE(v_Business_Booked, 0)) AS Business_Available,
+        (v_Platinum_Total - COALESCE(v_Platinum_Booked, 0)) AS Platinum_Available;
 END //
 DELIMITER ;
 

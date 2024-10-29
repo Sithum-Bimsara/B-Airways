@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import './SeatSelection.css';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '../context/AuthContext';
+import Button from './Button'; // Import the new Button component
 
 const SeatSelection = () => {
   const { userId } = useContext(AuthContext);
@@ -16,33 +17,6 @@ const SeatSelection = () => {
   const [membershipType, setMembershipType] = useState(null);
   const [discount, setDiscount] = useState(0);
   const router = useRouter();
-
-  // Define total seats based on model ID
-  const modelSeatConfig = {
-    1: { totalSeats: 160, seatsPerRow: 6 },
-    2: { totalSeats: 180, seatsPerRow: 6 },
-    3: { totalSeats: 489, seatsPerRow: 6 },
-  };
-
-  // Generate seat map based on total seats and booked seats
-  const generateSeatMap = (totalSeats, seatsPerRow, bookedSeats) => {
-    const seats = [];
-    for (let seatNumber = 1; seatNumber <= totalSeats; seatNumber++) {
-      const paddedSeatNumber = seatNumber.toString().padStart(3, '0');
-      const isBooked = bookedSeats.includes(paddedSeatNumber);
-      seats.push({
-        seatId: paddedSeatNumber,
-        isAvailable: !isBooked,
-        isAisle: false,
-      });
-
-      // Optionally, add aisle logic if needed
-      if (seatsPerRow > 0 && seatNumber % seatsPerRow === 0 && seatNumber !== totalSeats) {
-        seats.push({ isAisle: true });
-      }
-    }
-    return seats;
-  };
 
   // Fetch seat prices based on flight ID and travel class
   const fetchSeatPrices = async (flightId) => {
@@ -105,7 +79,8 @@ const SeatSelection = () => {
       setPassengerData(storedPassengerData);
 
       try {
-        const response = await fetch('/api/getBookedSeats', {
+        // Fetch booked seats and model ID
+        const bookedSeatsResponse = await fetch('/api/getBookedSeats', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -113,28 +88,72 @@ const SeatSelection = () => {
           body: JSON.stringify({ flightId }),
         });
 
-        const data = await response.json();
+        const bookedSeatsData = await bookedSeatsResponse.json();
 
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch booked seats.');
+        if (!bookedSeatsResponse.ok) {
+          throw new Error(bookedSeatsData.message || 'Failed to fetch booked seats.');
         }
 
-        const { modelId, bookedSeats } = data;
-
+        const { modelId, bookedSeats } = bookedSeatsData;
         setModelId(modelId);
-        const seatConfig = modelSeatConfig[modelId] || modelSeatConfig[1];
-        let seats = generateSeatMap(seatConfig.totalSeats, seatConfig.seatsPerRow, bookedSeats || []);
+
+        // Fetch seat counts per class from the new API
+        const modelSeatsResponse = await fetch('/api/getModelSeats', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ modelId }),
+        });
+
+        const modelSeatsData = await modelSeatsResponse.json();
+
+        if (!modelSeatsResponse.ok) {
+          throw new Error(modelSeatsData.message || 'Failed to fetch model seat counts.');
+        }
+
+        const { Economy, Business, Platinum } = modelSeatsData;
+
+        // Function to generate seat IDs based on count and seats per row
+        const generateSeatIds = (count, startingNum = 1) => {
+          const seatIds = [];
+          for (let i = 0; i < count; i++) {
+            const seatNum = startingNum + i;
+            seatIds.push(seatNum.toString().padStart(3, '0'));
+          }
+          return seatIds;
+        };
+
+        // Generate sequential seat numbers for each class
+        const economySeats = generateSeatIds(Economy, 1);
+        const businessSeats = generateSeatIds(Business, Economy + 1);
+        const platinumSeats = generateSeatIds(Platinum, Economy + Business + 1);
+
+        // Combine all seats with their class
+        const allSeats = [
+          ...economySeats.map(seatId => ({ seatId, travelClass: 'Economy', isAvailable: true })),
+          ...businessSeats.map(seatId => ({ seatId, travelClass: 'Business', isAvailable: true })),
+          ...platinumSeats.map(seatId => ({ seatId, travelClass: 'Platinum', isAvailable: true })),
+        ];
+
+        // Mark booked seats as unavailable
+        allSeats.forEach(seat => {
+          if (bookedSeats.includes(seat.seatId)) {
+            seat.isAvailable = false;
+          }
+        });
 
         // Mark seats already assigned to passengers as unavailable
         storedPassengerData.forEach((passenger) => {
           if (passenger.Seat) {
-            seats = seats.map((seat) =>
-              seat.seatId === passenger.Seat ? { ...seat, isAvailable: false } : seat
-            );
+            const seat = allSeats.find(s => s.seatId === passenger.Seat);
+            if (seat) {
+              seat.isAvailable = false;
+            }
           }
         });
 
-        setSeatMap(seats);
+        setSeatMap(allSeats);
 
         // Fetch seat prices
         await fetchSeatPrices(flightId);
@@ -143,6 +162,15 @@ const SeatSelection = () => {
         if (userId) {
           await fetchMembershipDetails(userId);
         }
+
+        // Calculate initial total price based on stored passenger data
+        const initialTotal = storedPassengerData.reduce((acc, passenger) => {
+          if (passenger.price) {
+            return acc + passenger.price;
+          }
+          return acc;
+        }, 0);
+        setTotalPrice(initialTotal);
 
         setLoading(false);
       } catch (err) {
@@ -162,21 +190,8 @@ const SeatSelection = () => {
 
   // Identify travel class based on seat ID
   const getTravelClass = (seatId) => {
-    const seatNumber = parseInt(seatId, 10);
-    if (modelId === 1) { // Boeing 737
-      if (seatNumber >= 1 && seatNumber <= 114) return 'Economy';
-      if (seatNumber >= 115 && seatNumber <= 144) return 'Business';
-      if (seatNumber >= 145 && seatNumber <= 160) return 'Platinum';
-    } else if (modelId === 2) { // Boeing 757
-      if (seatNumber >= 1 && seatNumber <= 135) return 'Economy';
-      if (seatNumber >= 136 && seatNumber <= 156) return 'Business';
-      if (seatNumber >= 157 && seatNumber <= 180) return 'Platinum';
-    } else if (modelId === 3) { // Airbus A380
-      if (seatNumber >= 1 && seatNumber <= 399) return 'Economy';
-      if (seatNumber >= 400 && seatNumber <= 475) return 'Business';
-      if (seatNumber >= 476 && seatNumber <= 489) return 'Platinum';
-    }
-    return 'Economy'; // Default
+    const seat = seatMap.find(s => s.seatId === seatId);
+    return seat ? seat.travelClass : 'Economy';
   };
 
   // Handle seat selection with discount application
@@ -327,24 +342,6 @@ const SeatSelection = () => {
     }
   };
 
-  // Function to categorize seats by class
-  const categorizeSeats = () => {
-    const categorized = {
-      Economy: [],
-      Business: [],
-      Platinum: []
-    };
-
-    seatMap.forEach(seat => {
-      if (seat.isAisle) return; // Skip aisles
-
-      const travelClass = getTravelClass(seat.seatId);
-      categorized[travelClass].push(seat);
-    });
-
-    return categorized;
-  };
-
   if (loading) {
     return (
       <div className="loading-container">
@@ -353,6 +350,23 @@ const SeatSelection = () => {
       </div>
     );
   }
+
+  // Categorize seats by class
+  const categorizeSeats = () => {
+    const categorized = {
+      Economy: [],
+      Business: [],
+      Platinum: []
+    };
+
+    seatMap.forEach(seat => {
+      if (seat.isAvailable !== undefined) {
+        categorized[seat.travelClass].push(seat);
+      }
+    });
+
+    return categorized;
+  };
 
   const categorizedSeats = categorizeSeats();
 
@@ -394,8 +408,8 @@ const SeatSelection = () => {
                       : ''
                   }`}
                   onClick={() => seat.isAvailable && handleSeatSelect(seat.seatId)}
-                  title={seat.isAvailable ? `Seat ${seat.seatId} (${getTravelClass(seat.seatId)})` : `Seat ${seat.seatId} - Booked`}
-                  aria-label={`Seat ${seat.seatId} ${seat.isAvailable ? getTravelClass(seat.seatId) : 'Booked'}`}
+                  title={seat.isAvailable ? `Seat ${seat.seatId} (${seat.travelClass})` : `Seat ${seat.seatId} - Booked`}
+                  aria-label={`Seat ${seat.seatId} ${seat.isAvailable ? seat.travelClass : 'Booked'}`}
                   role="button"
                   tabIndex={seat.isAvailable ? 0 : -1}
                   onKeyPress={(e) => { if (e.key === 'Enter' && seat.isAvailable) handleSeatSelect(seat.seatId) }}
@@ -424,9 +438,9 @@ const SeatSelection = () => {
         )}
       </div>
 
-      <button onClick={handleSubmit} className="confirm-seats-button">
-        Confirm Seats
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <Button onClick={handleSubmit} text="Confirm Seats" />
+      </div>
     </div>
   );
 };
