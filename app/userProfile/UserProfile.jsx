@@ -15,6 +15,7 @@ const UserProfile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -53,7 +54,6 @@ const UserProfile = () => {
       }
     };
     
-
     const fetchUpcomingBookings = async () => {
       setLoading(true);  // Show loading indicator while fetching data
       try {
@@ -76,19 +76,43 @@ const UserProfile = () => {
     fetchPastBookings();
   }, [userId]);
 
-  const handlePasswordChange = () => {
-    if (currentPassword !== userData.currentPassword) {
-      alert("Current password is incorrect. Please try again.");
+  const handlePasswordChange = async () => {
+    setPasswordError("");
+    
+    if (newPassword !== confirmPassword) {
+      setPasswordError("New passwords do not match");
       return;
     }
-    if (newPassword === confirmPassword) {
-      alert(`Password changed successfully to: ${newPassword}`);
+
+    try {
+      const response = await fetch('/api/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          currentPassword,
+          newPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setPasswordError(data.message);
+        return;
+      }
+
+      // Success
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       setPasswordModalOpen(false);
-    } else {
-      alert("New passwords do not match. Please try again.");
+      alert("Password changed successfully!");
+      
+    } catch (error) {
+      setPasswordError("Failed to change password. Please try again.");
     }
   };
 
@@ -138,8 +162,15 @@ const UserProfile = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
+              {passwordError && <p className="error-message">{passwordError}</p>}
               <button onClick={handlePasswordChange}>Save</button>
-              <button onClick={() => setPasswordModalOpen(false)}>Cancel</button>
+              <button onClick={() => {
+                setPasswordModalOpen(false);
+                setPasswordError("");
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
+              }}>Cancel</button>
             </>
           ) : (
             <button onClick={() => setPasswordModalOpen(true)}>Change Password</button>
