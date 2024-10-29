@@ -315,7 +315,7 @@ DELIMITER ;
 -- Given a date range, number of passengers travelling to a given destination 
 DELIMITER //
 CREATE PROCEDURE `GetPassengerCountByDateRangeAndDestinationName`(
-    IN dest_airport_name VARCHAR(100),
+    IN dest_airport_code CHAR(3),
     IN start_date DATE,
     IN end_date DATE
 )
@@ -325,8 +325,7 @@ BEGIN
     JOIN passenger p ON b.Passenger_ID = p.Passenger_ID
     JOIN flight f ON f.Flight_ID = b.Flight_ID
     JOIN route r ON r.Route_ID = f.Route_ID
-    JOIN airport a ON r.Destination_airport_code = a.Airport_code
-    WHERE a.Airport_name = dest_airport_name
+    WHERE r.Destination_airport_code = dest_airport_code
      AND f.Arrival_date BETWEEN start_date AND end_date;
 END //
 DELIMITER ;
@@ -355,8 +354,8 @@ DELIMITER ;
 -- Given origin and destination, all past flights, states, passenger counts data
 DELIMITER //
 CREATE PROCEDURE `GetAllPastFlightsAndPassengerCountByOriginAndDestination`(
-    IN origin_airport_name VARCHAR(100),
-    IN destination_airport_name VARCHAR(100)
+    IN origin_airport_code CHAR(3),
+    IN destination_airport_code CHAR(3)
 )
 BEGIN
     SELECT 
@@ -371,8 +370,8 @@ BEGIN
     JOIN airport a2 ON r.Destination_airport_code = a2.Airport_code
     LEFT JOIN booking b ON f.Flight_ID = b.Flight_ID
     LEFT JOIN passenger p ON b.Passenger_ID = p.Passenger_ID
-    WHERE a1.Airport_name = origin_airport_name
-    AND a2.Airport_name = destination_airport_name
+    WHERE r.Origin_airport_code = origin_airport_code
+    AND r.Destination_airport_code = destination_airport_code
     AND f.Departure_date < CURDATE()
     GROUP BY 
         f.Flight_ID, f.Status, a1.Airport_name, a2.Airport_name;

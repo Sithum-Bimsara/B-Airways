@@ -1,0 +1,350 @@
+/* Scoped styles */
+
+.adminContainer {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #2c3e50;
+    font-size: 2.8em;
+    letter-spacing: 1px;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 35px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+    background-color: #4a90e2;
+    color: #ffffff;
+    font-size: 1.6em;
+    padding: 20px 25px;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.cardBody {
+    padding: 25px 30px;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    position: relative; /* Added for button positioning */
+}
+
+.formGroup {
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 1em;
+}
+
+.input, .select {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input:focus, .select:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+.button, .primaryButton {
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    margin: 30px auto 0; /* Changed to center the button */
+    display: block; /* Added to ensure proper centering */
+}
+
+.button:hover, .primaryButton:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.button:active, .primaryButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button:disabled, .primaryButton:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+}
+
+.countDisplay {
+    margin-top: 20px;
+    font-size: 1.3em;
+    color: #16a085;
+    font-weight: 700;
+    text-align: center;
+}
+
+.tablesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.tableWrapper {
+    flex: 1 1 45%;
+    min-width: 280px;
+}
+
+.tableTitle {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: 600;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tableHeaderCell {
+    background-color: #4a90e2;
+    color: #ffffff;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.tableRow {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tableCell {
+    padding: 12px 15px;
+    color: #34495e;
+    font-size: 0.95em;
+    transition: background-color 0.2s;
+}
+
+.tableRow:hover .tableCell {
+    background-color: #f9f9f9;
+}
+
+.flightList {
+    margin-top: 20px;
+}
+
+.revenueContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chartPlaceholder {
+    margin-top: 30px;
+    width: 100%;
+    height: 300px;
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #7f8c8d;
+    font-size: 1.1em;
+    font-style: italic;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 1em;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.successMessage {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.errorMessage {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 25px 0;
+    color: #7f8c8d;
+    font-size: 1.1em;
+}
+
+.emptyState p {
+    margin: 0;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.tabButton {
+    background-color: #8ca2b8;
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.tabButton:hover {
+    background-color: #34495e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tabButtonActive {
+    background-color: #4a90e2;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.content {
+    padding: 10px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .tablesContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tableWrapper {
+        flex: 1 1 100%;
+    }
+
+    .revenueContainer {
+        flex-direction: column;
+    }
+
+    .chartPlaceholder {
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .adminContainer {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 2.2em;
+    }
+
+    .cardHeader {
+        font-size: 1.4em;
+    }
+
+    .form {
+        flex-direction: column;
+    }
+
+    .formGroup {
+        flex: 1 1 100%;
+    }
+
+    .tabButton {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+
+    .tableHeaderCell, .tableCell {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .button, .primaryButton {
+        width: 100%;
+        text-align: center;
+        margin: 20px auto 0; /* Maintain centering in mobile view */
+    }
+
+    .chartPlaceholder {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8em;
+    }
+
+    .cardHeader {
+        font-size: 1.2em;
+    }
+
+    .formGroup {
+        padding: 0 5px;
+    }
+
+    .button, .primaryButton {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+
+    .chartPlaceholder {
+        height: 150px;
+    }
+}

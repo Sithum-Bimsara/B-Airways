@@ -25,6 +25,13 @@ const PassengerForm = () => {
     ]);
   };
 
+  const removePassenger = (index) => {
+    if (passengers.length > 1) {
+      const updatedPassengers = passengers.filter((_, i) => i !== index);
+      setPassengers(updatedPassengers);
+    }
+  };
+
   const fetchPassengerData = async (passportNumber, index) => {
     if (!passportNumber) {
       alert('Please enter a Passport Number.');
@@ -117,44 +124,71 @@ const PassengerForm = () => {
       <form onSubmit={handleSubmit} className="passenger-form">
         {passengers.map((passenger, index) => (
           <div key={index} className="section passenger-details">
-            <h3>Passenger {index + 1}</h3>
-            <div className="form-row">
-              <input
-                type="text"
-                name="Passport_Number"
-                placeholder="Passport Number"
-                value={passenger.Passport_Number}
-                onChange={(e) => handlePassengerChange(e, index)}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => fetchPassengerData(passenger.Passport_Number, index)}
-                disabled={loading}
-                className="fetch-data-button"
-              >
-                {loading ? 'Fetching...' : 'Find me'}
-              </button>
+            <div className="passenger-header">
+              <h3>Passenger {index + 1}</h3>
+              {index > 0 && (
+                <button
+                  type="button"
+                  onClick={() => removePassenger(index)}
+                  className="remove-passenger-button"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor={`passport_number_${index}`}>Passport Number</label>
+              <div className="input-with-button">
+                <input
+                  type="text"
+                  id={`passport_number_${index}`}
+                  name="Passport_Number"
+                  placeholder="Enter Passport Number"
+                  value={passenger.Passport_Number}
+                  onChange={(e) => handlePassengerChange(e, index)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => fetchPassengerData(passenger.Passport_Number, index)}
+                  disabled={loading}
+                  className="fetch-data-button"
+                >
+                  {loading ? 'Fetching...' : 'Find Me'}
+                </button>
+              </div>
             </div>
 
-            <div className="form-row">
+            <div className="form-group">
+              <label htmlFor={`name_${index}`}>Name</label>
               <input
                 type="text"
+                id={`name_${index}`}
                 name="Name"
-                placeholder="Name"
+                placeholder="Enter Full Name"
                 value={passenger.Name}
                 onChange={(e) => handlePassengerChange(e, index)}
                 required
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor={`dob_${index}`}>Date of Birth</label>
               <input
-                type="text"
+                type="date"
+                id={`dob_${index}`}
                 name="Date_of_birth"
-                placeholder="Date of Birth (YYYY-MM-DD)"
+                placeholder="Select Date of Birth"
                 value={passenger.Date_of_birth}
                 onChange={(e) => handlePassengerChange(e, index)}
                 required
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor={`gender_${index}`}>Gender</label>
               <select
+                id={`gender_${index}`}
                 name="Gender"
                 value={passenger.Gender}
                 onChange={(e) => handlePassengerChange(e, index)}
@@ -167,11 +201,13 @@ const PassengerForm = () => {
               </select>
             </div>
 
-            <div className="form-row">
+            <div className="form-group">
+              <label htmlFor={`passport_expiry_${index}`}>Passport Expiry Date</label>
               <input
-                type="text"
+                type="date"
+                id={`passport_expiry_${index}`}
                 name="Passport_Expire_Date"
-                placeholder="Passport Expiry Date (YYYY-MM-DD)"
+                placeholder="Select Passport Expiry Date"
                 value={passenger.Passport_Expire_Date}
                 onChange={(e) => handlePassengerChange(e, index)}
                 required

@@ -22,6 +22,8 @@ function HeroSection() {
     fetchAirportCodes();
     // Clear all localStorage data
     localStorage.clear();
+    // Set initial flight type in localStorage
+    localStorage.setItem('flightType', 'oneway');
   }, []);
 
   useEffect(() => {
@@ -92,6 +94,7 @@ function HeroSection() {
 
     const searchUrl = `/searchResults?${queryParams}`;
     localStorage.setItem('lastSearchUrl', searchUrl);
+    localStorage.setItem('flightType', flightType);
     router.push(searchUrl);
   };
 
@@ -112,6 +115,7 @@ function HeroSection() {
 
   const handleFlightTypeChange = (type) => {
     setFlightType(type);
+    localStorage.setItem('flightType', type);
     if (type === 'oneway') {
       setReturnDate(''); // Clear return date when switching to one-way
     }
@@ -121,6 +125,8 @@ function HeroSection() {
     <section className="hero-section">
       <header className="header">
         <h1 className="main-title">It's more than</h1>
+        <br />
+        <br />
         <h1 className="main-title">just a trip</h1>
       </header>
       
@@ -144,8 +150,10 @@ function HeroSection() {
           <FontAwesomeIcon icon={faPlaneDeparture} className="icon" />
           <select value={fromWhere} onChange={handleFromWhereChange} className="dropdown">
             <option value="" disabled>From where?</option>
-            {originCodes.map((code, index) => (
-              <option key={index} value={code}>{code}</option>
+            {originCodes.map((airport, index) => (
+              <option key={index} value={airport.code}>
+                {airport.code} - {airport.name}
+              </option>
             ))}
           </select>
         </div>
@@ -153,8 +161,10 @@ function HeroSection() {
           <FontAwesomeIcon icon={faPlaneArrival} className="icon" />
           <select value={whereTo} onChange={handleWhereToChange} className="dropdown">
             <option value="" disabled>Where to?</option>
-            {destinationCodes.map((code, index) => (
-              <option key={index} value={code}>{code}</option>
+            {destinationCodes.map((airport, index) => (
+              <option key={index} value={airport.code}>
+                {airport.code} - {airport.name}
+              </option>
             ))}
           </select>
         </div>

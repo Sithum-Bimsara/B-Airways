@@ -13,6 +13,8 @@ const SeatSelection = () => {
   const [modelId, setModelId] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [seatPrices, setSeatPrices] = useState({});
+  const [membershipType, setMembershipType] = useState(null);
+  const [discount, setDiscount] = useState(0);
   const router = useRouter();
 
   // Define total seats based on model ID
@@ -65,6 +67,30 @@ const SeatSelection = () => {
     }
   };
 
+  // Fetch membership type and discount based on user ID
+  const fetchMembershipDetails = async (userId) => {
+    try {
+      const response = await fetch('/api/getMembershipDetails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch membership details.');
+      }
+
+      const data = await response.json();
+      setMembershipType(data.membershipType);
+      setDiscount(data.discount); // e.g., 0.10 for 10%
+    } catch (error) {
+      console.error(error);
+      alert(error.message || 'Error fetching membership details.');
+    }
+  };
+
   useEffect(() => {
     const fetchBookedSeats = async () => {
       const flightId = localStorage.getItem('selectedFlightId');
@@ -93,7 +119,6 @@ const SeatSelection = () => {
           throw new Error(data.message || 'Failed to fetch booked seats.');
         }
 
-        // Corrected Destructuring
         const { modelId, bookedSeats } = data;
 
         setModelId(modelId);
@@ -113,6 +138,12 @@ const SeatSelection = () => {
 
         // Fetch seat prices
         await fetchSeatPrices(flightId);
+
+        // If userId exists, fetch membership details
+        if (userId) {
+          await fetchMembershipDetails(userId);
+        }
+
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -122,7 +153,7 @@ const SeatSelection = () => {
     };
 
     fetchBookedSeats();
-  }, [router]);
+  }, [router, userId]);
 
   // Handle passenger selection
   const handlePassengerSelect = (index) => {
@@ -148,7 +179,7 @@ const SeatSelection = () => {
     return 'Economy'; // Default
   };
 
-  // Handle seat selection
+  // Handle seat selection with discount application
   const handleSeatSelect = (seatId) => {
     if (selectedPassengerIndex === null) {
       alert('Please select a passenger first.');
@@ -157,13 +188,14 @@ const SeatSelection = () => {
 
     const selectedPassenger = passengerData[selectedPassengerIndex];
     const travelClass = getTravelClass(seatId);
-    const price = seatPrices[travelClass] || 0;
+    const originalPrice = seatPrices[travelClass] || 0;
+    const discountedPrice = discount > 0 ? originalPrice * (1 - discount) : originalPrice;
 
     // Assign seat to passenger
     const updatedPassengerData = [...passengerData];
     const previousSeat = updatedPassengerData[selectedPassengerIndex].Seat;
 
-    // If passenger had a previous seat, make it available again
+    // If passenger had a previous seat, make it available again and adjust price
     if (previousSeat) {
       setSeatMap((prevSeats) =>
         prevSeats.map((seat) =>
@@ -171,17 +203,18 @@ const SeatSelection = () => {
         )
       );
 
-      // Subtract previous seat price
       const previousTravelClass = getTravelClass(previousSeat);
-      const previousPrice = seatPrices[previousTravelClass] || 0;
-      setTotalPrice((prevTotal) => prevTotal - previousPrice);
+      const previousOriginalPrice = seatPrices[previousTravelClass] || 0;
+      const previousDiscountedPrice = discount > 0 ? previousOriginalPrice * (1 - discount) : previousOriginalPrice;
+      setTotalPrice((prevTotal) => prevTotal - previousDiscountedPrice);
     }
 
     updatedPassengerData[selectedPassengerIndex] = {
       ...updatedPassengerData[selectedPassengerIndex],
       Seat: seatId,
-      price: price,
-      travelClass: travelClass
+      price: discountedPrice,
+      travelClass: travelClass,
+      discountApplied: discount, // Store the discount applied
     };
     setPassengerData(updatedPassengerData);
     localStorage.setItem('PassengerData', JSON.stringify(updatedPassengerData));
@@ -194,7 +227,7 @@ const SeatSelection = () => {
     );
 
     // Update total price
-    setTotalPrice((prevTotal) => prevTotal + price);
+    setTotalPrice((prevTotal) => prevTotal + discountedPrice);
   };
 
   const handleSubmit = async () => {
@@ -218,6 +251,7 @@ const SeatSelection = () => {
           flightId,
           userId: userId || '',
           passengerData,
+          discount: discount, // Optionally send discount information
         }),
       });
   
@@ -243,7 +277,7 @@ const SeatSelection = () => {
           bookingData.failedBookings.some(failed => 
             failed.Passenger_ID === passenger.Passenger_ID
           )
-        ).map(({ Seat, price, travelClass, ...rest }) => rest);
+        ).map(({ Seat, price, travelClass, discountApplied, ...rest }) => rest);
         localStorage.setItem('PassengerData', JSON.stringify(remainingPassengers));
   
         // Calculate new total price (which will be 0 as we removed prices)
@@ -312,7 +346,12 @@ const SeatSelection = () => {
   };
 
   if (loading) {
-    return <p>Loading seat map...</p>;
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading seat map...</p>
+      </div>
+    );
   }
 
   const categorizedSeats = categorizeSeats();
@@ -327,12 +366,13 @@ const SeatSelection = () => {
         <ul className="passenger-list">
           {passengerData.map((passenger, index) => (
             <li
-              key={passenger.Passenger_ID}
+              key={passenger.Passenger_ID || index}
               className={`passenger-item ${selectedPassengerIndex === index ? 'selected' : ''}`}
               onClick={() => handlePassengerSelect(index)}
+              tabIndex={0}
+              onKeyPress={(e) => { if (e.key === 'Enter') handlePassengerSelect(index) }}
             >
               {passenger.Name} {passenger.Seat && `- Seat ${passenger.Seat}`}
-              {passenger.price && ` - $${passenger.price.toFixed(2)}`}
             </li>
           ))}
         </ul>
@@ -345,7 +385,7 @@ const SeatSelection = () => {
           <div key={classType} className={`seat-class-section ${classType.toLowerCase()}`}>
             <h4>{classType} Class</h4>
             <div className="seat-map">
-              {categorizedSeats[classType].map((seat, idx) => (
+              {categorizedSeats[classType].map((seat) => (
                 <div
                   key={seat.seatId}
                   className={`seat ${!seat.isAvailable ? 'unavailable' : 'available'} ${
@@ -358,6 +398,7 @@ const SeatSelection = () => {
                   aria-label={`Seat ${seat.seatId} ${seat.isAvailable ? getTravelClass(seat.seatId) : 'Booked'}`}
                   role="button"
                   tabIndex={seat.isAvailable ? 0 : -1}
+                  onKeyPress={(e) => { if (e.key === 'Enter' && seat.isAvailable) handleSeatSelect(seat.seatId) }}
                 >
                   {seat.seatId}
                 </div>
@@ -367,9 +408,20 @@ const SeatSelection = () => {
         ))}
       </div>
 
+      {/* Discount Information */}
+      {membershipType && discount > 0 && (
+        <div className="discount-info-section">
+          <h4>Membership: {membershipType}</h4>
+          <p>Discount Applied: { (discount * 100).toFixed(0) }%</p>
+        </div>
+      )}
+
       {/* Total Price */}
       <div className="total-price-section">
         <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
+        {membershipType && discount > 0 && (
+          <p>Discount (Membership {membershipType}): -${(totalPrice * discount).toFixed(2)}</p>
+        )}
       </div>
 
       <button onClick={handleSubmit} className="confirm-seats-button">

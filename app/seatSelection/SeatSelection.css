@@ -4,6 +4,9 @@
   margin: auto;
   text-align: center;
   font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -16,32 +19,45 @@ h2 {
 }
 
 .passenger-list {
-  list-style-type: none;
-  padding: 0;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
   gap: 15px;
 }
 
 .passenger-item {
-  padding: 10px 20px;
-  background-color: #b2ebf2;
-  border: 2px solid #004d40;
+  padding: 10px 15px;
+  padding-right: 35px; /* Added extra padding on right for checkmark */
+  border: 1px solid #004d40;
   border-radius: 5px;
+  background-color: #b2ebf2;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  min-width: 150px;
+  position: relative;
 }
 
 .passenger-item:hover {
   background-color: #80deea;
   transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .passenger-item.selected {
   background-color: #00796b;
   color: #ffffff;
   border-color: #00575b;
+}
+
+.passenger-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 18px;
 }
 
 .seat-map-section {
@@ -55,6 +71,7 @@ h2 {
 .seat-class-section h4 {
   margin-bottom: 10px;
   color: #00575b;
+  text-align: left;
 }
 
 .seat-map {
@@ -77,11 +94,12 @@ h2 {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
 }
 
 .seat.available:hover {
   background-color: #a5d6a7; /* Darker Green on hover */
+  transform: scale(1.05);
 }
 
 .seat.unavailable {
@@ -96,77 +114,127 @@ h2 {
 }
 
 .confirm-seats-button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: #007bff; /* Button color */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .confirm-seats-button:hover {
   background-color: #0056b3; /* Darker button color on hover */
+  transform: translateY(-2px);
 }
 
-/* Optional: Styles for aisles */
-.aisle {
-  width: 40px;
-  height: 40px;
+/* Loading Spinner */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #0070f3;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Total Price Section */
 .total-price-section {
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: 20px;
   color: #004d40;
-}
-
-/* Additional Styles for Passenger List */
-.passenger-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-}
-
-.passenger-item {
-  padding: 10px 15px;
-  border: 1px solid #004d40;
-  border-radius: 5px;
-  background-color: #b2ebf2;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.passenger-item:hover {
-  background-color: #80deea;
-  transform: scale(1.05);
-}
-
-.passenger-item.selected {
-  background-color: #00796b;
-  color: #ffffff;
-  border-color: #00575b;
 }
 
 /* Styles for Different Seat Classes */
 .seat-class-section.economy {
   background-color: #e8f5e9; /* Light Green */
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
 }
 
 .seat-class-section.business {
   background-color: #e3f2fd; /* Light Blue */
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
 }
 
 .seat-class-section.platinum {
   background-color: #f3e5f5; /* Light Purple */
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
+}
+
+/* Accessibility Focus */
+.passenger-item:focus,
+.seat:focus {
+  outline: 3px solid #1976d2;
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .seat-class-section {
+    padding: 10px;
+  }
+
+  .seat-map {
+    gap: 8px;
+  }
+
+  .seat {
+    width: 35px;
+    height: 35px;
+  }
+
+  .passenger-item {
+    min-width: 120px;
+    padding: 8px 12px;
+    padding-right: 30px; /* Maintain space for checkmark */
+  }
+}
+
+@media (max-width: 600px) {
+  .seat-class-section {
+    padding: 8px;
+  }
+
+  .seat-map {
+    gap: 6px;
+  }
+
+  .seat {
+    width: 30px;
+    height: 30px;
+  }
+
+  .passenger-item {
+    min-width: 100px;
+    padding: 6px 10px;
+    padding-right: 25px; /* Maintain space for checkmark */
+    font-size: 14px;
+  }
+
+  .total-price-section {
+    font-size: 18px;
+  }
+
+  .confirm-seats-button {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 14px;
+  }
 }
