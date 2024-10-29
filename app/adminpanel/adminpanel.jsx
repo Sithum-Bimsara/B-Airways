@@ -209,7 +209,7 @@ export default function AdminDashboard() {
       });
       const result = await response.json();
       if (response.ok) {
-        setChangeStatus({ loading: false, message: 'Flight status updated successfully.' });
+        setChangeStatus({ loading: false, message: 'Flight status updated successfully and notifications sent.' });
         // Optionally, reset form
         setChangeStatusData({
           Flight_ID: '',

@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Invalid token.' }, { status: 401 });
     }
 
-    // Query to get all past bookings by the user
+    // Query to get all distinct past bookings by the user
     const [result] = await connection.query(
-      `SELECT 
+      `SELECT DISTINCT
           b.Flight_ID, 
           f.Departure_date AS Date,
           a.Airport_name AS Destination_Airport_Name 
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'No bookings yet.' }, { status: 200 });
     }
 
-    // Return all bookings for the user
+    // Return all distinct bookings for the user
     return NextResponse.json({
       bookings: bookingsData.map(booking => ({
         Flight_ID: booking.Flight_ID,

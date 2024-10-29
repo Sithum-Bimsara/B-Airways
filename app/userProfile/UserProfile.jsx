@@ -218,6 +218,7 @@ const UserProfile = () => {
                   <p><strong>Flight:</strong> {booking.Flight_ID}</p>
                   <p><strong>Date:</strong> {new Date(booking.Date).toLocaleDateString()}</p>
                   <p><strong>Destination:</strong> {booking.Destination_Airport_Name}</p>
+                  <p><strong>Status:</strong> {booking.Status}</p>
                 </div>
               ))}
             </div>
