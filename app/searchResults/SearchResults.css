@@ -197,16 +197,11 @@
   background-color: #95a5a6;
 }
 
-.world-map-container {
-  width: 100%;
-  height: 400px;
-  background-image: url('../assets/images/world-map.jpg');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.map-container {
   margin-top: 40px;
+  border-radius: 10px;
+  overflow: hidden; /* Ensure the map has rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Design */
@@ -234,7 +229,7 @@
     width: 100%;
   }
 
-  .world-map-container {
+  .map-container {
     height: 250px;
   }
 }

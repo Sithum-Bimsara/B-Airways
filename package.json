@@ -19,6 +19,7 @@
     "cookie": "^1.0.1",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
+    "leaflet": "^1.9.4",
     "mysql2": "^3.11.3",
     "next": "14.2.14",
     "nodemon": "^3.1.7",
@@ -26,6 +27,7 @@
     "react-bootstrap": "^2.10.5",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.27.0",
     "sharp": "^0.33.5"
   },

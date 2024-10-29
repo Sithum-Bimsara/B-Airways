@@ -4,6 +4,23 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import './SearchResults.css';
 
+// Import React Leaflet components
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Import Leaflet's icon to fix marker issues
+import L from 'leaflet';
+
+// Create custom location icon
+const locationIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
 const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const [outboundFlights, setOutboundFlights] = useState([]);
   const [returnFlights, setReturnFlights] = useState([]);
@@ -218,9 +235,35 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
         )}
       </div>
 
-      {/* World map image below the flight boxes */}
-      <div className="world-map-container">
-        {/* Optional: Add interactive elements or tooltips for better UX */}
+      {/* Interactive Map with Markers for BIA and BOM */}
+      <div className="map-container">
+        <MapContainer 
+          center={[22.1747, 58.5652]} // Centered between BIA and BOM
+          zoom={4} 
+          scrollWheelZoom={false} 
+          style={{ height: '400px', width: '100%', borderRadius: '10px' }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {/* Marker for BIA */}
+          <Marker position={[20.2609, 42.6043]} icon={locationIcon}>
+            <Popup>
+              <b>Bisha Airport (BIA)</b><br />
+              Bisha, Saudi Arabia<br />
+              <small>Coordinates: 20.2609°N, 42.6043°E</small>
+            </Popup>
+          </Marker>
+          {/* Marker for BOM */}
+          <Marker position={[19.0896, 72.8656]} icon={locationIcon}>
+            <Popup>
+              <b>Chhatrapati Shivaji Maharaj International Airport (BOM)</b><br />
+              Mumbai, India<br />
+              <small>Coordinates: 19.0896°N, 72.8656°E</small>
+            </Popup>
+          </Marker>
+        </MapContainer>
       </div>
     </div>
   );
