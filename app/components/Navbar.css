@@ -184,3 +184,29 @@
   color: #0070f3;
   background-color: rgba(0, 112, 243, 0.1);
 }
+
+.chatbot-toggle-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background-color: #0070f3;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 112, 243, 0.2);
+}
+
+.chatbot-toggle-btn:hover {
+  background-color: #0061d5;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 112, 243, 0.3);
+}
+
+.chatbot-toggle-btn svg {
+  font-size: 1.1rem;
+}
