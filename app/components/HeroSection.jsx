@@ -95,6 +95,8 @@ function HeroSection() {
     const searchUrl = `/searchResults?${queryParams}`;
     localStorage.setItem('lastSearchUrl', searchUrl);
     localStorage.setItem('flightType', flightType);
+    localStorage.setItem('fromWhere', fromWhere);
+    localStorage.setItem('whereTo', whereTo);
     router.push(searchUrl);
   };
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import './SearchResults.css';
 
 // Import React Leaflet components
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Import Leaflet's icon to fix marker issues
@@ -21,6 +21,20 @@ const locationIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 
+// Airport coordinates mapping
+const airportCoordinates = {
+  'SIN': [1.3644, 103.9915],
+  'CGK': [-6.1256, 106.6559],
+  'DPS': [-8.7482, 115.1675],
+  'BIA': [7.1806, 79.8842],
+  'HRI': [6.2856, 81.1241],
+  'DEL': [28.5562, 77.1000],
+  'BOM': [19.0896, 72.8656],
+  'MAA': [12.9900, 80.1693],
+  'BKK': [13.6900, 100.7501],
+  'DMK': [13.9126, 100.6069]
+};
+
 const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const [outboundFlights, setOutboundFlights] = useState([]);
   const [returnFlights, setReturnFlights] = useState([]);
@@ -28,12 +42,20 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const [loadingReturn, setLoadingReturn] = useState(true);
   const [errorOutbound, setErrorOutbound] = useState(null);
   const [errorReturn, setErrorReturn] = useState(null);
+  const [fromWhere, setFromWhere] = useState('');
+  const [whereTo, setWhereTo] = useState('');
 
   const router = useRouter();
   
   const [flightType, setFlightType] = useState('roundtrip'); // Default to 'roundtrip'
 
   useEffect(() => {
+    // Get airports from localStorage
+    const storedFromWhere = localStorage.getItem('fromWhere');
+    const storedWhereTo = localStorage.getItem('whereTo');
+    if (storedFromWhere) setFromWhere(storedFromWhere);
+    if (storedWhereTo) setWhereTo(storedWhereTo);
+
     // Check if BookingData exists in localStorage and refresh if it does
     const bookingData = localStorage.getItem('BookingData');
     const refresh = localStorage.getItem('refresh');
@@ -100,6 +122,45 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
   const handleSelectFlight = (flightId) => {
     localStorage.setItem('selectedFlightId', flightId);
     router.push('/passengerDetails');
+  };
+
+  // Calculate center point between two airports
+  const getCenterPoint = () => {
+    if (!fromWhere || !whereTo || !airportCoordinates[fromWhere] || !airportCoordinates[whereTo]) {
+      // Default to center of map if no airports selected
+      return [12.8797, 90.7219]; // Roughly center of South/Southeast Asia
+    }
+    const [lat1, lon1] = airportCoordinates[fromWhere];
+    const [lat2, lon2] = airportCoordinates[whereTo];
+    return [(lat1 + lat2) / 2, (lon1 + lon2) / 2];
+  };
+
+  // Get flight path coordinates
+  const getFlightPath = () => {
+    if (!fromWhere || !whereTo || !airportCoordinates[fromWhere] || !airportCoordinates[whereTo]) {
+      return [];
+    }
+    return [airportCoordinates[fromWhere], airportCoordinates[whereTo]];
+  };
+
+  // Calculate appropriate zoom level based on distance between airports
+  const getZoomLevel = () => {
+    if (!fromWhere || !whereTo || !airportCoordinates[fromWhere] || !airportCoordinates[whereTo]) {
+      return 4; // Default zoom level
+    }
+    const [lat1, lon1] = airportCoordinates[fromWhere];
+    const [lat2, lon2] = airportCoordinates[whereTo];
+    
+    // Calculate rough distance between points
+    const latDiff = Math.abs(lat1 - lat2);
+    const lonDiff = Math.abs(lon1 - lon2);
+    const maxDiff = Math.max(latDiff, lonDiff);
+    
+    // Adjust zoom based on distance
+    if (maxDiff > 20) return 4;
+    if (maxDiff > 10) return 5;
+    if (maxDiff > 5) return 6;
+    return 7;
   };
 
   return (
@@ -251,11 +312,11 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
         )}
       </div>
 
-      {/* Interactive Map with Markers for BIA and BOM */}
+      {/* Interactive Map with Markers for selected airports and flight path */}
       <div className="map-container">
         <MapContainer 
-          center={[22.1747, 58.5652]} // Centered between BIA and BOM
-          zoom={4} 
+          center={getCenterPoint()} 
+          zoom={getZoomLevel()} 
           scrollWheelZoom={false} 
           style={{ height: '400px', width: '100%', borderRadius: '10px' }}
         >
@@ -263,22 +324,31 @@ const SearchResults = ({ route1, route2, departureDate, returnDate }) => {
             attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {/* Marker for BIA */}
-          <Marker position={[20.2609, 42.6043]} icon={locationIcon}>
-            <Popup>
-              <b>Bisha Airport (BIA)</b><br />
-              Bisha, Saudi Arabia<br />
-              <small>Coordinates: 20.2609°N, 42.6043°E</small>
-            </Popup>
-          </Marker>
-          {/* Marker for BOM */}
-          <Marker position={[19.0896, 72.8656]} icon={locationIcon}>
-            <Popup>
-              <b>Chhatrapati Shivaji Maharaj International Airport (BOM)</b><br />
-              Mumbai, India<br />
-              <small>Coordinates: 19.0896°N, 72.8656°E</small>
-            </Popup>
-          </Marker>
+          {fromWhere && airportCoordinates[fromWhere] && (
+            <Marker position={airportCoordinates[fromWhere]} icon={locationIcon}>
+              <Popup>
+                <b>{fromWhere} Airport</b><br />
+                <small>Coordinates: {airportCoordinates[fromWhere][0]}°, {airportCoordinates[fromWhere][1]}°</small>
+              </Popup>
+            </Marker>
+          )}
+          {whereTo && airportCoordinates[whereTo] && (
+            <Marker position={airportCoordinates[whereTo]} icon={locationIcon}>
+              <Popup>
+                <b>{whereTo} Airport</b><br />
+                <small>Coordinates: {airportCoordinates[whereTo][0]}°, {airportCoordinates[whereTo][1]}°</small>
+              </Popup>
+            </Marker>
+          )}
+          {/* Add dotted line between airports */}
+          {fromWhere && whereTo && (
+            <Polyline 
+              positions={getFlightPath()}
+              dashArray={[5, 10]}
+              color="red"
+              weight={2}
+            />
+          )}
         </MapContainer>
       </div>
     </div>
