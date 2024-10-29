@@ -14,16 +14,17 @@
   }
   
   .modal-content {
-    background-color: #fff;
+    background: linear-gradient(to right, #f0f4ff, #d9eaff);/* Gradient background */
     padding: 30px;
     border-radius: 10px;
-    width: 90%;
+    width: 100%;
     max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   }
   
   .modal-content h2 {
-    margin-bottom: 20px;
+    margin-top: -10px;
+    margin-bottom: 30px;
     text-align: center;
     color: #007acc;
   }
@@ -49,7 +50,8 @@
   
   .modal-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center-align the buttons */
+    gap: 30px; /* Controls spacing between buttons */
   }
   
   .modal-buttons button {
@@ -58,7 +60,9 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    margin: 0; /* Ensure no extra margin is added */
   }
+  
   
   .modal-buttons button[type="submit"] {
     background-color: #007acc;

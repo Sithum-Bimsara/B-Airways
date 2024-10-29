@@ -1,73 +1,115 @@
+/* Main Section Styling */
 .contact-us {
-  max-width: 600px; /* Center the form and set a max width */
-  margin: 40px auto; /* Center the section horizontally */
-  padding: 20px; /* Add some padding */
-  background-color: linear-gradient(to right, #f0f4ff, #d9eaff); /* Light background color for contrast */
-  border-radius: 8px; /* Round the corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 40px 40px;
+  background: linear-gradient(to right, #f0f4ff, #d9eaff);/* Gradient background */
+  border-radius: 12px; /* Slightly larger rounding */
+  box-shadow: 0 6px 15px rgba(78, 110, 154, 0.15); /* Softer shadow */
+  position: relative; /* For background decorations */
+  overflow: hidden;
 }
 
+/* Decorative Background Circles */
+.contact-us::before,
+.contact-us::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.contact-us::before {
+  width: 150px;
+  height: 150px;
+  background-color: #0070f3;
+  top: -40px;
+  left: -40px;
+}
+
+.contact-us::after {
+  width: 200px;
+  height: 200px;
+  background-color: #ff6f61;
+  bottom: -60px;
+  right: -60px;
+}
+
+/* Heading and Paragraph */
 .contact-us h2 {
-  font-size: 24px; /* Larger font size for the heading */
-  margin-bottom: 20px; /* Space between heading and paragraph */
-  color: #333; /* Darker text color for better readability */
-  text-align: center; /* Center the heading */
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #007acc;
+  text-align: center;
+  letter-spacing: 1px; /* Letter spacing for style */
 }
 
 .contact-us p {
-  font-size: 16px; /* Slightly larger font size for the paragraph */
-  color: #666; /* Medium gray color for the text */
-  text-align: center; /* Center the text */
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.6;
 }
 
+/* Form Styling */
 .contact-form {
   display: flex;
-  flex-direction: column; /* Stack the form elements vertically */
+  flex-direction: column;
 }
 
 .form-group {
-  margin-bottom: 15px; /* Space between form groups */
+  margin-bottom: 20px;
 }
 
 .form-group label {
-  margin-bottom: 5px; /* Space between label and input */
-  font-weight: bold; /* Make label text bold */
-  color: #333; /* Dark color for the labels */
+  font-weight: bold;
+  color: #333;
 }
 
 .form-group input,
 .form-group textarea {
-  width: 100%; /* Full width for inputs */
-  padding: 10px; /* Padding inside inputs */
-  border: 1px solid #ccc; /* Light border for inputs */
-  border-radius: 5px; /* Round the corners */
-  font-size: 16px; /* Slightly larger font size for inputs */
-  transition: border 0.3s; /* Smooth border color change */
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #f7f7f7;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #0070f3; /* Change border color on focus */
-  outline: none; /* Remove outline */
+  border-color: #0070f3;
+  box-shadow: 0 4px 8px rgba(0, 112, 243, 0.15); /* Shadow on focus */
+  outline: none;
 }
 
+/* Button Styling */
 .submit-button {
-  padding: 10px; /* Padding for button */
-  background-color: #0070f3; /* Blue background */
-  color: white; /* White text */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Round corners */
-  font-size: 18px; /* Larger font size for the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background color change */
+  padding: 12px;
+  background: linear-gradient(145deg, #0070f3, #005bb5);
+  color: #fff;
+  border: none;
+  border-radius: 25px; /* Rounded button */
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 112, 243, 0.3); /* Button shadow */
 }
 
 .submit-button:hover {
-  background-color: #005bb5; /* Darker blue on hover */
+  background: linear-gradient(145deg, #005bb5, #0070f3); /* Reverse gradient on hover */
+  transform: scale(1.05); /* Slightly enlarge */
+  box-shadow: 0 6px 12px rgba(0, 112, 243, 0.5); /* Enhance shadow */
 }
 
 @media (max-width: 600px) {
   .contact-us {
-    margin: 20px; /* Reduce margin for smaller screens */
+    margin: 20px;
+    padding: 30px;
   }
 }
