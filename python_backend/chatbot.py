@@ -86,7 +86,7 @@ def chat_with_llm(user_message: str):
         results_context = f"""Based on this database query result:
         {results}
         
-        Please provide a natural language answer to the question also be user friendly to continue an engaging conversation: {user_message}"""
+        Please provide a natural language answer to the question also be user friendly to continue an engaging conversation. Do not reveal any sensitive, confidential or private information. Only share information that is appropriate for public consumption: {user_message}"""
         
         # Get final response
         final_response = chat_session.send_message(results_context)

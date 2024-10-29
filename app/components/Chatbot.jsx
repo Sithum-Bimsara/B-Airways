@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 
 const Chatbot = ({ onClose }) => {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Hello! How can I assist you today?' },
+    { sender: 'bot', text: 'Welcome to B Airways! I\'m your virtual assistant. How can I help you with your travel plans today?' },
   ]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
@@ -58,7 +59,7 @@ const Chatbot = ({ onClose }) => {
         ...prevMessages,
         {
           sender: 'bot',
-          text: 'Sorry, something went wrong. Please try again later.',
+          text: 'I apologize, but I\'m having trouble connecting right now. Please try again in a moment.',
         },
       ]);
     }
@@ -75,7 +76,7 @@ const Chatbot = ({ onClose }) => {
       <div className="card-container">
         <div className="card-header">
           <div className="img-avatar" />
-          <div className="text-chat">Chat</div>
+          <div className="text-chat">B Airways Assistant</div>
           <button className="close-button" onClick={onClose}>×</button>
         </div>
         <div className="card-body">
@@ -87,7 +88,11 @@ const Chatbot = ({ onClose }) => {
                   msg.sender === 'bot' ? 'left' : 'right'
                 }`}
               >
-                <p>{msg.text}</p>
+                {msg.sender === 'bot' ? (
+                  <ReactMarkdown>{msg.text}</ReactMarkdown>
+                ) : (
+                  <p>{msg.text}</p>
+                )}
               </div>
             ))}
             <div ref={messagesEndRef} />
@@ -95,7 +100,7 @@ const Chatbot = ({ onClose }) => {
           <div className="message-input">
             <form onSubmit={handleSendMessage}>
               <textarea
-                placeholder="Type your message here..."
+                placeholder="Ask about flights, bookings, or travel information..."
                 className="message-send"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
@@ -117,7 +122,7 @@ const StyledWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,21 +130,21 @@ const StyledWrapper = styled.div`
 
   .card-container {
     background-color: #fff;
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 20px;
+    padding: 25px;
     width: 90%;
     max-width: 800px;
     height: 80vh;
     max-height: 800px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.4s ease-out;
   }
 
   @keyframes slideIn {
     from {
-      transform: translateY(-20px);
+      transform: translateY(-30px);
       opacity: 0;
     }
     to {
@@ -151,22 +156,34 @@ const StyledWrapper = styled.div`
   .card-header {
     display: flex;
     align-items: center;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e8e8e8;
     position: relative;
   }
 
   .img-avatar {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background-color: #0070f3;
+    background: linear-gradient(135deg, #0070f3, #00a1ff);
     margin-right: 15px;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      bottom: 2px;
+      right: 2px;
+      border: 2px solid white;
+    }
   }
 
   .text-chat {
-    color: #333;
-    font-size: 24px;
+    color: #1a1a1a;
+    font-size: 26px;
     font-weight: bold;
   }
 
@@ -177,15 +194,16 @@ const StyledWrapper = styled.div`
     transform: translateY(-50%);
     background: none;
     border: none;
-    font-size: 28px;
+    font-size: 32px;
     color: #666;
     cursor: pointer;
     padding: 0 10px;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
   }
 
   .close-button:hover {
     color: #333;
+    transform: translateY(-50%) scale(1.1);
   }
 
   .card-body {
@@ -193,80 +211,102 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    margin-top: 15px;
+    margin-top: 20px;
   }
 
   .messages-container {
     flex: 1;
-    padding: 15px;
+    padding: 20px;
     overflow-y: auto;
-    background-color: #f9f9f9;
-    border-radius: 10px;
+    background-color: #f8fafc;
+    border-radius: 15px;
   }
 
   .message-box {
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    border-radius: 15px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    border-radius: 18px;
     max-width: 70%;
     word-wrap: break-word;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
 
   .message-box.left {
-    background-color: #e1e1e1;
+    background-color: #f0f0f0;
     align-self: flex-start;
+    border-bottom-left-radius: 5px;
   }
 
   .message-box.right {
-    background-color: #0070f3;
+    background: linear-gradient(135deg, #0070f3, #00a1ff);
     color: #fff;
     align-self: flex-end;
+    border-bottom-right-radius: 5px;
+  }
+
+  .message-box p {
+    margin: 0;
+  }
+
+  .message-box ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .message-box strong {
+    font-weight: 600;
   }
 
   .message-input {
-    padding: 15px;
-    border-top: 1px solid #eee;
+    padding: 20px;
+    border-top: 2px solid #e8e8e8;
     background-color: #fff;
-    border-radius: 0 0 15px 15px;
+    border-radius: 0 0 20px 20px;
   }
 
   .message-input form {
     display: flex;
-    gap: 10px;
+    gap: 15px;
   }
 
   .message-send {
     flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 15px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
     resize: none;
     font-size: 16px;
-    min-height: 45px;
+    min-height: 50px;
+    transition: border-color 0.2s ease;
+    &:focus {
+      outline: none;
+      border-color: #0070f3;
+    }
   }
 
   .button-send {
-    padding: 12px 24px;
-    background-color: #0070f3;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #0070f3, #00a1ff);
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,112,243,0.2);
   }
 
   .button-send:hover {
-    background-color: #005bb5;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,112,243,0.3);
   }
 
   @media (max-width: 768px) {
     .card-container {
       width: 95%;
       height: 90vh;
-      margin: 20px;
+      margin: 15px;
     }
 
     .message-box {

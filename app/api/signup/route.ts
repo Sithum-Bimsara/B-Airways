@@ -32,6 +32,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
     }
 
+    // Validate password strength
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return NextResponse.json({ 
+        message: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.',
+      }, { status: 400 });
+    }
+
     // Check if user already exists
     const [existingUser]: any = await connection.execute(
       `SELECT * FROM User WHERE User_name = ? OR Email = ?`,
