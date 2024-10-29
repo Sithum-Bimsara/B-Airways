@@ -124,7 +124,7 @@ const Tickets = () => {
                 <p className="price">${booking.price.toFixed(2)}</p>
                 <div className="barcode">
                   {/* Barcode representation */}
-                  ||||| |||| ||||| ||||
+                  ||||| |||| ||||| 
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ const Tickets = () => {
       </div>
 
       <div className="total-section">
-        <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
+        <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
       </div>
 
       <div className="button-container">
