@@ -1,40 +1,87 @@
-"use client"; // Ensure this is marked as a client component
+"use client";
 
-import React, { useState, useContext } from 'react';
-import './UserProfile.css'; 
+import React, { useState, useEffect, useContext } from 'react';
+import './UserProfile.css';
 import { AuthContext } from '../context/AuthContext';
 
 const UserProfile = () => {
   const { username, role, userId } = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pastBookings, setPastBookings] = useState([]);
+  const [upcomingBookings, setUpcomingBookings] = useState([]);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
-  const [userData] = useState({
-    userName: "Sanuji2002",
-    firstname: "Sanuji",
-    lastname: "Samarakoon",
-    birthDate: "11 February 2002",
-    gender: "Female",
-    country: "Sri Lanka",
-    email: "sanujis1102@gmail.com",
-    NIC: "20208070",
-   
-  });
-  
-  const [currentPassword, setCurrentPassword] = useState(""); // Current password input
-  const [newPassword, setNewPassword] = useState(""); // New password input
-  const [confirmPassword, setConfirmPassword] = useState(""); // Confirm new password input
-  const [passwordModalOpen, setPasswordModalOpen] = useState(false); // For modal visibility
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/getUserData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ userId })
+        });
+        if (!response.ok) throw new Error('Failed to fetch user data');
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Simulating the user's current password (this should come from your backend)
-  const actualCurrentPassword = "userCurrentPassword"; // Replace this with the actual logic from your backend
-  
+    const fetchPastBookings = async () => {
+      setLoading(true);  // Show loading indicator while fetching data
+      try {
+        const response = await fetch(`/api/getPastBookingsData?booking_type=before`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        });
+        if (!response.ok) throw new Error('Failed to fetch booking data');
+        const data = await response.json();
+        setPastBookings(data.bookings);  
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+
+    const fetchUpcomingBookings = async () => {
+      setLoading(true);  // Show loading indicator while fetching data
+      try {
+        const response = await fetch(`/api/getUpcomingBookingsData?booking_type=after`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        });
+        if (!response.ok) throw new Error('Failed to fetch booking data');
+        const data = await response.json();
+        setUpcomingBookings(data.bookings);  // Assuming the response is { bookings: [...] }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+    fetchUpcomingBookings();
+    fetchPastBookings();
+  }, [userId]);
+
   const handlePasswordChange = () => {
-    if (currentPassword !== actualCurrentPassword) {
+    if (currentPassword !== userData.currentPassword) {
       alert("Current password is incorrect. Please try again.");
       return;
     }
-    
     if (newPassword === confirmPassword) {
-      // Perform password change logic (e.g., sending the new password to the server)
       alert(`Password changed successfully to: ${newPassword}`);
       setCurrentPassword("");
       setNewPassword("");
@@ -45,49 +92,31 @@ const UserProfile = () => {
     }
   };
 
-  const firstLetter = username ? username.charAt(0) : ''; // Get the first letter of the name
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
-  // Define dummy flight data
-  const flights = {
-    upcoming: [
-      { flight: "FL123", date: "2024-10-30", destination: "New York" },
-      { flight: "FL456", date: "2024-11-15", destination: "London" },
-      { flight: "FL789", date: "2024-12-01", destination: "Dubai" }
-    ],
-    past: [
-      { flight: "FL101", date: "2024-09-20", destination: "Tokyo" },
-      { flight: "FL202", date: "2024-08-05", destination: "Paris" },
-      { flight: "FL303", date: "2024-07-15", destination: "Sydney" }
-    ]
-  };
+  const firstLetter = username ? username.charAt(0) : '';
 
   return (
     <div className="profile-container">
-      {/* Main Profile Section */}
       <div className="profile-main">
-        {/* Profile Picture */}
         <div className="profile-picture">
           <div className="letter-avatar">{firstLetter}</div>
         </div>
-
-        <h2>{username}</h2>
-        <h3>User ID: {userId}</h3>
-
+        <h2>{userData.username}</h2>
+        
         <section className="profile-section">
+          <div className="profile-detail-row">
+            <p>First name: {userData.firstName}</p>
+            <p>Last name: {userData.lastName}</p>
+            <p>Born: {new Date(userData.dateOfBirth).toISOString().split('T')[0]}</p>
+            <p>Country: {userData.country}</p>
+            <p>Gender: {userData.gender}</p>
+            <p>NIC: {userData.nicCode}</p>
+            <p>Email: {userData.email}</p>
+          </div>
+        </section>
 
-    <div className="profile-detail-row">
-      <p>First name: {userData.firstname}</p>
-      <p>Last name: {userData.lastname}</p>
-      <p>Born: {userData.birthDate}</p>
-      <p>Country: {userData.country}</p>
-      <p>Gender: {userData.gender}</p>
-      <p>NIC: {userData.NIC}</p> 
-      <p>Email: {userData.email}</p>
-    </div>
-  
-</section>
-
-         {/* Change Password Section */}
         <section className="profile-section">
           {passwordModalOpen ? (
             <>
@@ -116,41 +145,45 @@ const UserProfile = () => {
             <button onClick={() => setPasswordModalOpen(true)}>Change Password</button>
           )}
         </section>
-
       </div>
 
       {/* Flights Container */}
       <div className="flights-container">
-
         {/* Past Flights Box */}
-  <div className="flights-box">
+        <div className="flights-box">
     <h2>Past Flights</h2>
-    {flights.past.map((flight, index) => (
-      <div key={index} className="flight-card">
-        <p><strong>Flight:</strong> {flight.flight}</p>
-        <p><strong>Date:</strong> {flight.date}</p>
-        <p><strong>Destination:</strong> {flight.destination}</p>
-      </div>
-    ))}
+    {pastBookings?.length > 0 ? (
+      pastBookings.map((booking, index) => (
+        <div key={index} className="flight-card">
+          <p><strong>Flight:</strong> {booking.Flight_ID}</p>
+          <p><strong>Date:</strong> {new Date(booking.Date).toLocaleDateString()}</p>
+          <p><strong>Destination:</strong> {booking.Destination_Airport_Name}</p>
+        </div>
+      ))
+    ) : (
+      <p>No past flights available.</p>
+    )}
   </div>
-  {/* Upcoming Flights Box */}
-  <div className="flights-box">
+
+        {/* Upcoming Flights Box */}
+        <div className="flights-box">
     <h2>Upcoming Flights</h2>
-    {flights.upcoming.map((flight, index) => (
-      <div key={index} className="flight-card">
-        <p><strong>Flight:</strong> {flight.flight}</p>
-        <p><strong>Date:</strong> {flight.date}</p>
-        <p><strong>Destination:</strong> {flight.destination}</p>
-      </div>
-    ))}
+    {upcomingBookings?.length > 0 ? (
+      upcomingBookings.map((booking, index) => (
+        <div key={index} className="flight-card">
+          <p><strong>Flight:</strong> {booking.Flight_ID}</p>
+          <p><strong>Date:</strong> {new Date(booking.Date).toLocaleDateString()}</p>
+          <p><strong>Destination:</strong> {booking.Destination_Airport_Name}</p>
+        </div>
+      ))
+    ) : (
+      <p>No upcoming flights available.</p>
+    )}
   </div>
-
   
-</div>
       </div>
-
-    
+    </div>
   );
-}
+};
 
 export default UserProfile;
