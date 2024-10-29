@@ -7,9 +7,10 @@
 }
 
 .testimonials h2 {
-    font-size: 28px;
+    font-size: 36px;
     color: #3c47e9; /* Primary color */
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    margin-top: -10px;
 }
 
 .testimonial-cards {

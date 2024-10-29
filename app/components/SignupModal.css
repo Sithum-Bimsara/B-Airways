@@ -14,7 +14,7 @@
   }
   
   .modal-content {
-    background-color: #fff;
+    background: linear-gradient(to right, #f0f4ff, #d9eaff);/* Gradient background */
     padding: 30px;
     border-radius: 10px;
     width: 90%;
@@ -23,9 +23,10 @@
   }
   
   .modal-content h2 {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: center;
     color: #007acc;
+    margin-top: -10px;
   }
   
   .modal-content form {
@@ -50,8 +51,9 @@
   }
   
   .modal-buttons {
-    display: flex;
-    justify-content: space-between;
+    display: flex; /* Change from 'flexbox' to 'flex' */
+    justify-content: center; /* Center-align the buttons */
+    gap: -100px; /* Add gap for precise control over button spacing */
   }
   
   .modal-buttons button {
@@ -60,7 +62,10 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    /* Reduce any additional margin here if it exists */
+    margin: 0; /* Ensures buttons stay close together */
   }
+  
   
   .modal-buttons button[type="submit"] {
     background-color: #007acc;
