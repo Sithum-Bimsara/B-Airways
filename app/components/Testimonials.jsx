@@ -13,7 +13,7 @@ function Testimonials() {
     {
       name: 'Kim Taeri',
       location: 'Seoul, South Korea',
-      date: 'April 2023',
+      date: 'April 2024',
       review:
         'What a great experience using B Airways! I booked all of my flights for my gap year through B Airways and never had any issues. When I had to cancel a flight because of an emergency, B Airways support helped me out!',
       image: user1,
