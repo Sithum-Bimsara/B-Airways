@@ -253,10 +253,11 @@ const SeatSelection = () => {
         return;
       }
     }
-  
+
     try {
       const flightId = localStorage.getItem('selectedFlightId');
       
+      // First create the bookings
       const bookingResponse = await fetch('/api/createBooking', {
         method: 'POST',
         headers: {
@@ -266,14 +267,25 @@ const SeatSelection = () => {
           flightId,
           userId: userId || '',
           passengerData,
-          discount: discount, // Optionally send discount information
+          discount: discount,
         }),
       });
-  
+
       const bookingData = await bookingResponse.json();
-  
-      if (bookingResponse.status === 207) { // Partial success
-        // Store successful bookings in BookingData
+
+      if (!bookingResponse.ok && bookingResponse.status !== 207) {
+        throw new Error(bookingData.message || 'Failed to create bookings.');
+      }
+
+      // Show confirmation dialog with total price
+      const confirmed = window.confirm(`Total Price: $${totalPrice.toFixed(2)}\nAre you sure you want to confirm this booking?`);
+    
+      if (!confirmed) {
+        return;
+      }
+
+      // Handle partial success case
+      if (bookingResponse.status === 207) {
         const successfulBookings = bookingData.successfulBookings.map(booking => ({
           bookingId: booking.bookingId,
           passengerId: booking.Passenger_ID,
@@ -282,40 +294,39 @@ const SeatSelection = () => {
           price: booking.price,
           travelClass: getTravelClass(booking.Seat)
         }));
-        
-        // Store existing bookings if any
+
+        // Update booking status for successful bookings
+        await fetch('/api/updateBookingStatus', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            bookingIds: successfulBookings.map(booking => booking.bookingId)
+          }),
+        });
+
         const existingBookings = JSON.parse(localStorage.getItem('BookingData') || '[]');
         localStorage.setItem('BookingData', JSON.stringify([...existingBookings, ...successfulBookings]));
-  
-        // Update PassengerData to keep only failed bookings, removing seat and price
+
         const remainingPassengers = passengerData.filter(passenger => 
           bookingData.failedBookings.some(failed => 
             failed.Passenger_ID === passenger.Passenger_ID
           )
         ).map(({ Seat, price, travelClass, discountApplied, ...rest }) => rest);
         localStorage.setItem('PassengerData', JSON.stringify(remainingPassengers));
-  
-        // Calculate new total price (which will be 0 as we removed prices)
         localStorage.setItem('TotalPrice', JSON.stringify(0));
-  
-        // Show error messages for failed bookings
+
         const errorMessages = bookingData.failedBookings
           .map(booking => booking.errorMessage)
           .join('\n');
         
         alert(`Some bookings failed:\n${errorMessages}`);
-        
-        // Refresh the page to update seat map
         window.location.reload();
         return;
       }
-  
-      if (!bookingResponse.ok) {
-        throw new Error(bookingData.message || 'Failed to create bookings.');
-      }
-  
-      // All bookings successful
-      // Store all bookings in BookingData
+
+      // Handle complete success case
       const successfulBookings = bookingData.successfulBookings.map(booking => ({
         bookingId: booking.bookingId,
         passengerId: booking.Passenger_ID,
@@ -324,15 +335,21 @@ const SeatSelection = () => {
         price: booking.price,
         travelClass: getTravelClass(booking.Seat)
       }));
+
+      // Update booking status for all successful bookings
+      await fetch('/api/updateBookingStatus', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bookingIds: successfulBookings.map(booking => booking.bookingId)
+        }),
+      });
       
-      // Store existing bookings if any
       const existingBookings = JSON.parse(localStorage.getItem('BookingData') || '[]');
       localStorage.setItem('BookingData', JSON.stringify([...existingBookings, ...successfulBookings]));
-      
-      // Clear PassengerData since all bookings were successful
       localStorage.setItem('PassengerData', JSON.stringify([]));
-      
-      // Store total price
       localStorage.setItem('TotalPrice', JSON.stringify(totalPrice));
       
       router.push('/tickets');
