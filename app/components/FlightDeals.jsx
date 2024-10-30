@@ -9,6 +9,7 @@ import nusaPenidaIslandBali from '../assets/images/nusaPenidaIslandBali.jpg';
 import sigiriya from '../assets/images/sigiriya.jpg';
 import tajMahalIndia from '../assets/images/tajMahalIndia.jpg';
 import watBenchamabophitTemple from '../assets/images/WatBenchamabophitTempleinBangkokThailand.jpg';
+import thailand from '../assets/images/thailand.jpg';
 
 import './FlightDeals.css';
 
@@ -62,6 +63,12 @@ function FlightDeals() {
       description: 'Admire the Marble Temple’s elegance under twilight hues.',
       image: watBenchamabophitTemple,
     },
+    {
+      city: 'Phi Phi Islands',
+      location: 'Thailand',
+      description: 'Immerse yourself in the tropical beauty of these stunning islands.',
+      image: thailand, 
+    }
   ];
 
   return (
