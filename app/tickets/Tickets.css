@@ -11,7 +11,7 @@
 }
 
 .title {
-  color: #1a237e;
+  color: #24577a;
   margin-bottom: 15px;
   font-size: 1.8em;
   font-weight: bold;
@@ -53,11 +53,12 @@
   align-items: center;
   margin-bottom: 12px;
   font-size: 1em;
-  color: #1976d2;
+  color: #4e83a7;
 }
 
 .airline {
   font-weight: bold;
+  color: #4e83a7;
 }
 
 .ticket-body {
@@ -137,7 +138,7 @@
 }
 
 .action-button {
-  background-color: #0070f3;
+  background-color: #24577a;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -150,7 +151,7 @@
 }
 
 .action-button:hover {
-  background-color: #005bb5;
+  background-color: #4e83a7;
   transform: translateY(-2px);
 }
 
