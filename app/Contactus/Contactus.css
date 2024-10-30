@@ -23,7 +23,7 @@
 .contact-us::before {
   width: 150px;
   height: 150px;
-  background-color: #0070f3;
+  background-color: #24577a;
   top: -40px;
   left: -40px;
 }
@@ -40,7 +40,7 @@
 .contact-us h2 {
   font-size: 26px;
   margin-bottom: 20px;
-  color: #007acc;
+  color: #24577a;
   text-align: center;
   letter-spacing: 1px; /* Letter spacing for style */
 }
@@ -81,7 +81,7 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #0070f3;
+  border-color: #24577a;
   box-shadow: 0 4px 8px rgba(0, 112, 243, 0.15); /* Shadow on focus */
   outline: none;
 }
@@ -89,7 +89,7 @@
 /* Button Styling */
 .submit-button {
   padding: 12px;
-  background: linear-gradient(145deg, #0070f3, #005bb5);
+  background: linear-gradient(145deg, #4e83a7, #24577a);
   color: #fff;
   border: none;
   border-radius: 25px; /* Rounded button */

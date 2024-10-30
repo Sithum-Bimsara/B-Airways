@@ -61,13 +61,13 @@
 }
 
 .signin-btn {
-  background-color: #3c47e9;
+  background-color: #24577a;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 112, 243, 0.2);
 }
 
 .signin-btn:hover {
-  background-color: #0061d5;
+  background-color: #4e83a7;
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 112, 243, 0.3);
 }
@@ -120,7 +120,7 @@
 }
 
 .profile-link:hover {
-  color: #0070f3;
+  color: #4e83a7;
 }
 
 .profile-link span {
@@ -144,7 +144,7 @@
 
 .admin-link {
   text-decoration: none;
-  color: #333;
+  color: #24577a;
   font-size: 1rem;
   font-weight: 600;
   padding: 8px 16px;
@@ -155,7 +155,7 @@
 }
 
 .admin-link:hover {
-  color: #0070f3;
+  color: #4e83a7;
   background-color: rgba(0, 112, 243, 0.1);
 }
 
@@ -167,7 +167,7 @@
 
 .menu a, .nav-link {
   text-decoration: none;
-  color: #333;
+  color: #24577a;
   font-size: 1rem;
   font-weight: 600;
   padding: 8px 16px;
@@ -181,7 +181,7 @@
 }
 
 .menu a:hover, .nav-link:hover {
-  color: #0070f3;
+  color: #4e83a7;
   background-color: rgba(0, 112, 243, 0.1);
 }
 
@@ -192,7 +192,7 @@
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 500;
-  background-color: #3c47e9;
+  background-color: #24577a;
   color: #fff;
   display: flex;
   align-items: center;
@@ -202,7 +202,7 @@
 }
 
 .chatbot-toggle-btn:hover {
-  background-color: #0061d5;
+  background-color: #4e83a7;
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 112, 243, 0.3);
 }
