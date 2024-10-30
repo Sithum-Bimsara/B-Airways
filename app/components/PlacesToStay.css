@@ -42,7 +42,7 @@
 .places-to-stay h2{
   font-size: 32px;
   font-weight: bold;
-  color: #3c47e9; /* Primary color */
+  color: #24577a; /* Primary color */
   margin-bottom: 40px;
 }
 
@@ -57,5 +57,5 @@
 .place-name {
   font-weight: bold;
   font-size: 20px;
-  color: #3c47e9; /* Different color for country name */
+    color: #24577a;
 }

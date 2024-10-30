@@ -10,7 +10,7 @@
   .flight-deals-heading {
     font-size: 32px;
     font-weight: bold;
-    color: #3c47e9; /* Primary color */
+    color: #24577a;
     margin-bottom: 40px;
   }
   
@@ -60,7 +60,7 @@
   .deal-city {
     font-size: 20px;
     font-weight: bold;
-    color: #3c47e9;
+    color: #24577a;
     margin: 0;
   }
   
