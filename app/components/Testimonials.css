@@ -8,7 +8,7 @@
 
 .testimonials h2 {
     font-size: 36px;
-    color: #3c47e9; /* Primary color */
+    color: #24577a; /* Primary color */
     margin-bottom: 40px;
     margin-top: -10px;
 }
@@ -91,7 +91,7 @@
 .read-more-btn {
     background-color: transparent; /* Button background */
     border: none; /* Remove border */
-    color: #3c47e9; /* Color of button text */
+    color: #24577a; /* Color of button text */
     cursor: pointer; /* Pointer cursor */
     margin-top: 10px; /* Margin above button */
     font-size: 14px; /* Button font size */

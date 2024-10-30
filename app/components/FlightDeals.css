@@ -11,7 +11,7 @@
 .flight-deals-heading {
   font-size: 36px; /* Slightly larger heading */
   font-weight: bold;
-  color: #3c47e9; /* Primary color */
+  color: #24577a; /* Primary color */
   margin-bottom: 20px; /* Adjusted margin */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   margin-top: 40px;
@@ -76,7 +76,7 @@
   flex: 2;
   font-size: 20px; /* Slightly larger city name */
   font-weight: bold;
-  color: #3c47e9;
+  color: #24577a;
   margin: 0;
 }
 
