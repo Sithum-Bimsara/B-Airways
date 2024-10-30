@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlaneDeparture, faPlaneArrival, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlaneDeparture, faPlaneArrival, faCalendarAlt, faExclamationCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './HeroSection.css';
 
 function HeroSection() {
@@ -17,6 +17,8 @@ function HeroSection() {
   const [route1, setRoute1] = useState(null);
   const [route2, setRoute2] = useState(null);
   const [flightType, setFlightType] = useState('oneway');
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     fetchAirportCodes();
@@ -48,25 +50,43 @@ function HeroSection() {
       try {
         const response1 = await fetch(`/api/getRoute?origin=${origin}&destination=${destination}`);
         const data1 = await response1.json();
-        if (data1 && data1.length > 0 && data1[0].Route_ID) {
+        const response2 = await fetch(`/api/getRoute?origin=${destination}&destination=${origin}`);
+        const data2 = await response2.json();
+
+        const hasOutbound = data1 && data1.length > 0 && data1[0].Route_ID;
+        const hasReturn = data2 && data2.length > 0 && data2[0].Route_ID;
+
+        if (hasOutbound) {
           setRoute1({ id: data1[0].Route_ID });
         } else {
           setRoute1(null);
         }
 
-        const response2 = await fetch(`/api/getRoute?origin=${destination}&destination=${origin}`);
-        const data2 = await response2.json();
-        if (data2 && data2.length > 0 && data2[0].Route_ID) {
+        if (hasReturn) {
           setRoute2({ id: data2[0].Route_ID });
         } else {
           setRoute2(null);
-          setReturnDate(''); // Clear return date if route2 is not valid
+          setReturnDate('');
         }
+
+        if (!hasOutbound && !hasReturn && flightType === 'roundtrip') {
+          setShowAlert(true);
+          setAlertMessage(`No flights available in either direction between ${origin} and ${destination}. Please try different locations.`);
+        } else if (!hasOutbound) {
+          setShowAlert(true);
+          setAlertMessage(`No flights available from ${origin} to ${destination}. Please try different locations.`);
+        } else if (!hasReturn && flightType === 'roundtrip') {
+          setShowAlert(true);
+          setAlertMessage(`No return flights available from ${destination} to ${origin}. Please try different locations.`);
+        }
+
       } catch (error) {
         console.error('Error fetching routes:', error);
         setRoute1(null);
         setRoute2(null);
-        setReturnDate(''); // Clear return date if there's an error
+        setReturnDate('');
+        setShowAlert(true);
+        setAlertMessage('Error checking flight routes. Please try again.');
       }
     }
   };
@@ -103,12 +123,14 @@ function HeroSection() {
   const handleFromWhereChange = async (event) => {
     const selectedFromWhere = event.target.value;
     setFromWhere(selectedFromWhere);
+    setShowAlert(false);
     fetchRoutes(selectedFromWhere, whereTo);
   };
 
   const handleWhereToChange = async (event) => {
     const selectedWhereTo = event.target.value;
     setWhereTo(selectedWhereTo);
+    setShowAlert(false);
     fetchRoutes(fromWhere, selectedWhereTo);
   };
 
@@ -118,10 +140,28 @@ function HeroSection() {
   const handleFlightTypeChange = (type) => {
     setFlightType(type);
     localStorage.setItem('flightType', type);
-    if (type === 'oneway') {
-      setReturnDate(''); // Clear return date when switching to one-way
+    if (type === 'oneway' && !route1) {
+      setReturnDate('');
+      setShowAlert(true);
+      setAlertMessage(`No flights available from  ${fromWhere} and ${whereTo}. Please try different locations.`);
+    } else if (type === 'roundtrip' && fromWhere && whereTo && !route2 && route1) {
+      setShowAlert(true);
+      setAlertMessage(`No return flights available from ${whereTo} to ${fromWhere}. Please try different locations.`);
+    } else if (type === 'roundtrip' && fromWhere && whereTo && !route2 && !route1) {
+      setShowAlert(true);
+      setAlertMessage(`No flights available in either direction between ${fromWhere} and ${whereTo}. Please try different locations.`);
     }
   };
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
 
   return (
     <section className="hero-section">
@@ -132,6 +172,19 @@ function HeroSection() {
         <h1 className="main-title">just a trip</h1>
       </header>
       
+      {showAlert && (
+        <div className="alert">
+          <FontAwesomeIcon icon={faExclamationCircle} className="alert-icon" />
+          <div className="alert-content">{alertMessage}</div>
+          <button 
+            onClick={() => setShowAlert(false)}
+            aria-label="Close alert"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
+      )}
+
       <div className="flight-type-selector">
         <button 
           className={`type-button ${flightType === 'oneway' ? 'active' : ''}`}

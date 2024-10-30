@@ -81,13 +81,36 @@ def chat_with_llm(user_message: str):
         
         # Execute SQL query and get results
         results = db.run(sql_query)
+
+        print(f"SQL Query: {sql_query}")
+        print(f"Results: {results}")
         
         # Create context with results for final answer
-        results_context = f"""Based on this database query result:
-        {results}
-        
-        Please provide a natural language answer to the question also be user friendly to continue an engaging conversation. Do not reveal any sensitive, confidential or private information. Only share information that is appropriate for public consumption: {user_message}"""
-        
+        if results:
+            results_context = f"""Based on this database query result:
+            {results}
+            
+            You are a friendly customer service chatbot for B Airways. Please provide a natural, conversational response to this question: {user_message}
+
+            Guidelines:
+            - Use the query results to provide accurate information
+            - Maintain a helpful and professional tone
+            - Only share publicly available information
+            - Do not reveal any sensitive data like personal details or internal records
+            - Keep the conversation engaging and suggest relevant follow-up topics
+            - Format numbers and dates in a user-friendly way"""
+        else:
+            results_context = f"""You are a helpful and friendly customer service chatbot for B Airways. 
+            Even though I don't have specific database information for this query, please:
+            1. Maintain a natural, conversational tone
+            2. Acknowledge the user's question
+            3. Provide helpful general information about aviation and travel
+            4. Suggest alternative topics or questions if appropriate
+            5. Express willingness to help with other questions
+            
+            The user's question is: {user_message}
+            
+            Remember to be empathetic, professional and focus only on publicly available information."""
         # Get final response
         final_response = chat_session.send_message(results_context)
         return final_response.text

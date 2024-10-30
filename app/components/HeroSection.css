@@ -132,3 +132,72 @@
   .search-button:hover {
     background-color:/*#3c47e9*/ #24577a;
   }
+
+  /* Add these styles for the alert */
+  .alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 500px;
+    animation: slideDown 0.3s ease-out;
+    border-left: 4px solid #ff4d4d;
+  }
+
+  .alert-content {
+    flex: 1;
+    color: #333;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .alert-icon {
+    color: #ff4d4d;
+    font-size: 20px;
+  }
+
+  .alert button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+
+  .alert button:hover {
+    color: #333;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translate(-50%, -100%);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+  }
+
+  /* Add media query for mobile responsiveness */
+  @media (max-width: 768px) {
+    .alert {
+      width: 90%;
+      min-width: auto;
+      margin: 0 20px;
+    }
+  }
