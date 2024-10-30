@@ -49,7 +49,7 @@
     height: 200px;
     object-fit: cover;
     aspect-ratio: 3 / 2; /* Maintains consistent ratio */
-    flex: 0 0 70%; /* Take 70% of the card height */
+    flex: 0 0 60%; /* Take 60% of the card height */
   }
   
   .deal-info {
