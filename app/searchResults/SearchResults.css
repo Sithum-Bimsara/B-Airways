@@ -172,7 +172,7 @@
 }
 
 .select-button {
-  background-color: #0070f3;
+  background-color: #24577a;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -184,7 +184,7 @@
 }
 
 .select-button:hover:not(:disabled) {
-  background-color: #005bb5;
+  background-color: #4e83a7;
   transform: translateY(-2px);
 }
 

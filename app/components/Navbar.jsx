@@ -49,7 +49,7 @@ function Navbar() {
         <ul className="menu">
           <li>
             <button onClick={() => scrollToSection('flights')} className="nav-link">
-              Flights
+              Destinations
             </button>
           </li>
           <li>
