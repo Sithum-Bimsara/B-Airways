@@ -49,7 +49,6 @@
 .place-description {
   font-size: 16px;
   color: #333;
-  margin: 0;
   line-height: 1.6; /* Improve readability */
   word-wrap: break-word; /* Prevent overflow for long words */
 }
@@ -57,5 +56,6 @@
 .place-name {
   font-weight: bold;
   font-size: 20px;
-    color: #24577a;
+  color: #24577a;
+  margin-bottom: 5px;
 }
