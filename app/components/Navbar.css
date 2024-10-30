@@ -158,3 +158,20 @@
 .admin-link:hover {
   color: #005bb5;
 }
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-height: 80px; 
+  width: auto;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .logo img {
+    max-height: 70px; 
+  }
+}

@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import Link from 'next/link';
+import Image from 'next/image';
+import logo from '../assets/images/b-airways-logo.png';
 
 function Navbar() {
   const [isSignupOpen, setIsSignupOpen] = React.useState(false);
@@ -23,7 +25,17 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">B Airways</div>
+      <div className="logo">
+          <Link href="/">
+            <Image 
+              src={logo}
+              alt="B Airways Logo"
+              width={250} 
+              height={150} 
+              priority 
+            />
+          </Link>
+        </div>
         <ul className="menu">
           <li>Flights</li>
           <li>Hotels</li>
