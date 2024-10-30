@@ -308,7 +308,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE `GetPassengersByAgeCategory`(IN flightID VARCHAR(10))
 BEGIN
-    SELECT 
+    SELECT DISTINCT
         p.Name,
         p.Passport_Number,
         TIMESTAMPDIFF(YEAR, p.Date_of_birth, CURDATE()) AS Age,
