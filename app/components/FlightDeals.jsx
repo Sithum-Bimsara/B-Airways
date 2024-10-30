@@ -18,52 +18,53 @@ function FlightDeals() {
     {
       city: 'Buddha Tooth Relic Temple',
       location: 'Singapore',
-      description: 'Discover the beautiful architecture of this Chinese Buddhist temple at night.',
+      description: 'Marvel at this grand temple’s glowing splendor by night.',
       image: ancientCitySingapore,
     },
     {
       city: 'Lempuyang Temple',
       location: 'Bali, Indonesia',
-      description: 'Experience the Gates of Heaven with the majestic Mount Agung in the background.',
+      description: 'Step through the Gates of Heaven with stunning Mount Agung views.',
       image: empuyangTempleBali,
     },
     {
       city: 'Marina Bay & Helix Bridge',
       location: 'Singapore',
-      description: 'Enjoy the breathtaking skyline view from this architectural wonder by night.',
+      description: 'Experience the dazzling skyline from Singapore’s iconic landmarks.',
       image: helixBaySingapore,
     },
     {
       city: 'Lotus Tower',
       location: 'Colombo, Sri Lanka',
-      description: 'Explore the tallest tower in South Asia with panoramic views of the city.',
+      description: 'Ascend South Asia’s tallest tower for panoramic city views.',
       image: lotusTowerSL,
     },
     {
       city: 'Nusa Penida Island',
       location: 'Bali, Indonesia',
-      description: 'Discover the turquoise waters and cliffs of this idyllic paradise.',
+      description: 'Explore turquoise waters, towering cliffs, and hidden beaches.',
       image: nusaPenidaIslandBali,
     },
     {
       city: 'Sigiriya Rock Fortress',
       location: 'Sri Lanka',
-      description: 'Climb the ancient rock fortress for a stunning panoramic view of the jungle.',
+      description: 'Scale the ancient fortress for breathtaking jungle views.',
       image: sigiriya,
     },
     {
       city: 'Taj Mahal',
       location: 'Agra, India',
-      description: 'Marvel at the symbol of love, a UNESCO World Heritage Site.',
+      description: 'Witness the timeless beauty of this symbol of eternal love.',
       image: tajMahalIndia,
     },
     {
       city: 'Wat Benchamabophit Temple',
       location: 'Bangkok, Thailand',
-      description: 'Admire the marble architecture of this beautiful Thai temple during twilight.',
+      description: 'Admire the Marble Temple’s elegance under twilight hues.',
       image: watBenchamabophitTemple,
     },
   ];
+  
   
   
 
