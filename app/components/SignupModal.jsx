@@ -89,6 +89,7 @@ const SignupModal = ({ isOpen, onClose }) => {
             placeholder="Last Name"
             required
           />
+          <label>Enter your birthday:</label>
           <input
             type="date"
             name="dateOfBirth"
