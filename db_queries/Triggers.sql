@@ -27,7 +27,7 @@ BEGIN
         UPDATE member_detail
         SET No_of_booking = No_of_booking + 1
         WHERE User_ID = NEW.User_ID;
-
+        
         -- Select the appropriate membership type based on the number of bookings
         SELECT Membership_Type
         INTO new_membership_type

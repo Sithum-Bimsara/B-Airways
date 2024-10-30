@@ -10,14 +10,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Origin and destination are required.' }, { status: 400 });
     }
 
-    const [results]: any = await connection.query('CALL GetAllPastFlightsAndPassengerCountByOriginAndDestination(?, ?)', [
-      origin,
-      destination
-    ]);
+    const [results]: any = await connection.execute(
+      `SELECT 
+        Flight_ID,
+        Status,
+        OriginAirportName,
+        DestinationAirportName,
+        PassengerCount
+      FROM FlightDetailsView
+      WHERE Origin_airport_code = ?
+      AND Destination_airport_code = ?
+      AND Departure_date < CURDATE()`,
+      [origin, destination]
+    );
 
     console.log('Past flights results:', results);
 
-    return NextResponse.json({ pastFlights: results[0] });
+    return NextResponse.json({ pastFlights: results });
   } catch (error: any) {
     console.error('Error fetching past flights:', error);
     return NextResponse.json({ message: 'Error fetching past flights.' }, { status: 500 });
