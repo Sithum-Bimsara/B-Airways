@@ -18,6 +18,20 @@ USE `b_airways`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Temporary view structure for view `aircraftmodelrevenueview`
+--
+
+DROP TABLE IF EXISTS `aircraftmodelrevenueview`;
+/*!50001 DROP VIEW IF EXISTS `aircraftmodelrevenueview`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `aircraftmodelrevenueview` AS SELECT 
+ 1 AS `Airplane_model_ID`,
+ 1 AS `Model_name`,
+ 1 AS `TotalRevenue`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `airplane`
 --
 
@@ -189,7 +203,7 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
-INSERT INTO `booking` VALUES ('bk_1','FL001',NULL,1,'P001_S001','2023-06-01 10:00:00',450),('bk_10','FL003',NULL,10,'P008_S002','2023-06-03 08:15:00',550),('bk_11','FL003',NULL,1,'P008_S400','2023-06-03 09:00:00',1100),('bk_12','FL003',NULL,2,'P008_S476','2023-06-03 09:30:00',1700),('bk_13','FL004',NULL,3,'P004_S020','2023-06-04 11:00:00',600),('bk_14','FL004',NULL,4,'P004_S021','2023-06-04 11:15:00',600),('bk_15','FL004',NULL,5,'P004_S136','2023-06-04 12:00:00',1200),('bk_16','FL004',NULL,6,'P004_S157','2023-06-04 12:30:00',1800),('bk_17','FL005',NULL,7,'P005_S030','2023-06-05 13:00:00',650),('bk_18','FL005',NULL,8,'P005_S031','2023-06-05 13:15:00',650),('bk_19','FL005',NULL,9,'P005_S140','2023-06-05 14:00:00',1300),('bk_2','FL001',NULL,2,'P001_S002','2023-06-01 10:15:00',450),('bk_20','FL005',NULL,10,'P005_S160','2023-06-05 14:30:00',1900),('bk_21','FL003',NULL,1,'P008_S230','2024-10-27 21:27:19',550),('bk_22','FL003',NULL,2,'P008_S489','2024-10-27 21:27:19',1700),('bk_23','FL001',NULL,1,'P001_S010','2024-10-27 21:30:14',450),('bk_24','FL001',NULL,2,'P001_S140','2024-10-27 21:30:14',900),('bk_25','FL001',NULL,1,'P001_S070','2024-10-27 21:51:59',450),('bk_26','FL001',NULL,2,'P001_S071','2024-10-27 21:51:59',450),('bk_27','FL003',NULL,1,'P008_S046','2024-10-27 21:55:06',550),('bk_28','FL001',NULL,1,'P001_S041','2024-10-27 21:55:41',450),('bk_29','FL001',NULL,1,'P001_S110','2024-10-27 21:56:59',450),('bk_3','FL001',NULL,3,'P001_S115','2023-06-01 11:00:00',900),('bk_30','FL003',NULL,1,'P008_S481','2024-10-27 21:57:54',1700),('bk_31','FL003',NULL,2,'P008_S487','2024-10-27 21:57:54',1700),('bk_32','FL001',NULL,1,'P001_S131','2024-10-27 22:02:36',900),('bk_33','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S081','2024-10-27 22:24:07',450),('bk_34','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P001_S156','2024-10-27 22:24:07',1500),('bk_35','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S060','2024-10-27 22:27:49',450),('bk_36','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S014','2024-10-27 22:35:53',450),('bk_37','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P001_S063','2024-10-27 22:35:53',450),('bk_38','FL003','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P008_S009','2024-10-27 22:38:17',550),('bk_39','FL003','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P008_S411','2024-10-27 22:38:17',1100),('bk_4','FL001',NULL,4,'P001_S145','2023-06-01 11:30:00',1500),('bk_40','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S086','2024-10-27 22:39:38',450),('bk_41','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S152','2024-10-27 22:47:44',1500),('bk_42','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P001_S144','2024-10-27 22:47:44',900),('bk_5','FL002',NULL,5,'P002_S010','2023-06-02 09:00:00',500),('bk_6','FL002',NULL,6,'P002_S011','2023-06-02 09:15:00',500),('bk_7','FL002',NULL,7,'P002_S120','2023-06-02 10:00:00',1000),('bk_8','FL002',NULL,8,'P002_S150','2023-06-02 10:30:00',1600),('bk_9','FL003',NULL,9,'P008_S001','2023-06-03 08:00:00',550);
+INSERT INTO `booking` VALUES ('bk_1','FL001',NULL,1,'P001_S001','2023-06-01 10:00:00',450),('bk_10','FL003',NULL,10,'P008_S002','2023-06-03 08:15:00',550),('bk_11','FL003',NULL,1,'P008_S400','2023-06-03 09:00:00',1100),('bk_12','FL003',NULL,2,'P008_S476','2023-06-03 09:30:00',1700),('bk_13','FL004',NULL,3,'P004_S020','2023-06-04 11:00:00',600),('bk_14','FL004',NULL,4,'P004_S021','2023-06-04 11:15:00',600),('bk_15','FL004',NULL,5,'P004_S136','2023-06-04 12:00:00',1200),('bk_16','FL004',NULL,6,'P004_S157','2023-06-04 12:30:00',1800),('bk_17','FL005',NULL,7,'P005_S030','2023-06-05 13:00:00',650),('bk_18','FL005',NULL,8,'P005_S031','2023-06-05 13:15:00',650),('bk_19','FL005',NULL,9,'P005_S140','2023-06-05 14:00:00',1300),('bk_2','FL001',NULL,2,'P001_S002','2023-06-01 10:15:00',450),('bk_20','FL005',NULL,10,'P005_S160','2023-06-05 14:30:00',1900),('bk_21','FL003',NULL,1,'P008_S230','2024-10-27 21:27:19',550),('bk_22','FL003',NULL,2,'P008_S489','2024-10-27 21:27:19',1700),('bk_23','FL001',NULL,1,'P001_S010','2024-10-27 21:30:14',450),('bk_24','FL001',NULL,2,'P001_S140','2024-10-27 21:30:14',900),('bk_25','FL001',NULL,1,'P001_S070','2024-10-27 21:51:59',450),('bk_26','FL001',NULL,2,'P001_S071','2024-10-27 21:51:59',450),('bk_27','FL003',NULL,1,'P008_S046','2024-10-27 21:55:06',550),('bk_28','FL001',NULL,1,'P001_S041','2024-10-27 21:55:41',450),('bk_29','FL001',NULL,1,'P001_S110','2024-10-27 21:56:59',450),('bk_3','FL001',NULL,3,'P001_S115','2023-06-01 11:00:00',900),('bk_30','FL003',NULL,1,'P008_S481','2024-10-27 21:57:54',1700),('bk_31','FL003',NULL,2,'P008_S487','2024-10-27 21:57:54',1700),('bk_32','FL001',NULL,1,'P001_S131','2024-10-27 22:02:36',900),('bk_33','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S081','2024-10-27 22:24:07',450),('bk_34','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P001_S156','2024-10-27 22:24:07',1500),('bk_35','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S060','2024-10-27 22:27:49',450),('bk_36','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S014','2024-10-27 22:35:53',450),('bk_37','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P001_S063','2024-10-27 22:35:53',450),('bk_38','FL003','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P008_S009','2024-10-27 22:38:17',550),('bk_39','FL003','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P008_S411','2024-10-27 22:38:17',1100),('bk_4','FL001',NULL,4,'P001_S145','2023-06-01 11:30:00',1500),('bk_40','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S086','2024-10-27 22:39:38',450),('bk_41','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S152','2024-10-27 22:47:44',1500),('bk_42','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P001_S144','2024-10-27 22:47:44',900),('bk_43','FL003',NULL,1,'P008_S436','2024-10-28 21:06:17',1100),('bk_44','FL001',NULL,1,'P001_S013','2024-10-28 21:24:25',450),('bk_45','FL001',NULL,1,'P001_S125','2024-10-28 21:31:15',900),('bk_46','FL003',NULL,1,'P008_S484','2024-10-28 21:31:59',1700),('bk_47','FL003',NULL,2,'P008_S485','2024-10-28 21:31:59',1700),('bk_48','FL003',NULL,1,'P003_S001','2023-06-01 10:00:00',1500),('bk_49','FL003',NULL,1,'P008_S145','2024-10-29 01:48:26',550),('bk_5','FL002',NULL,5,'P002_S010','2023-06-02 09:00:00',500),('bk_50','FL003',NULL,1,'P008_S283','2024-10-29 02:44:51',550),('bk_51','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S155','2024-10-29 03:28:41',1425),('bk_52','FL001',NULL,1,'P001_S124','2024-10-29 03:48:45',900),('bk_53','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S128','2024-10-29 03:54:06',855),('bk_54','FL003',NULL,1,'P008_S322','2024-10-29 19:25:04',550),('bk_55','FL003',NULL,2,'P008_S488','2024-10-29 19:25:04',1700),('bk_56','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S034','2024-10-29 19:58:40',427.5),('bk_57','FL005','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P005_S034','2024-10-29 19:59:04',617.5),('bk_58','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S141','2024-10-29 20:02:45',855),('bk_59','FL001',NULL,1,'P001_S077','2024-10-29 20:30:25',450),('bk_6','FL002',NULL,6,'P002_S011','2023-06-02 09:15:00',500),('bk_60','FL001',NULL,2,'P001_S160','2024-10-29 20:31:36',1500),('bk_61','FL001',NULL,2,'P001_S118','2024-10-29 20:36:55',900),('bk_62','FL001',NULL,2,'P001_S136','2024-10-29 20:46:34',900),('bk_65','FL001','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P001_S080','2024-10-30 00:11:01',427.5),('bk_66','FL003','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P008_S430','2024-10-30 19:13:48',1045),('bk_67','FL003','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P008_S478','2024-10-30 19:13:48',1615),('bk_68','FL035','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P004_S179','2024-10-30 20:43:32',1547),('bk_69','FL035','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P004_S145','2024-10-30 20:43:32',910),('bk_7','FL002',NULL,7,'P002_S120','2023-06-02 10:00:00',1000),('bk_70','FL035','0267645b-9484-11ef-8ff5-047c16a3f13c',3,'P004_S146','2024-10-30 20:43:32',910),('bk_71','FL035','0267645b-9484-11ef-8ff5-047c16a3f13c',4,'P004_S134','2024-10-30 20:43:32',455),('bk_72','FL034','a45145cf-9648-11ef-8ff5-047c16a3f13c',1,'P001_S112','2024-10-30 20:45:03',200),('bk_73','FL034','a45145cf-9648-11ef-8ff5-047c16a3f13c',2,'P001_S113','2024-10-30 20:45:03',200),('bk_74','FL034','a45145cf-9648-11ef-8ff5-047c16a3f13c',1,'P001_S152','2024-10-30 20:45:47',1000),('bk_75','FL035','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P004_S032','2024-10-30 22:31:55',455),('bk_76','FL035','0267645b-9484-11ef-8ff5-047c16a3f13c',2,'P004_S180','2024-10-30 22:31:55',1547),('bk_77','FL038','0267645b-9484-11ef-8ff5-047c16a3f13c',1,'P006_S146','2024-10-30 22:32:35',910),('bk_8','FL002',NULL,8,'P002_S150','2023-06-02 10:30:00',1600),('bk_9','FL003',NULL,9,'P008_S001','2023-06-03 08:00:00',550);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -268,7 +282,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES ('FL001',1,'RT003','2024-10-28','2024-10-28','10:00:00','08:00:00','Scheduled'),('FL002',2,'RT002','2024-10-28','2024-10-28','14:30:00','12:00:00','Scheduled'),('FL003',8,'RT003','2024-10-28','2024-10-28','17:00:00','15:00:00','Delayed'),('FL004',4,'RT009','2024-10-28','2024-10-28','20:30:00','18:00:00','Scheduled'),('FL005',5,'RT009','2024-10-28','2024-10-28','11:00:00','09:00:00','Scheduled'),('FL006',1,'RT006','2024-10-29','2024-10-29','10:00:00','08:00:00','Scheduled'),('FL007',2,'RT007','2024-10-29','2024-10-29','14:30:00','12:00:00','Scheduled'),('FL008',3,'RT008','2024-10-29','2024-10-29','17:00:00','15:00:00','Delayed'),('FL009',4,'RT009','2024-10-29','2024-10-29','20:30:00','18:00:00','Scheduled'),('FL010',5,'RT010','2024-10-29','2024-10-29','11:00:00','09:00:00','Cancelled'),('FL011',1,'RT011','2024-10-30','2024-10-30','10:00:00','08:00:00','Scheduled'),('FL012',2,'RT012','2024-10-30','2024-10-30','14:30:00','12:00:00','Scheduled'),('FL013',3,'RT013','2024-10-30','2024-10-30','17:00:00','15:00:00','Delayed'),('FL014',4,'RT014','2024-10-30','2024-10-30','20:30:00','18:00:00','Scheduled'),('FL015',5,'RT015','2024-10-30','2024-10-30','11:00:00','09:00:00','Cancelled'),('FL016',1,'RT016','2024-10-31','2024-10-31','10:00:00','08:00:00','Scheduled'),('FL017',2,'RT017','2024-10-31','2024-10-31','14:30:00','12:00:00','Scheduled'),('FL018',3,'RT018','2024-10-31','2024-10-31','17:00:00','15:00:00','Delayed'),('FL019',4,'RT019','2024-10-31','2024-10-31','20:30:00','18:00:00','Scheduled'),('FL020',5,'RT020','2024-10-27','2024-10-27','11:00:00','09:00:00','Cancelled'),('FL021',1,'RT001','2024-10-27','2024-10-27','10:00:00','08:00:00','Scheduled'),('FL022',2,'RT002','2024-10-27','2024-10-27','14:30:00','12:00:00','Scheduled'),('FL023',3,'RT003','2024-10-27','2024-10-27','17:00:00','15:00:00','Delayed'),('FL024',4,'RT004','2024-10-27','2024-10-27','20:30:00','18:00:00','Scheduled'),('FL025',5,'RT005','2024-10-27','2024-10-27','11:00:00','09:00:00','Cancelled'),('FL026',1,'RT006','2024-10-27','2024-10-27','10:00:00','08:00:00','Scheduled'),('FL027',2,'RT007','2024-10-27','2024-10-27','14:30:00','12:00:00','Scheduled'),('FL028',3,'RT008','2024-10-27','2024-10-27','17:00:00','15:00:00','Delayed'),('FL029',4,'RT009','2024-10-27','2024-10-27','20:30:00','18:00:00','Scheduled'),('FL030',5,'RT010','2024-10-27','2024-10-27','11:00:00','09:00:00','Cancelled');
+INSERT INTO `flight` VALUES ('FL001',1,'RT003','2024-10-28','2024-10-28','10:00:00','08:00:00','Delayed'),('FL002',2,'RT002','2024-10-28','2024-10-28','14:30:00','12:00:00','Scheduled'),('FL003',8,'RT003','2024-10-28','2024-10-28','17:00:00','15:00:00','Delayed'),('FL004',4,'RT009','2024-10-28','2024-10-28','20:30:00','18:00:00','Scheduled'),('FL005',5,'RT009','2024-10-28','2024-10-28','11:00:00','09:00:00','Scheduled'),('FL006',1,'RT006','2024-10-29','2024-10-29','10:00:00','08:00:00','Scheduled'),('FL007',2,'RT007','2024-10-29','2024-10-29','14:30:00','12:00:00','Scheduled'),('FL008',3,'RT008','2024-10-29','2024-10-29','17:00:00','15:00:00','Delayed'),('FL009',4,'RT009','2024-10-29','2024-10-29','20:30:00','18:00:00','Scheduled'),('FL010',5,'RT010','2024-10-29','2024-10-29','11:00:00','09:00:00','Cancelled'),('FL011',1,'RT011','2024-10-30','2024-10-30','10:00:00','08:00:00','Scheduled'),('FL012',2,'RT012','2024-10-30','2024-10-30','14:30:00','12:00:00','Scheduled'),('FL013',3,'RT013','2024-10-30','2024-10-30','17:00:00','15:00:00','Delayed'),('FL014',4,'RT014','2024-10-30','2024-10-30','20:30:00','18:00:00','Scheduled'),('FL015',5,'RT015','2024-10-30','2024-10-30','11:00:00','09:00:00','Cancelled'),('FL016',1,'RT016','2024-10-31','2024-10-31','10:00:00','08:00:00','Delayed'),('FL017',2,'RT017','2024-10-31','2024-10-31','14:30:00','12:00:00','Scheduled'),('FL018',3,'RT018','2024-10-31','2024-10-31','17:00:00','15:00:00','Delayed'),('FL019',4,'RT019','2024-10-31','2024-10-31','20:30:00','18:00:00','Scheduled'),('FL020',5,'RT020','2024-10-27','2024-10-27','11:00:00','09:00:00','Cancelled'),('FL021',1,'RT001','2024-10-27','2024-10-27','10:00:00','08:00:00','Scheduled'),('FL022',2,'RT002','2024-10-27','2024-10-27','14:30:00','12:00:00','Scheduled'),('FL023',3,'RT003','2024-10-27','2024-10-27','17:00:00','15:00:00','Delayed'),('FL024',4,'RT004','2024-10-27','2024-10-27','20:30:00','18:00:00','Scheduled'),('FL025',5,'RT005','2024-10-27','2024-10-27','11:00:00','09:00:00','Cancelled'),('FL026',1,'RT006','2024-10-27','2024-10-27','10:00:00','08:00:00','Scheduled'),('FL027',2,'RT007','2024-10-27','2024-10-27','14:30:00','12:00:00','Scheduled'),('FL028',3,'RT008','2024-10-27','2024-10-27','17:00:00','15:00:00','Delayed'),('FL029',4,'RT009','2024-10-27','2024-10-27','20:30:00','18:00:00','Scheduled'),('FL030',5,'RT010','2024-10-27','2024-10-27','11:00:00','09:00:00','Cancelled'),('FL031',1,'RT001','2024-10-29','2024-10-29','15:42:00','13:24:00','Cancelled'),('FL032',2,'RT002','2024-10-29','2024-10-29','01:34:00','02:32:00','Cancelled'),('FL033',3,'RT001','2024-10-29','2024-10-29','22:00:00','19:00:00','Scheduled'),('FL034',1,'RT003','2024-10-31','2024-10-31','15:00:00','13:00:00','Scheduled'),('FL035',4,'RT003','2024-10-31','2024-10-31','22:26:00','20:26:00','Scheduled'),('FL036',8,'RT003','2024-10-31','2024-10-31','02:30:00','12:30:00','Scheduled'),('FL037',1,'RT009','2024-11-08','2024-11-08','02:32:00','23:32:00','Scheduled'),('FL038',6,'RT009','2024-11-14','2024-11-14','22:33:00','20:33:00','Scheduled'),('FL039',1,'RT009','2024-11-14','2024-11-14','09:36:00','08:36:00','Scheduled');
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -295,9 +309,28 @@ CREATE TABLE `flight_pricing` (
 
 LOCK TABLES `flight_pricing` WRITE;
 /*!40000 ALTER TABLE `flight_pricing` DISABLE KEYS */;
-INSERT INTO `flight_pricing` VALUES ('FL001','Economy',450),('FL001','Business',900),('FL001','Platinum',1500),('FL002','Economy',500),('FL002','Business',1000),('FL002','Platinum',1600),('FL003','Economy',550),('FL003','Business',1100),('FL003','Platinum',1700),('FL004','Economy',600),('FL004','Business',1200),('FL004','Platinum',1800),('FL005','Economy',650),('FL005','Business',1300),('FL005','Platinum',1900),('FL006','Economy',700),('FL006','Business',1400),('FL006','Platinum',2000),('FL007','Economy',750),('FL007','Business',1500),('FL007','Platinum',2100),('FL008','Economy',800),('FL008','Business',1600),('FL008','Platinum',2200),('FL009','Economy',850),('FL009','Business',1700),('FL009','Platinum',2300),('FL010','Economy',900),('FL010','Business',1800),('FL010','Platinum',2400),('FL011','Economy',950),('FL011','Business',1900),('FL011','Platinum',2500),('FL012','Economy',1000),('FL012','Business',2000),('FL012','Platinum',2600),('FL013','Economy',1050),('FL013','Business',2100),('FL013','Platinum',2700),('FL014','Economy',1100),('FL014','Business',2200),('FL014','Platinum',2800),('FL015','Economy',1150),('FL015','Business',2300),('FL015','Platinum',2900),('FL016','Economy',1200),('FL016','Business',2400),('FL016','Platinum',3000),('FL017','Economy',1250),('FL017','Business',2500),('FL017','Platinum',3100),('FL018','Economy',1300),('FL018','Business',2600),('FL018','Platinum',3200),('FL019','Economy',1350),('FL019','Business',2700),('FL019','Platinum',3300),('FL020','Economy',1400),('FL020','Business',2800),('FL020','Platinum',3400),('FL021','Economy',1450),('FL021','Business',2900),('FL021','Platinum',3500),('FL022','Economy',1500),('FL022','Business',3000),('FL022','Platinum',3600),('FL023','Economy',1550),('FL023','Business',3100),('FL023','Platinum',3700),('FL024','Economy',1600),('FL024','Business',3200),('FL024','Platinum',3800),('FL025','Economy',1650),('FL025','Business',3300),('FL025','Platinum',3900),('FL026','Economy',1700),('FL026','Business',3400),('FL026','Platinum',4000),('FL027','Economy',1750),('FL027','Business',3500),('FL027','Platinum',4100),('FL028','Economy',1800),('FL028','Business',3600),('FL028','Platinum',4200),('FL029','Economy',1850),('FL029','Business',3700),('FL029','Platinum',4300),('FL030','Economy',1900),('FL030','Business',3800),('FL030','Platinum',4400);
+INSERT INTO `flight_pricing` VALUES ('FL001','Economy',450),('FL001','Business',900),('FL001','Platinum',1500),('FL002','Economy',500),('FL002','Business',1000),('FL002','Platinum',1600),('FL003','Economy',550),('FL003','Business',1100),('FL003','Platinum',1700),('FL004','Economy',600),('FL004','Business',1200),('FL004','Platinum',1800),('FL005','Economy',650),('FL005','Business',1300),('FL005','Platinum',1900),('FL006','Economy',700),('FL006','Business',1400),('FL006','Platinum',2000),('FL007','Economy',750),('FL007','Business',1500),('FL007','Platinum',2100),('FL008','Economy',800),('FL008','Business',1600),('FL008','Platinum',2200),('FL009','Economy',850),('FL009','Business',1700),('FL009','Platinum',2300),('FL010','Economy',900),('FL010','Business',1800),('FL010','Platinum',2400),('FL011','Economy',950),('FL011','Business',1900),('FL011','Platinum',2500),('FL012','Economy',1000),('FL012','Business',2000),('FL012','Platinum',2600),('FL013','Economy',1050),('FL013','Business',2100),('FL013','Platinum',2700),('FL014','Economy',1100),('FL014','Business',2200),('FL014','Platinum',2800),('FL015','Economy',1150),('FL015','Business',2300),('FL015','Platinum',2900),('FL016','Economy',1200),('FL016','Business',2400),('FL016','Platinum',3000),('FL017','Economy',1250),('FL017','Business',2500),('FL017','Platinum',3100),('FL018','Economy',1300),('FL018','Business',2600),('FL018','Platinum',3200),('FL019','Economy',1350),('FL019','Business',2700),('FL019','Platinum',3300),('FL020','Economy',1400),('FL020','Business',2800),('FL020','Platinum',3400),('FL021','Economy',1450),('FL021','Business',2900),('FL021','Platinum',3500),('FL022','Economy',1500),('FL022','Business',3000),('FL022','Platinum',3600),('FL023','Economy',1550),('FL023','Business',3100),('FL023','Platinum',3700),('FL024','Economy',1600),('FL024','Business',3200),('FL024','Platinum',3800),('FL025','Economy',1650),('FL025','Business',3300),('FL025','Platinum',3900),('FL026','Economy',1700),('FL026','Business',3400),('FL026','Platinum',4000),('FL027','Economy',1750),('FL027','Business',3500),('FL027','Platinum',4100),('FL028','Economy',1800),('FL028','Business',3600),('FL028','Platinum',4200),('FL029','Economy',1850),('FL029','Business',3700),('FL029','Platinum',4300),('FL030','Economy',1900),('FL030','Business',3800),('FL030','Platinum',4400),('FL031','Economy',200),('FL031','Business',600),('FL031','Platinum',1000.02),('FL032','Economy',200),('FL032','Business',600),('FL032','Platinum',1000),('FL033','Economy',200),('FL033','Business',500),('FL033','Platinum',1500),('FL034','Economy',200),('FL034','Business',400),('FL034','Platinum',1000),('FL035','Economy',500),('FL035','Business',1000),('FL035','Platinum',1700),('FL036','Economy',400),('FL036','Business',800),('FL036','Platinum',1600),('FL037','Economy',200),('FL037','Business',400),('FL037','Platinum',1000),('FL038','Economy',800),('FL038','Business',1000),('FL038','Platinum',1900),('FL039','Economy',600),('FL039','Business',1000),('FL039','Platinum',1400);
 /*!40000 ALTER TABLE `flight_pricing` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `flightdetailsview`
+--
+
+DROP TABLE IF EXISTS `flightdetailsview`;
+/*!50001 DROP VIEW IF EXISTS `flightdetailsview`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `flightdetailsview` AS SELECT 
+ 1 AS `Flight_ID`,
+ 1 AS `Status`,
+ 1 AS `Departure_date`,
+ 1 AS `Origin_airport_code`,
+ 1 AS `Destination_airport_code`,
+ 1 AS `OriginAirportName`,
+ 1 AS `DestinationAirportName`,
+ 1 AS `PassengerCount`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `location`
@@ -375,9 +408,23 @@ CREATE TABLE `member_detail` (
 
 LOCK TABLES `member_detail` WRITE;
 /*!40000 ALTER TABLE `member_detail` DISABLE KEYS */;
-INSERT INTO `member_detail` VALUES ('0267645b-9484-11ef-8ff5-047c16a3f13c',10,'Frequent');
+INSERT INTO `member_detail` VALUES ('0267645b-9484-11ef-8ff5-047c16a3f13c',28,'Gold'),('a45145cf-9648-11ef-8ff5-047c16a3f13c',3,'Normal');
 /*!40000 ALTER TABLE `member_detail` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `memberdiscountview`
+--
+
+DROP TABLE IF EXISTS `memberdiscountview`;
+/*!50001 DROP VIEW IF EXISTS `memberdiscountview`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `memberdiscountview` AS SELECT 
+ 1 AS `User_ID`,
+ 1 AS `Membership_Type`,
+ 1 AS `Discount`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `passenger`
@@ -405,7 +452,7 @@ CREATE TABLE `passenger` (
 
 LOCK TABLES `passenger` WRITE;
 /*!40000 ALTER TABLE `passenger` DISABLE KEYS */;
-INSERT INTO `passenger` VALUES (1,'1234','2030-12-01','Akindu','2014-05-20','Male'),(2,'5678','2028-09-15','Sarah','1990-03-12','Female'),(3,'9012','2029-07-22','John','1985-11-30','Male'),(4,'3456','2031-04-18','Emily','1998-08-05','Female'),(5,'7890','2027-11-09','Michael','1976-02-14','Male'),(6,'2345','2032-01-25','Jessica','2001-06-20','Female'),(7,'6789','2029-03-07','David','1988-09-03','Male'),(8,'0123','2030-08-11','Lisa','1995-12-28','Female'),(9,'4567','2028-05-30','Daniel','1982-04-17','Male'),(10,'8901','2031-10-14','Sophia','2005-07-09','Female');
+INSERT INTO `passenger` VALUES (1,'123456789','2030-12-02','AkinduH','2014-04-10','Male'),(2,'234567899','2028-09-15','Sarah','1990-03-12','Female'),(3,'345678999','2029-07-22','John','1985-11-30','Male'),(4,'456789999','2031-04-18','Emily','1998-08-05','Female'),(5,'7890','2027-11-09','Michael','1976-02-14','Male'),(6,'2345','2032-01-25','Jessica','2001-06-20','Female'),(7,'6789','2029-03-07','David','1988-09-03','Male'),(8,'0123','2030-08-11','Lisa','1995-12-28','Female'),(9,'4567','2028-05-30','Daniel','1982-04-17','Male'),(10,'8901','2031-10-14','Sophia','2005-07-09','Female');
 /*!40000 ALTER TABLE `passenger` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -497,7 +544,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('0267645b-9484-11ef-8ff5-047c16a3f13c','AkinduH','Akindu','Himan','2024-10-03','Sri Lanka','20022470923','Male','akinduhiman2@gmail.com','Member','$2b$10$ZzPDqW1Gq263/z/qX7WayuEmCSh34fi.nWkhFoCAZ.7xAIbeafyE.'),('f79cd31b-9478-11ef-8ff5-047c16a3f13c','admin','admin','admin','2024-10-01','Sri Lanka','20022470923','Male','admin@gmail.com','Admin','$2b$10$zFM/CtHqkECfSMAog2PcluQUDOOHEMzUYCHWGy39D7bul17cYqRHu');
+INSERT INTO `user` VALUES ('0267645b-9484-11ef-8ff5-047c16a3f13c','AkinduH','Akindu','Himan','2024-10-03','Sri Lanka','20022470923','Male','akinduhiman2@gmail.com','Member','$2b$10$/v3sH1ov8KZF.93L5sCxWe6jo/o7quPM/bBN.SfGyK5jQ4vjuaE06'),('a45145cf-9648-11ef-8ff5-047c16a3f13c','Himan','Himan','2','1999-05-03','Sri Lanka','20022470944','Male','himan@gmail.com','Member','$2b$10$G.TLWv5eJeeo5LlzXwbb1.O6q96LZhKmN7xhZd/sJTRNPxjy2kV0i'),('f79cd31b-9478-11ef-8ff5-047c16a3f13c','admin','admin','admin','2024-10-01','Sri Lanka','20022470923','Male','admin@gmail.com','Admin','$2b$10$zFM/CtHqkECfSMAog2PcluQUDOOHEMzUYCHWGy39D7bul17cYqRHu');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -576,16 +623,13 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `GetRevenueByAircraftModel`(
     DETERMINISTIC
 BEGIN
     DECLARE totalRevenue FLOAT DEFAULT 0;
-
-    SELECT SUM(b.Price)
+    
+    SELECT TotalRevenue 
     INTO totalRevenue
-    FROM booking b
-    JOIN flight f ON f.Flight_ID = b.Flight_ID    
-    JOIN airplane a ON a.Airplane_ID = f.Airplane_ID
-    JOIN airplane_model am ON am.Airplane_model_ID = a.Airplane_model_ID
-    WHERE am.Airplane_model_ID = Aircraft_type;
+    FROM AircraftModelRevenueView
+    WHERE Airplane_model_ID = Aircraft_type;
 
-    RETURN totalRevenue;
+    RETURN COALESCE(totalRevenue, 0);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -615,23 +659,45 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `AddFlight`(
 )
 BEGIN
     DECLARE new_Flight_ID VARCHAR(10);
+    DECLARE airplane_conflict INT;
 
-    -- Generate the next Flight_ID based on the highest existing Flight_ID
-    SELECT CONCAT('FL', LPAD(COALESCE(MAX(CAST(SUBSTRING(Flight_ID, 3, 3) AS UNSIGNED)), 0) + 1, 3, '0'))
-    INTO new_Flight_ID
-    FROM flight;
+    -- Check if airplane is already scheduled for this time period
+    SELECT COUNT(*) INTO airplane_conflict
+    FROM flight 
+    WHERE Airplane_ID = p_Airplane_ID
+    AND (
+        (p_Departure_date BETWEEN Departure_date AND Arrival_date)
+        OR (p_Arrival_date BETWEEN Departure_date AND Arrival_date)
+        OR (Departure_date BETWEEN p_Departure_date AND p_Arrival_date)
+        OR (Arrival_date BETWEEN p_Departure_date AND p_Arrival_date)
+    )
+    AND (
+        (p_Departure_time BETWEEN Departure_time AND Arrival_time)
+        OR (p_Arrival_time BETWEEN Departure_time AND Arrival_time)
+        OR (Departure_time BETWEEN p_Departure_time AND p_Arrival_time)
+        OR (Arrival_time BETWEEN p_Departure_time AND p_Arrival_time)
+    );
 
-    -- Insert into the flight table
-    INSERT INTO flight (Flight_ID, Airplane_ID, Route_ID, Departure_date, Arrival_date, Departure_time, Arrival_time)
-    VALUES (new_Flight_ID, p_Airplane_ID, p_Route_ID, p_Departure_date, p_Arrival_date, p_Departure_time, p_Arrival_time);
+    IF airplane_conflict > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Airplane is already scheduled for this time period';
+    ELSE
+        -- Generate the next Flight_ID based on the highest existing Flight_ID
+        SELECT CONCAT('FL', LPAD(COALESCE(MAX(CAST(SUBSTRING(Flight_ID, 3, 3) AS UNSIGNED)), 0) + 1, 3, '0'))
+        INTO new_Flight_ID
+        FROM flight;
 
-    -- Insert pricing 
-    INSERT INTO flight_pricing (Flight_ID, Travel_Class, Price) 
-    VALUES 
-    (new_Flight_ID, 'Economy', p_Economy_Price),
-    (new_Flight_ID, 'Business', p_Business_Price),
-    (new_Flight_ID, 'Platinum', p_Platinum_Price);
-    
+        -- Insert into the flight table
+        INSERT INTO flight (Flight_ID, Airplane_ID, Route_ID, Departure_date, Arrival_date, Departure_time, Arrival_time)
+        VALUES (new_Flight_ID, p_Airplane_ID, p_Route_ID, p_Departure_date, p_Arrival_date, p_Departure_time, p_Arrival_time);
+
+        -- Insert pricing 
+        INSERT INTO flight_pricing (Flight_ID, Travel_Class, Price) 
+        VALUES 
+        (new_Flight_ID, 'Economy', p_Economy_Price),
+        (new_Flight_ID, 'Business', p_Business_Price),
+        (new_Flight_ID, 'Platinum', p_Platinum_Price);
+    END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -793,44 +859,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `GetAllPastFlightsAndPassengerCountByOriginAndDestination` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllPastFlightsAndPassengerCountByOriginAndDestination`(
-    IN origin_airport_name VARCHAR(100),
-    IN destination_airport_name VARCHAR(100)
-)
-BEGIN
-    SELECT 
-        f.Flight_ID,
-        f.Status,
-        a1.Airport_name AS OriginAirportName,
-        a2.Airport_name AS DestinationAirportName,
-        COUNT(DISTINCT p.Passenger_ID) AS PassengerCount
-    FROM flight f
-    JOIN route r ON f.Route_ID = r.Route_ID
-    JOIN airport a1 ON r.Origin_airport_code = a1.Airport_code
-    JOIN airport a2 ON r.Destination_airport_code = a2.Airport_code
-    LEFT JOIN booking b ON f.Flight_ID = b.Flight_ID
-    LEFT JOIN passenger p ON b.Passenger_ID = p.Passenger_ID
-    WHERE a1.Airport_name = origin_airport_name
-    AND a2.Airport_name = destination_airport_name
-    AND f.Departure_date < CURDATE()
-    GROUP BY 
-        f.Flight_ID, f.Status, a1.Airport_name, a2.Airport_name;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `GetAvailableFlights` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -870,9 +898,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAvailableSeats`(IN p_Flight_ID V
 BEGIN
     DECLARE v_Airplane_ID INT;
     DECLARE v_Airplane_model_ID INT;
-    DECLARE v_Total_Seats INT;
-    DECLARE v_Booked_Seats INT;
-    DECLARE v_Available_Seats INT;
+    DECLARE v_Economy_Total INT;
+    DECLARE v_Business_Total INT;
+    DECLARE v_Platinum_Total INT;
+    DECLARE v_Economy_Booked INT;
+    DECLARE v_Business_Booked INT;
+    DECLARE v_Platinum_Booked INT;
 
     -- Get the Airplane_ID and Airplane_model_ID for the given Flight_ID
     SELECT f.Airplane_ID, a.Airplane_model_ID 
@@ -881,24 +912,37 @@ BEGIN
     JOIN Airplane a ON f.Airplane_ID = a.Airplane_ID
     WHERE f.Flight_ID = p_Flight_ID;
 
-    -- Get the total number of seats for the airplane model
-    SELECT (No_of_Economic_Seats + No_of_Business_Seats + No_of_Platinum_Seats)
-    INTO v_Total_Seats
+    -- Get the total seats by class for the airplane model
+    SELECT 
+        No_of_Economic_Seats,
+        No_of_Business_Seats,
+        No_of_Platinum_Seats
+    INTO 
+        v_Economy_Total,
+        v_Business_Total,
+        v_Platinum_Total
     FROM Airplane_model
     WHERE Airplane_model_ID = v_Airplane_model_ID;
 
-    -- Get the number of booked seats for the flight
-    SELECT COUNT(*)
-    INTO v_Booked_Seats
-    FROM Booking
-    WHERE Flight_ID = p_Flight_ID;
-
-    -- Calculate available seats
-    SET v_Available_Seats = v_Total_Seats - v_Booked_Seats;
-
-    -- Return the results
+    -- Get booked seats by class
     SELECT 
-        v_Available_Seats AS Available_Seats;
+        COUNT(CASE WHEN s.Travel_Class = 'Economy' THEN 1 END),
+        COUNT(CASE WHEN s.Travel_Class = 'Business' THEN 1 END),
+        COUNT(CASE WHEN s.Travel_Class = 'Platinum' THEN 1 END)
+    INTO
+        v_Economy_Booked,
+        v_Business_Booked,
+        v_Platinum_Booked
+    FROM Booking b
+    JOIN Seat s ON b.Seat_ID = s.Seat_ID
+    WHERE b.Flight_ID = p_Flight_ID
+    GROUP BY b.Flight_ID;
+
+    -- Return available seats by class
+    SELECT 
+        (v_Economy_Total - COALESCE(v_Economy_Booked, 0)) AS Economy_Available,
+        (v_Business_Total - COALESCE(v_Business_Booked, 0)) AS Business_Available,
+        (v_Platinum_Total - COALESCE(v_Platinum_Booked, 0)) AS Platinum_Available;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -999,7 +1043,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetPassengerCountByDateRangeAndDestinationName`(
-    IN dest_airport_name VARCHAR(100),
+    IN dest_airport_code CHAR(3),
     IN start_date DATE,
     IN end_date DATE
 )
@@ -1009,8 +1053,7 @@ BEGIN
     JOIN passenger p ON b.Passenger_ID = p.Passenger_ID
     JOIN flight f ON f.Flight_ID = b.Flight_ID
     JOIN route r ON r.Route_ID = f.Route_ID
-    JOIN airport a ON r.Destination_airport_code = a.Airport_code
-    WHERE a.Airport_name = dest_airport_name
+    WHERE r.Destination_airport_code = dest_airport_code
      AND f.Arrival_date BETWEEN start_date AND end_date;
 END ;;
 DELIMITER ;
@@ -1030,7 +1073,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetPassengersByAgeCategory`(IN flightID VARCHAR(10))
 BEGIN
-    SELECT 
+    SELECT DISTINCT
         p.Name,
         p.Passport_Number,
         TIMESTAMPDIFF(YEAR, p.Date_of_birth, CURDATE()) AS Age,
@@ -1078,6 +1121,60 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `aircraftmodelrevenueview`
+--
+
+/*!50001 DROP VIEW IF EXISTS `aircraftmodelrevenueview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `aircraftmodelrevenueview` AS select `am`.`Airplane_model_ID` AS `Airplane_model_ID`,`am`.`Model_name` AS `Model_name`,sum(`b`.`Price`) AS `TotalRevenue` from (((`booking` `b` join `flight` `f` on((`f`.`Flight_ID` = `b`.`Flight_ID`))) join `airplane` `a` on((`a`.`Airplane_ID` = `f`.`Airplane_ID`))) join `airplane_model` `am` on((`am`.`Airplane_model_ID` = `a`.`Airplane_model_ID`))) group by `am`.`Airplane_model_ID`,`am`.`Model_name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `flightdetailsview`
+--
+
+/*!50001 DROP VIEW IF EXISTS `flightdetailsview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `flightdetailsview` AS select `f`.`Flight_ID` AS `Flight_ID`,`f`.`Status` AS `Status`,`f`.`Departure_date` AS `Departure_date`,`a1`.`Airport_code` AS `Origin_airport_code`,`a2`.`Airport_code` AS `Destination_airport_code`,`a1`.`Airport_name` AS `OriginAirportName`,`a2`.`Airport_name` AS `DestinationAirportName`,count(distinct `p`.`Passenger_ID`) AS `PassengerCount` from (((((`flight` `f` join `route` `r` on((`f`.`Route_ID` = `r`.`Route_ID`))) join `airport` `a1` on((`r`.`Origin_airport_code` = `a1`.`Airport_code`))) join `airport` `a2` on((`r`.`Destination_airport_code` = `a2`.`Airport_code`))) left join `booking` `b` on((`f`.`Flight_ID` = `b`.`Flight_ID`))) left join `passenger` `p` on((`b`.`Passenger_ID` = `p`.`Passenger_ID`))) group by `f`.`Flight_ID`,`f`.`Status`,`f`.`Departure_date`,`a1`.`Airport_code`,`a2`.`Airport_code`,`a1`.`Airport_name`,`a2`.`Airport_name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `memberdiscountview`
+--
+
+/*!50001 DROP VIEW IF EXISTS `memberdiscountview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `memberdiscountview` AS select `u`.`User_ID` AS `User_ID`,`m`.`Membership_Type` AS `Membership_Type`,`l`.`Discount` AS `Discount` from ((`user` `u` join `member_detail` `m` on((`u`.`User_ID` = `m`.`User_ID`))) join `loyalty_detail` `l` on((`l`.`Membership_Type` = `m`.`Membership_Type`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1088,4 +1185,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-28 19:21:46
+-- Dump completed on 2024-10-30 23:17:27
