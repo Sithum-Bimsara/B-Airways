@@ -33,11 +33,21 @@ To run this project locally, follow these steps:
    DB_PASSWORD=your_database_password
    DB_NAME=your_database_name
    JWT_SECRET_KEY=your_jwt_secret_key
+   SMTP_SERVER_USERNAME=your_smtp_username
+   SMTP_SERVER_PASSWORD=your_smtp_password 
+   SMTP_SERVER_HOST=your_smtp_host
+   SITE_MAIL_RECEIVER=your_site_email
+   GEMINI_API_KEY=your_gemini_api_key
+
    ```
 
-4. **Run the development server:**
+4. **Run the development server and Python server:**
    ```bash
+   # Start Next.js development server
    npm run dev
+
+   # In a separate terminal, start the Python server
+   python "app/utils/Services/python_backend/chatbot.py"
    ```
 
 5. **Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.**
