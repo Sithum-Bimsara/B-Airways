@@ -39,6 +39,9 @@
   flex: 1 1 calc(33.33% - 20px); /* Responsive 3 cards per row with gap */
   max-width: 300px;
   transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  display: flex;
+  flex-direction: column;
+  width: calc(33.33% - 20px);
 }
 
 .deal-card:hover {
@@ -48,8 +51,10 @@
 
 .deal-image {
   width: 100%;
-  height: 300px;
+  height: 200px;
   object-fit: cover;
+  aspect-ratio: 3 / 2; /* Maintains consistent ratio */
+  flex: 0 0 60%; /* Take 60% of the card height */
   transition: filter 0.3s ease; /* Smooth transition for hover effect */
 }
 
@@ -58,20 +63,27 @@
 }
 
 .deal-info {
-  padding: 15px;
+  padding: 12px 12px 20px;
+  flex: 1; /* Allow info section to fill remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
   border-radius: 10px; /* Rounded corners for info area */
 }
 
 .deal-city {
-  font-size: 22px; /* Slightly larger city name */
+  flex: 2;
+  font-size: 20px; /* Slightly larger city name */
   font-weight: bold;
   color: #3c47e9;
-  margin: 10px 0;
+  margin: 0;
 }
 
 .deal-location {
+  flex: 1;
   font-size: 16px;
+  font-weight: bold;
   color: #666; /* Gray color for the location */
   margin: 5px 0; /* Adjusted margin */
 }
@@ -79,16 +91,9 @@
 .deal-description {
   font-size: 14px;
   color: #888; /* Light gray for the description */
-  margin: 5px 0; /* Adjusted margin */
+  font-style: italic;
+  line-height: 1.5; /* Added line height for better readability */
+  margin-top: 5px; 
 }
 
-.deal-price {
-  font-size: 20px; /* Slightly larger price */
-  font-weight: bold;
-  color: #333;
-  margin: 10px 0 0; /* Add margin to the top */
-  text-align: center;
-  background-color: #e0f7fa; /* Light blue background */
-  padding: 5px; /* Padding for price */
-  border-radius: 5px; /* Rounded corners for price */
-}
+

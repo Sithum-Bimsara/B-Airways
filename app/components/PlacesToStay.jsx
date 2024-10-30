@@ -1,37 +1,36 @@
 // components/PlacesToStay.jsx
 import React from 'react';
 import './PlacesToStay.css';
-import maldivesImage from '../assets/images/maldivesImage.jpg';
-import moroccoImage from '../assets/images/moroccoImage.jpg';
-import mongoliaImage from '../assets/images/mongoliaImage.jpg';
+import anantaraPeaceHavenImage from '../assets/images/AnantaraPeaceHaven.jpg';
+import nottingHillApartmentsBaliResortImage from '../assets/images/NottingHillApartmentsBaliResort.jpg';
+import santhiyaTreeKohChangResortImage from '../assets/images/SanthiyaTreeKohChangResort,KohChang.jpeg';
 import Image from 'next/image';
 
 function PlacesToStay() {
   const places = [
     { 
-      name: 'Maldives', 
-      description: `Experience luxury and relaxation among the stunning 
-                    atolls. The Maldives offers world-class resorts, pristine 
-                    beaches, and incredible snorkeling and diving opportunities.`,
-      image: maldivesImage 
+      name: 'Anantara Peace Haven, Sri Lanka', 
+      description: `Escape to a beachfront paradise on Sri Lanka’s southern coast. 
+                    Surrounded by coconut groves, this luxurious resort offers private 
+                    pool villas, a two-level infinity pool, and vibrant dining experiences.`,
+      image: anantaraPeaceHavenImage 
     },
     { 
-      name: 'Morocco', 
-      description: `Explore the vibrant culture and ancient architecture of Morocco. 
-                    Wander through colorful souks, visit the Ourika Valley, and 
-                    enjoy the incredible cuisine.`,
-      image: moroccoImage 
+      name: 'Notting Hill Apartments Bali Resort, Indonesia', 
+      description: `Unwind in Bali’s tropical beauty at this resort nestled among lush greenery. 
+                    Experience modern luxury with spacious apartments, an infinity pool overlooking 
+                    the ocean, and easy access to vibrant beaches and local attractions.`,
+      image: nottingHillApartmentsBaliResortImage 
     },
     { 
-      name: 'Mongolia', 
-      description: `Immerse yourself in traditional Mongolian life by staying 
-                    in yurts, known locally as gers. Experience the vast open 
-                    landscapes, ride horses across the steppe, and explore 
-                    the history of the Mongol Empire.`,
-      image: mongoliaImage 
+      name: 'Santhiya Tree Koh Chang Resort, Thailand', 
+      description: `Immerse yourself in tropical bliss at this eco-luxury resort on Koh Chang Island. 
+                    Relax in teakwood villas with private pools, indulge in spa treatments, and enjoy 
+                    breathtaking views of the sea.`,
+      image: santhiyaTreeKohChangResortImage 
     },
   ];
-
+  
   return (
     <section id="hotels" className="places-to-stay">
       <h2>Explore unique places to stay</h2>
