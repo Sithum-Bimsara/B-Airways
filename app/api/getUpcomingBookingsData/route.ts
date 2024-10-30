@@ -27,19 +27,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Invalid token.' }, { status: 401 });
     }
 
-    // Query to get all distinct upcoming bookings by the user
+    // Query to get all booking details by the user
     const [result] = await connection.query(
-      `SELECT DISTINCT
-          b.Flight_ID, 
-          f.Departure_date AS Date,
+      `SELECT 
+          b.Booking_ID,
+          p.Name AS Passenger_Name,
+          b.Seat_ID,
+          s.Travel_Class,
+          a.Airport_name AS Destination_Airport_Name,
           f.Status,
-          a.Airport_name AS Destination_Airport_Name 
+          f.Departure_date AS Date
        FROM booking b
        JOIN flight f ON b.Flight_ID = f.Flight_ID
        JOIN route r ON f.Route_ID = r.Route_ID
        JOIN airport a ON r.Destination_airport_code = a.Airport_code
+       JOIN passenger p ON b.Passenger_ID = p.Passenger_ID
+       JOIN seat s ON b.Seat_ID = s.Seat_ID
        WHERE b.User_ID = ?
-       AND f.Departure_date >= CURDATE();`,
+       AND f.Departure_date >= CURDATE()
+       ORDER BY f.Departure_date;`,
       [decoded.userId]
     );
 
@@ -51,13 +57,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'No bookings yet.' }, { status: 200 });
     }
 
-    // Return all distinct bookings for the user
+    // Return all bookings for the user
     return NextResponse.json({
       bookings: bookingsData.map(booking => ({
-        Flight_ID: booking.Flight_ID,
-        Date: booking.Date,
-        Status: booking.Status,
+        Booking_ID: booking.Booking_ID,
+        Passenger_Name: booking.Passenger_Name,
+        Seat_ID: booking.Seat_ID,
+        Travel_Class: booking.Travel_Class,
         Destination_Airport_Name: booking.Destination_Airport_Name,
+        Status: booking.Status,
+        Date: booking.Date
       }))
     });
   } catch (error) {

@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './UserProfile.css';
 import { AuthContext } from '../context/AuthContext';
+import ConfirmationModal from '../components/ConfirmationModal';
+import Toast from '../components/Toast';
 
 const UserProfile = () => {
   const { username, role, userId } = useContext(AuthContext);
@@ -16,6 +18,9 @@ const UserProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: '' });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -117,6 +122,50 @@ const UserProfile = () => {
     }
   };
 
+  const handleCancelBooking = async (bookingId) => {
+    try {
+      const response = await fetch('/api/cancelBooking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bookingId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to cancel booking');
+      }
+
+      // Remove the cancelled booking from the state
+      setUpcomingBookings(prevBookings => 
+        prevBookings.filter(booking => booking.Booking_ID !== bookingId)
+      );
+
+      // Show success toast instead of alert
+      setToast({
+        show: true,
+        message: 'Booking cancelled successfully',
+        type: 'success'
+      });
+    } catch (error) {
+      console.error('Error cancelling booking:', error);
+      // Show error toast instead of alert
+      setToast({
+        show: true,
+        message: 'Failed to cancel booking. Please try again.',
+        type: 'error'
+      });
+    } finally {
+      setIsModalOpen(false);
+      setSelectedBooking(null);
+    }
+  };
+
+  const openCancelModal = (booking) => {
+    setSelectedBooking(booking);
+    setIsModalOpen(true);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -197,8 +246,12 @@ const UserProfile = () => {
             <div className="flight-list">
               {pastBookings.map((booking, index) => (
                 <div key={index} className="flight-card">
-                  <p><strong>Flight:</strong> {booking.Flight_ID}</p>
+                  <p><strong>Booking ID:</strong> {booking.Booking_ID}</p>
+                  <p><strong>Flight ID:</strong> {booking.Flight_ID}</p>
                   <p><strong>Date:</strong> {new Date(booking.Date).toLocaleDateString()}</p>
+                  <p><strong>Passenger:</strong> {booking.Passenger_Name}</p>
+                  <p><strong>Seat:</strong> {booking.Seat_ID}</p>
+                  <p><strong>Class:</strong> {booking.Travel_Class}</p>
                   <p><strong>Destination:</strong> {booking.Destination_Airport_Name}</p>
                 </div>
               ))}
@@ -215,10 +268,19 @@ const UserProfile = () => {
             <div className="flight-list">
               {upcomingBookings.map((booking, index) => (
                 <div key={index} className="flight-card">
-                  <p><strong>Flight:</strong> {booking.Flight_ID}</p>
-                  <p><strong>Date:</strong> {new Date(booking.Date).toLocaleDateString()}</p>
+                  <p><strong>Booking ID:</strong> {booking.Booking_ID}</p>
+                  <p><strong>Passenger:</strong> {booking.Passenger_Name}</p>
+                  <p><strong>Seat:</strong> {booking.Seat_ID}</p>
+                  <p><strong>Class:</strong> {booking.Travel_Class}</p>
                   <p><strong>Destination:</strong> {booking.Destination_Airport_Name}</p>
+                  <p><strong>Date:</strong> {new Date(booking.Date).toLocaleDateString()}</p>
                   <p><strong>Status:</strong> {booking.Status}</p>
+                  <button 
+                    className="cancel-booking-button"
+                    onClick={() => openCancelModal(booking)}
+                  >
+                    Cancel Booking
+                  </button>
                 </div>
               ))}
             </div>
@@ -227,6 +289,24 @@ const UserProfile = () => {
           )}
         </div>
       </div>
+
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedBooking(null);
+        }}
+        onConfirm={() => handleCancelBooking(selectedBooking?.Booking_ID)}
+        bookingDetails={selectedBooking}
+      />
+
+      {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ show: false, message: '', type: '' })}
+        />
+      )}
     </div>
   );
 };
