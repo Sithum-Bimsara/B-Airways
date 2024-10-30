@@ -65,11 +65,21 @@ To run this project locally, follow these steps:
 
 ## Technologies Used
 
-- Next.js
-- React
+### Frontend
+- Next.js 14 (App Router)
+- React 18
+- TailwindCSS
+
+### Backend
+- Python (FastAPI)
 - MySQL
 - JSON Web Tokens (JWT)
-- CSS Modules
+
+### AI/ML
+- Google Gemini API
+
+### Development Tools
+- TypeScript
 
 ## Contributing
 
