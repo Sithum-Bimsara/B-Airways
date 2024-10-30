@@ -115,7 +115,7 @@ h2 {
 
 .confirm-seats-button {
   padding: 12px 24px;
-  background-color: #007bff; /* Button color */
+  background-color: #24577a; /* Button color */
   color: white;
   border: none;
   border-radius: 5px;
@@ -125,7 +125,7 @@ h2 {
 }
 
 .confirm-seats-button:hover {
-  background-color: #0056b3; /* Darker button color on hover */
+  background-color: #4e83a7; /* Darker button color on hover */
   transform: translateY(-2px);
 }
 
@@ -140,7 +140,7 @@ h2 {
 
 .spinner {
   border: 6px solid #f3f3f3;
-  border-top: 6px solid #0070f3;
+  border-top: 6px solid #4e83a7;
   border-radius: 50%;
   width: 48px;
   height: 48px;
