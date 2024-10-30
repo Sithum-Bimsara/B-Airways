@@ -140,7 +140,7 @@ function HeroSection() {
   const handleFlightTypeChange = (type) => {
     setFlightType(type);
     localStorage.setItem('flightType', type);
-    if (type === 'oneway' && !route1) {
+    if (type === 'oneway' && fromWhere && whereTo && !route1) {
       setReturnDate('');
       setShowAlert(true);
       setAlertMessage(`No flights available from  ${fromWhere} and ${whereTo}. Please try different locations.`);

@@ -78,7 +78,7 @@ export default function AdminDashboard() {
   // Fetch Functions
   const fetchPassengerDetails = async (flightNo) => {
     try {
-      const response = await fetch(`/api/passengers?flightNo=${flightNo}`);
+      const response = await fetch(`/api/AdminPanel/passengers?flightNo=${flightNo}`);
       const data = await response.json();
       setPassengerDetails({
         below18: data.below18.map(p => ({
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
 
   const fetchPassengerCount = async (destination, fromDate, toDate) => {
     try {
-      const response = await fetch(`/api/passenger-count?destination=${destination}&fromDate=${fromDate}&toDate=${toDate}`);
+      const response = await fetch(`/api/AdminPanel/passenger-count?destination=${destination}&fromDate=${fromDate}&toDate=${toDate}`);
       const data = await response.json();
       setPassengerCount(data.count);
     } catch (error) {
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
 
   const fetchBookingCounts = async (fromDate, toDate) => {
     try {
-      const response = await fetch(`/api/bookings?fromDate=${fromDate}&toDate=${toDate}`);
+      const response = await fetch(`/api/AdminPanel/bookings?fromDate=${fromDate}&toDate=${toDate}`);
       const data = await response.json();
       setBookingCounts(data.bookingCounts);
     } catch (error) {
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
 
   const fetchPastFlights = async (origin, destination) => {
     try {
-      const response = await fetch(`/api/past-flights?origin=${origin}&destination=${destination}`);
+      const response = await fetch(`/api/AdminPanel/past-flights?origin=${origin}&destination=${destination}`);
       const data = await response.json();
       setPastFlights(data.pastFlights);
     } catch (error) {
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
 
   const fetchRevenueData = async () => {
     try {
-      const response = await fetch('/api/revenue');
+      const response = await fetch('/api/AdminPanel/revenue');
       const data = await response.json();
       setRevenueData(data);
     } catch (error) {
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
 
   const fetchAllFlights = async () => {
     try {
-      const response = await fetch('/api/getAllFlights');
+      const response = await fetch('/api/AdminPanel/getAllFlights');
       const data = await response.json();
       if (data && Array.isArray(data)) {
         setFlights(data);
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setAddFlightStatus({ loading: true, message: '' });
     try {
-      const response = await fetch('/api/addFlight', {
+      const response = await fetch('/api/AdminPanel/addFlight', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addFlightData)
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setChangeStatus({ loading: true, message: '' });
     try {
-      const response = await fetch('/api/changeFlightStatus', {
+      const response = await fetch('/api/AdminPanel/changeFlightStatus', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(changeStatusData)
