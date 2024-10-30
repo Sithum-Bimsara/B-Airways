@@ -8,6 +8,8 @@ function ContactUs() {
     email: '',
     message: ''
   });
+  const [status, setStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,18 +19,52 @@ function ContactUs() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can handle form submission, e.g., send the data to your server
-    console.log('Form submitted:', formData);
-    // Reset form
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+    setStatus({ type: '', message: '' });
+
+    try {
+      const response = await fetch('/api/contactUs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus({
+          type: 'success',
+          message: 'Thank you for your message! We will get back to you soon.'
+        });
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error(data.message || 'Something went wrong!');
+      }
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: error.message || 'Failed to send message. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section id="contact-us" className="contact-us">
       <h2>Contact Us</h2>
       <p>If you have any questions or need assistance, feel free to reach out to us!</p>
+      
+      {status.message && (
+        <div className={`alert ${status.type}`}>
+          {status.message}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="contact-form">
         <div className="form-group">
           <label htmlFor="name">Name</label>
@@ -39,6 +75,7 @@ function ContactUs() {
             value={formData.name}
             onChange={handleChange}
             required
+            disabled={isSubmitting}
           />
         </div>
         <div className="form-group">
@@ -50,6 +87,7 @@ function ContactUs() {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={isSubmitting}
           />
         </div>
         <div className="form-group">
@@ -60,9 +98,16 @@ function ContactUs() {
             value={formData.message}
             onChange={handleChange}
             required
+            disabled={isSubmitting}
           ></textarea>
         </div>
-        <button type="submit" className="submit-button">Submit</button>
+        <button 
+          type="submit" 
+          className={`submit-button ${isSubmitting ? 'submitting' : ''}`}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Sending...' : 'Submit'}
+        </button>
       </form>
     </section>
   );
