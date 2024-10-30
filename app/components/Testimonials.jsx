@@ -22,7 +22,7 @@ function Testimonials() {
     {
       name: 'Kaori Yamaguchi',
       location: 'Honolulu, Hawaii',
-      date: 'February 2024',
+      date: 'June 2024',
       review:
         'My family and I visit Hawaii every year, and we usually book our flights through B Airways. B Airways was recommended to us by a long-time friend, and I\'m so glad we tried it out! The process was easy and reliable.',
       image: user2,

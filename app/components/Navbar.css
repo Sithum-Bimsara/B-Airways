@@ -61,7 +61,7 @@
 }
 
 .signin-btn {
-  background-color: #0070f3;
+  background-color: #3c47e9;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 112, 243, 0.2);
 }
@@ -192,7 +192,7 @@
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 500;
-  background-color: #0070f3;
+  background-color: #3c47e9;
   color: #fff;
   display: flex;
   align-items: center;
