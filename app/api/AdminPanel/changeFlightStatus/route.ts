@@ -4,12 +4,12 @@ import { sendMail } from '../../../utils/sendMail';
 
 export async function POST(request: Request) {
   try {
-    const { Flight_ID, newStatus } = await request.json();
+    const { Flight_ID, newStatus, departure_time } = await request.json();
 
     // Validate required fields
-    if (!Flight_ID || !newStatus) {
+    if (!Flight_ID || !newStatus || !departure_time) {
       return NextResponse.json(
-        { message: 'Flight_ID and newStatus are required.' },
+        { message: 'Flight_ID, newStatus, and departure_time are required.' },
         { status: 400 }
       );
     }
@@ -19,6 +19,15 @@ export async function POST(request: Request) {
     if (!validStatuses.includes(newStatus)) {
       return NextResponse.json(
         { message: `Invalid status. Valid statuses are: ${validStatuses.join(', ')}.` },
+        { status: 400 }
+      );
+    }
+
+    // Validate departure_time format (HH:MM)
+    const departureTimeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
+    if (!departureTimeRegex.test(departure_time)) {
+      return NextResponse.json(
+        { message: 'Invalid departure_time format. Expected HH:MM.' },
         { status: 400 }
       );
     }
@@ -33,10 +42,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Flight not found.' }, { status: 404 });
     }
 
-    // Update the flight status
+    // Update the flight status and departure time
     await connection.query(
-      'UPDATE Flight SET Status = ? WHERE Flight_ID = ?',
-      [newStatus, Flight_ID]
+      'UPDATE Flight SET Status = ?, Departure_time = ? WHERE Flight_ID = ?',
+      [newStatus, departure_time, Flight_ID]
     );
 
     // Fetch all users who have booked this flight
@@ -72,6 +81,8 @@ export async function POST(request: Request) {
       ${newStatus === 'Cancelled' ? 
         'Please contact our customer service team for assistance with rebooking or refund options.' :
         'Please check your booking details in your B Airways account for the most up-to-date information.'}
+
+      New Departure Time: ${departure_time}
 
       If you have any questions or concerns, please don't hesitate to reach out to our customer service team.
 

@@ -38,7 +38,9 @@ export default function AdminDashboard() {
 
   const [changeStatusData, setChangeStatusData] = useState({
     Flight_ID: '',
-    newStatus: ''
+    currentStatus: '',
+    newStatus: '',
+    departure_time: ''
   });
 
   const [activeTab, setActiveTab] = useState('passengerDetails');
@@ -73,6 +75,10 @@ export default function AdminDashboard() {
       ...prev,
       [name]: value
     }));
+
+    if (name === 'Flight_ID') {
+      fetchCurrentFlightData(value);
+    }
   };
 
   // Fetch Functions
@@ -159,6 +165,37 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchCurrentFlightData = async (flightId) => {
+    try {
+      const response = await fetch(`/api/AdminPanel/getFlightDetails?Flight_ID=${flightId}`);
+      const data = await response.json();
+      if (response.ok) {
+        setChangeStatusData(prev => ({
+          ...prev,
+          currentStatus: data.Status,
+          newStatus: data.Status,
+          departure_time: data.Departure_time || ''
+        }));
+      } else {
+        console.error("Error fetching flight details:", data.message);
+        setChangeStatusData(prev => ({
+          ...prev,
+          currentStatus: '',
+          newStatus: '',
+          departure_time: ''
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching flight details:", error);
+      setChangeStatusData(prev => ({
+        ...prev,
+        currentStatus: '',
+        newStatus: '',
+        departure_time: ''
+      }));
+    }
+  };
+
   useEffect(() => {
     fetchRevenueData();
     fetchAllFlights();
@@ -213,7 +250,9 @@ export default function AdminDashboard() {
         // Optionally, reset form
         setChangeStatusData({
           Flight_ID: '',
-          newStatus: ''
+          currentStatus: '',
+          newStatus: '',
+          departure_time: ''
         });
         fetchAllFlights(); // Refresh flights list
       } else {
@@ -296,7 +335,7 @@ export default function AdminDashboard() {
 
   const renderPassengerCount = () => (
     <div className={styles.card}>
-      <div className={styles.cardHeader}>Passenger Count by Destination</div>
+      <div className={styles.cardHeader}>Passenger Count</div>
       <div className={styles.cardBody}>
         <form onSubmit={(e) => { e.preventDefault(); fetchPassengerCount(formData.destination, formData.fromDate, formData.toDate); }} className={styles.form}>
           <div className={styles.formGroup}>
@@ -334,17 +373,18 @@ export default function AdminDashboard() {
             />
           </div>
           <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
-            Submit
+            Get Count
           </button>
         </form>
-        <p className={styles.countDisplay}>Total Passengers: {passengerCount}</p>
+        <div className={styles.countDisplay}>
+          Total Passengers: {passengerCount}
+        </div>
       </div>
     </div>
   );
-
   const renderBookingCounts = () => (
     <div className={styles.card}>
-      <div className={styles.cardHeader}>Booking Counts by Passenger Type</div>
+      <div className={styles.cardHeader}>Booking Counts</div>
       <div className={styles.cardBody}>
         <form onSubmit={(e) => { e.preventDefault(); fetchBookingCounts(formData.fromDate, formData.toDate); }} className={styles.form}>
           <div className={styles.formGroup}>
@@ -370,38 +410,35 @@ export default function AdminDashboard() {
             />
           </div>
           <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
-            Submit
+            Get Booking Counts
           </button>
         </form>
-        <div className={styles.bookingCounts}>
-          {bookingCounts.length > 0 ? (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th className={styles.tableHeaderCell}>Passenger Type</th>
-                  <th className={styles.tableHeaderCell}>Number of Bookings</th>
+        <div className={styles.countDisplay}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th className={styles.tableHeaderCell}>Passenger Type</th>
+                <th className={styles.tableHeaderCell}>Number of Bookings</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookingCounts.map((booking, index) => (
+                <tr key={index} className={styles.tableRow}>
+                  <td className={styles.tableCell}>{booking.PassengerType}</td>
+                  <td className={styles.tableCell}>{booking.NumberOfBookings}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {bookingCounts.map((booking, index) => (
-                  <tr key={index} className={styles.tableRow}>
-                    <td className={styles.tableCell}>{booking.PassengerType}</td>
-                    <td className={styles.tableCell}>{booking.NumberOfBookings}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : <p className={styles.emptyState}>No data available.</p>}
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   );
-
   const renderPastFlights = () => (
     <div className={styles.card}>
-      <div className={styles.cardHeader}>Past Flights Data</div>
+      <div className={styles.cardHeader}>Past Flights</div>
       <div className={styles.cardBody}>
-        <form onSubmit={(e) => { e.preventDefault(); fetchPastFlights(formData.origin, formData.destinationQuery); }} className={styles.form}>
+        <form onSubmit={(e) => { e.preventDefault(); fetchPastFlights(formData.origin, formData.destination); }} className={styles.form}>
           <div className={styles.formGroup}>
             <label className={styles.label}>Origin:</label>
             <input
@@ -411,23 +448,23 @@ export default function AdminDashboard() {
               onChange={handleInputChange}
               required
               className={styles.input}
-              placeholder="Enter Origin Airport"
+              placeholder="Enter Origin"
             />
           </div>
           <div className={styles.formGroup}>
             <label className={styles.label}>Destination:</label>
             <input
               type="text"
-              name="destinationQuery"
-              value={formData.destinationQuery}
+              name="destination"
+              value={formData.destination}
               onChange={handleInputChange}
               required
               className={styles.input}
-              placeholder="Enter Destination Airport"
+              placeholder="Enter Destination"
             />
           </div>
           <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
-            Submit
+            Get Past Flights
           </button>
         </form>
         <div className={styles.flightList}>
@@ -436,30 +473,31 @@ export default function AdminDashboard() {
               <thead>
                 <tr>
                   <th className={styles.tableHeaderCell}>Flight ID</th>
+                  <th className={styles.tableHeaderCell}>Status</th>
                   <th className={styles.tableHeaderCell}>Origin Airport</th>
                   <th className={styles.tableHeaderCell}>Destination Airport</th>
-                  <th className={styles.tableHeaderCell}>Status</th>
                   <th className={styles.tableHeaderCell}>Passenger Count</th>
                 </tr>
               </thead>
               <tbody>
-                {pastFlights.map((flight) => (
-                  <tr key={flight.Flight_ID} className={styles.tableRow}>
+                {pastFlights.map((flight, index) => (
+                  <tr key={index} className={styles.tableRow}>
                     <td className={styles.tableCell}>{flight.Flight_ID}</td>
+                    <td className={styles.tableCell}>{flight.Status}</td>
                     <td className={styles.tableCell}>{flight.OriginAirportName}</td>
                     <td className={styles.tableCell}>{flight.DestinationAirportName}</td>
-                    <td className={styles.tableCell}>{flight.Status}</td>
                     <td className={styles.tableCell}>{flight.PassengerCount}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ) : <p className={styles.emptyState}>No past flights found.</p>}
+          ) : (
+            <p className={styles.emptyState}>No past flights available.</p>
+          )}
         </div>
       </div>
     </div>
   );
-
   const renderRevenueData = () => (
     <div className={styles.card}>
       <div className={styles.cardHeader}>Revenue by Aircraft Type</div>
@@ -697,21 +735,45 @@ export default function AdminDashboard() {
               )}
             </select>
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>New Status:</label>
-            <select
-              name="newStatus"
-              value={changeStatusData.newStatus}
-              onChange={handleChangeStatusInput}
-              required
-              className={styles.select}
-            >
-              <option value="" disabled>Select new status</option>
-              <option value="Scheduled">Scheduled</option>
-              <option value="Delayed">Delayed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-          </div>
+          {changeStatusData.Flight_ID && (
+            <>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Current Status:</label>
+                <input
+                  type="text"
+                  value={changeStatusData.currentStatus}
+                  readOnly
+                  className={styles.input}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>New Status:</label>
+                <select
+                  name="newStatus"
+                  value={changeStatusData.newStatus}
+                  onChange={handleChangeStatusInput}
+                  required
+                  className={styles.select}
+                >
+                  <option value="" disabled>Select new status</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Delayed">Delayed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Departure Time:</label>
+                <input
+                  type="time"
+                  name="departure_time"
+                  value={changeStatusData.departure_time}
+                  onChange={handleChangeStatusInput}
+                  required
+                  className={styles.input}
+                />
+              </div>
+            </>
+          )}
           <button type="submit" className={`${styles.button} ${styles.primaryButton}`} disabled={changeStatus.loading}>
             {changeStatus.loading ? 'Updating Status...' : 'Update Status'}
           </button>

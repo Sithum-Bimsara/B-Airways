@@ -20,6 +20,9 @@ function HeroSection() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
+  // Get today's date in YYYY-MM-DD format for min date validation
+  const today = new Date().toISOString().split('T')[0];
+
   useEffect(() => {
     fetchAirportCodes();
     // Clear all localStorage data
@@ -92,6 +95,20 @@ function HeroSection() {
   };
 
   const handleSearch = () => {
+    // Check if all required fields are filled
+    if (!fromWhere || !whereTo || !departureDate) {
+      setShowAlert(true);
+      setAlertMessage('Please fill in all required fields before searching');
+      return;
+    }
+
+    // For round trips, check if return date is filled
+    if (flightType === 'roundtrip' && !returnDate) {
+      setShowAlert(true);
+      setAlertMessage('Please select a return date for round trip flights');
+      return;
+    }
+
     let queryParams;
     if (route1 && departureDate && !returnDate) {
       queryParams = new URLSearchParams({
@@ -108,7 +125,8 @@ function HeroSection() {
       }).toString();
     } 
     else {
-      console.error('Please fill in all required fields');
+      setShowAlert(true);
+      setAlertMessage('No available routes for the selected locations');
       return;
     }
 
@@ -134,7 +152,15 @@ function HeroSection() {
     fetchRoutes(fromWhere, selectedWhereTo);
   };
 
-  const handleDepartureDateChange = (event) => setDepartureDate(event.target.value);
+  const handleDepartureDateChange = (event) => {
+    const selectedDate = event.target.value;
+    setDepartureDate(selectedDate);
+    // Clear return date if it's before the new departure date
+    if (returnDate && returnDate < selectedDate) {
+      setReturnDate('');
+    }
+  };
+
   const handleReturnDateChange = (event) => setReturnDate(event.target.value);
 
   const handleFlightTypeChange = (type) => {
@@ -229,7 +255,8 @@ function HeroSection() {
             type="date" 
             value={departureDate} 
             onChange={handleDepartureDateChange} 
-            className="dropdown" 
+            className="dropdown"
+            min={today}
           />
         </div>
         {flightType === 'roundtrip' && (
@@ -241,6 +268,7 @@ function HeroSection() {
               onChange={handleReturnDateChange} 
               className="dropdown" 
               disabled={!route2}
+              min={departureDate || today}
             />
           </div>
         )}

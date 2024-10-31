@@ -4,6 +4,7 @@ import './SeatSelection.css';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '../context/AuthContext';
 import Button from './Button'; // Import the new Button component
+import Card from '../components/Card'; // Import the Card component
 
 const SeatSelection = () => {
   const { userId } = useContext(AuthContext);
@@ -17,6 +18,8 @@ const SeatSelection = () => {
   const [membershipType, setMembershipType] = useState(null);
   const [discount, setDiscount] = useState(0);
   const router = useRouter();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
 
   // Fetch seat prices based on flight ID and travel class
   const fetchSeatPrices = async (flightId) => {
@@ -257,7 +260,7 @@ const SeatSelection = () => {
     try {
       const flightId = localStorage.getItem('selectedFlightId');
       
-      // First create the bookings
+      // Create bookings first
       const bookingResponse = await fetch('/api/createBooking', {
         method: 'POST',
         headers: {
@@ -277,15 +280,47 @@ const SeatSelection = () => {
         throw new Error(bookingData.message || 'Failed to create bookings.');
       }
 
-      // Show confirmation dialog with total price
-      const confirmed = window.confirm(`Total Price: $${totalPrice.toFixed(2)}\nAre you sure you want to confirm this booking?`);
-    
-      if (!confirmed) {
-        return;
+      setBookingData(bookingData);
+      setShowConfirmModal(true);
+
+    } catch (err) {
+      console.error(err);
+      alert(err.message || 'Something went wrong while creating bookings.');
+    }
+  };
+
+  const handleCancelBookings = async () => {
+    try {
+      // Cancel each booking in successfulBookings
+      if (bookingData && bookingData.successfulBookings) {
+        const cancelPromises = bookingData.successfulBookings.map(booking =>
+          fetch('/api/cancelBooking', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              bookingId: booking.bookingId
+            })
+          })
+        );
+        
+        await Promise.all(cancelPromises);
       }
+      setShowConfirmModal(false);
+    } catch (err) {
+      console.error('Error cancelling bookings:', err);
+      alert('Failed to cancel bookings');
+    }
+  };
+
+  // New function to handle confirmation
+  const handleConfirmBooking = async () => {
+    try {
+      if (!bookingData) return;
 
       // Handle partial success case
-      if (bookingResponse.status === 207) {
+      if (bookingData.failedBookings && bookingData.failedBookings.length > 0) {
         const successfulBookings = bookingData.successfulBookings.map(booking => ({
           bookingId: booking.bookingId,
           passengerId: booking.Passenger_ID,
@@ -306,9 +341,6 @@ const SeatSelection = () => {
           }),
         });
 
-        const existingBookings = JSON.parse(localStorage.getItem('BookingData') || '[]');
-        localStorage.setItem('BookingData', JSON.stringify([...existingBookings, ...successfulBookings]));
-
         const remainingPassengers = passengerData.filter(passenger => 
           bookingData.failedBookings.some(failed => 
             failed.Passenger_ID === passenger.Passenger_ID
@@ -321,6 +353,7 @@ const SeatSelection = () => {
           .map(booking => booking.errorMessage)
           .join('\n');
         
+        setShowConfirmModal(false);
         alert(`Some bookings failed:\n${errorMessages}`);
         window.location.reload();
         return;
@@ -352,10 +385,12 @@ const SeatSelection = () => {
       localStorage.setItem('PassengerData', JSON.stringify([]));
       localStorage.setItem('TotalPrice', JSON.stringify(totalPrice));
       
+      setShowConfirmModal(false);
       router.push('/tickets');
     } catch (err) {
       console.error(err);
-      alert(err.message || 'Something went wrong while creating bookings.');
+      setShowConfirmModal(false);
+      alert(err.message || 'Something went wrong while confirming bookings.');
     }
   };
 
@@ -458,6 +493,32 @@ const SeatSelection = () => {
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <Button onClick={handleSubmit} text="Confirm Seats" />
       </div>
+
+      {/* Add Modal Component */}
+      {showConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Confirm Booking</h3>
+            <div className="modal-price">
+              <p>Total Price: ${totalPrice.toFixed(2)}</p>
+              {membershipType && discount > 0 && (
+                <p className="discount-text">
+                  Includes {(discount * 100).toFixed(0)}% {membershipType} discount
+                </p>
+              )}
+            </div>
+            <div className="modal-buttons">
+              <button 
+                className="modal-button cancel"
+                onClick={handleCancelBookings}
+              >
+                Cancel
+              </button>
+              <Card onClick={handleConfirmBooking} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

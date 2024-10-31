@@ -1,7 +1,9 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Tickets.css';
 import { useRouter } from 'next/navigation';
+import html2canvas from 'html2canvas';
+import Toast from '../components/Toast/Toast';
 
 const Tickets = () => {
   const [bookings, setBookings] = useState([]);
@@ -14,6 +16,12 @@ const Tickets = () => {
   const [arrivalDate, setArrivalDate] = useState('');
   const [flightType, setFlightType] = useState('');
   const router = useRouter();
+  const ticketsRef = useRef(null);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+  };
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -22,7 +30,7 @@ const Tickets = () => {
       const flightTypeFromStorage = localStorage.getItem('flightType');
 
       if (!flightId || bookingData.length === 0) {
-        alert('No booking information found.');
+        showToast('No booking information found.', 'error');
         router.push('/searchResults');
         return;
       }
@@ -46,7 +54,7 @@ const Tickets = () => {
         setArrivalDate(flight.arrivalDate);
       } catch (error) {
         console.error(error);
-        alert(error.message || 'Error fetching flight details.');
+        showToast(error.message || 'Error fetching flight details.', 'error');
       }
 
       setLoading(false);
@@ -68,6 +76,71 @@ const Tickets = () => {
     router.push('/');
   };
 
+  const handleSendEmail = async () => {
+    if (!bookings.length) {
+      showToast('No bookings to send.', 'error');
+      return;
+    }
+
+    try {
+      const ticketsElement = ticketsRef.current;
+      if (!ticketsElement) {
+        showToast('Could not find tickets element.', 'error');
+        return;
+      }
+
+      showToast('Preparing your tickets...', 'info');
+      const canvas = await html2canvas(ticketsElement);
+      const imageData = canvas.toDataURL('image/png');
+
+      const firstBookingId = bookings[0].bookingId;
+      if (!firstBookingId) {
+        showToast('No Booking ID found.', 'error');
+        return;
+      }
+
+      const emailResponse = await fetch('/api/getUserEmailByBookingId', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bookingId: firstBookingId }),
+      });
+
+      const emailData = await emailResponse.json();
+
+      if (!emailResponse.ok) {
+        showToast(`Failed to retrieve user email: ${emailData.message}`, 'error');
+        return;
+      }
+
+      const userEmail = emailData.email;
+      if (!userEmail) {
+        showToast('User email not found. Please log in again.', 'error');
+        return;
+      }
+
+      showToast('Sending email...', 'info');
+      const response = await fetch('/api/sendTicketEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: userEmail, image: imageData }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        showToast('Ticket image sent to your email successfully.', 'success');
+      } else {
+        showToast(`Failed to send email: ${data.message}`, 'error');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      showToast('An error occurred while sending the email.', 'error');
+    }
+  };
+
   if (loading) {
     return <p className="loading">Loading your tickets...</p>;
   }
@@ -75,7 +148,7 @@ const Tickets = () => {
     <div className="tickets-container">
       <h2 className="title">Your Tickets</h2>
       
-      <div className="tickets-list">
+      <div className="tickets-list" ref={ticketsRef}>
         {bookings.map((booking) => (
           <div key={booking.bookingId} className="boarding-pass">
             <div className="main-ticket">
@@ -145,7 +218,20 @@ const Tickets = () => {
         <button className="action-button" onClick={handleReturnHome}>
           Return to Home
         </button>
+        <button className="action-button" onClick={handleSendEmail}>
+          Send Ticket via Email
+        </button>
       </div>
+
+      {toast && (
+        <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}>
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        </div>
+      )}
     </div>
   );
 };
