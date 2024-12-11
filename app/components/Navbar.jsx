@@ -96,7 +96,7 @@ function Navbar() {
               </button>
             </>
           )}
-        </div>
+        </div> 
       </nav>
       <SignupModal isOpen={isSignupOpen} onClose={closeSignupModal} />
       <SigninModal isOpen={isSigninOpen} onClose={closeSigninModal} />
